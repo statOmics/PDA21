@@ -1,5 +1,12 @@
-## Add packages used in Rmd files
-pkgs <- c(
-    "ggplot2"  # As example
-)
-install.packages(pkgs, Ncpus = 2L)
+## ----biocmanagermsg, eval = TRUE-----------------------------------------
+message("* Installing BiocManager.")
+
+
+## ----biocmanager, eval = TRUE--------------------------------------------
+if (!require("BiocManager"))
+  install.packages("BiocManager")
+
+## ----pkgs----------------------------------------------------------------
+pkgs <- c("tidyverse",
+          "msqrob2")
+BiocManager::install(pkgs)
