@@ -10,9 +10,16 @@ output:
 ---
 
 
+```{r setup, include=FALSE, cache=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+***
+
 ```{r echo=FALSE}
 knitr::include_graphics("./figures/IntroFig.png")
 ```
+
 
 ### Course Description
 

@@ -1,15 +1,29 @@
-name: "my-website"
+name : "PDA21"
+title : "Proteomics Data Analysis 2021 (PDA21)"
 navbar:
-  title: "My Website"
+  title: "PDA21"
   left:
     - icon: fa-home
       href: index.html
-    - text: "About"
-      href: about.html
-
+      
+    - text: "Lectures"
+      icon: fa-chalkboard-teacher
+      menu:
+      - text: Preprocessing
+        href: pda_quantification_preprocessing.html
+  right:
+    - icon: fa-github
+      href: https://github.com/statOmics/HDA2020
+    - text: "statOmics"
+      href: http://statomics.github.io/
 output:
-  html_document:
+    html_document:
       code_download: true
+      theme: cosmo
+      toc: true
+      toc_float: true
+      highlight: tango
+      number_sections: true
       df_print: paged
 new_session: true
 exclude: ["install.R"]
