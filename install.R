@@ -8,5 +8,8 @@ if (!require("BiocManager"))
 
 ## ----pkgs----------------------------------------------------------------
 pkgs <- c("tidyverse",
+          "limma",
+          "plotly",
+          "QFeatures",
           "msqrob2")
 BiocManager::install(pkgs)
