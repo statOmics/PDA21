@@ -12,6 +12,16 @@ output:
       number_sections: true
 ---
 
+
+
+<iframe width="560" height="315"
+src="https://www.youtube.com/embed/JOdiYzCFhBE"
+frameborder="0"
+style="display: block; margin: auto;"
+allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
+- [Playlist PDA Preprocessing](https://www.youtube.com/playlist?list=PLZH1hP8_LbJJXQeQ_KYDNoq-AXyFBG6nX)
+
 # Outline {-}
 
 1. Introduction
@@ -26,6 +36,14 @@ output:
 ---
 
 # Intro: Challenges in Label-Free Quantitative Proteomics
+
+
+<iframe width="560" height="315"
+src="https://www.youtube.com/embed/JOdiYzCFhBE"
+frameborder="0"
+style="display: block; margin: auto;"
+allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
 
 ## MS-based workflow
 
@@ -73,6 +91,11 @@ knitr::include_graphics("./figures/proteomicsDataAnalysis.png")
 
 ## CPTAC Spike-in Study
 
+<iframe width="560" height="315"
+src="https://www.youtube.com/embed/6V5GiA4Cg2U"
+frameborder="0"
+style="display: block; margin: auto;"
+allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 ```{r echo=FALSE, out.width="50%"}
 knitr::include_graphics("./figures/cptacLayoutLudger.png")
@@ -264,6 +287,12 @@ colData(pe)
 
 ## Log-transformation
 
+<iframe width="560" height="315"
+src="https://www.youtube.com/embed/7a6x5MYFgKc"
+frameborder="0"
+style="display: block; margin: auto;"
+allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
 ### Explore the data with plots
 
 Peptide AALEELVK from spiked-in UPS protein P12081. 
@@ -351,6 +380,11 @@ pe <- logTransform(pe, base = 2, i = "peptideRaw", name = "peptideLog")
 
 ## Filtering
 
+<iframe width="560" height="315"
+src="https://www.youtube.com/embed/3zVFqdTlB_c"
+frameborder="0"
+style="display: block; margin: auto;"
+allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 - Reverse sequences
 - Only identified by modification site (only modified peptides detected)
@@ -400,6 +434,12 @@ We keep `r nrow(pe[["peptideLog"]])` peptides upon filtering.
 ---
 
 ## Normalization 
+
+<iframe width="560" height="315"
+src="https://www.youtube.com/embed/RpHbgEFj9U4"
+frameborder="0"
+style="display: block; margin: auto;"
+allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 <details><summary> Click to see code to make plot </summary><p>
 
@@ -524,6 +564,12 @@ $$y_{ip}^\text{norm} = \frac{y_{ip} - \mu_i}{s_i}$$
 
 ## Summarization 
 
+<iframe width="560" height="315"
+src="https://www.youtube.com/embed/NUPJWPJgQUc"
+frameborder="0"
+style="display: block; margin: auto;"
+allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
 - We illustrate summarization issues using a subset of the cptac study (Lab 2, condition A and E) for a spiked protein (UPS P12081).
 
 <details><summary> Click to see code to make plot </summary><p>
@@ -562,10 +608,17 @@ $\rightarrow$ Summarize all peptide intensities from the same protein in a sampl
 
 Commonly used methods are 
 
-    - Mean summarization
-    - Median summarization
-    - Maxquant's maxLFQ summarization (in protein groups file)
-    - Model based summarization
+- Mean summarization
+$$
+y_{ip}=\beta_i^\text{samp} + \epsilon_{ip}
+$$
+
+- Median summarization
+- Maxquant's maxLFQ summarization (in protein groups file)
+- Model based summarization: 
+$$
+y_{ip}=\beta_i^\text{samp} + \beta_p^\text{pep} + \epsilon_{ip}
+$$
 
 ---
 
