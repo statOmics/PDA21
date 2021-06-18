@@ -11,5 +11,6 @@ pkgs <- c("tidyverse",
           "limma",
           "plotly",
           "QFeatures",
-          "msqrob2")
+          "msqrob2",
+          "gridExtra")
 BiocManager::install(pkgs)
