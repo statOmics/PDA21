@@ -39,7 +39,7 @@ allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 
 <iframe width="560" height="315"
-src="https://www.youtube.com/embed/JOdiYzCFhBE"
+src="https://www.youtube.com/embed/HdpjkoZIm9k"
 frameborder="0"
 style="display: block; margin: auto;"
 allow="autoplay; encrypted-media" allowfullscreen></iframe>
@@ -506,8 +506,8 @@ knitr::include_graphics("./figures/partners.png")
 
 ### Normalization of the data by median centering
 
-$$y_{ip}^\text{norm} = y_{ip} - \mu_i$$ 
-with $\mu_i$ the median intensity over all observed peptides in sample $i$.
+$$y_{ip}^\text{norm} = y_{ip} - \hat\mu_i$$ 
+with $\hat\mu_i$ the median intensity over all observed peptides in sample $i$.
 
 <details><summary> Click to see R-code to normalize the data </summary><p>
 ```{r}
@@ -620,6 +620,33 @@ $$
 y_{ip}=\beta_i^\text{samp} + \beta_p^\text{pep} + \epsilon_{ip}
 $$
 
+
+<details><summary> Click to see R-code to normalize the data </summary><p>
+We use the standard sumarization in aggregateFeatures, which is
+robust model based summarization. 
+
+```{r,warning=FALSE}
+pe <- aggregateFeatures(pe,
+    i = "peptideNorm", 
+    fcol = "Proteins", 
+    na.rm = TRUE,
+    name = "protein")
+```
+
+Other summarization methods can be implemented by using the `fun` argument in the `aggregateFeatures` function. 
+
+- `fun = MsCoreUtils::medianPolish()` to fits an additive model (two way decomposition) using Tukey's median polish_ procedure using stats::medpolish()
+
+- `fun = MsCoreUtils::robustSummary()` to calculate a robust aggregation using MASS::rlm() (default)
+
+- `fun = base::colMeans()` to use the mean of each column
+
+- `fun = matrixStats::colMedians()` to use the median of each column
+
+- `fun = base::colSums()` to use the sum of each column
+
+</p></details>
+
 ---
 
 # Exercise
@@ -631,6 +658,52 @@ $$
 
 # Code
 
-- Our R/Bioconductor package `msqrob2` can be used with a GUI/shinyApp in the `msqrob2gui` package or in R markdown scripts. 
+- Our R/Bioconductor package `msqrob2` can be used in R markdown scripts or with a GUI/shinyApp in the `msqrob2gui` package or . 
 
 - Users who want to learn how to code and automate proteomics data analyses in reproducible R markdown scripts can get more information on all code used in this script in the video below. 
+
+1. Data infrastructure
+<iframe width="560" height="315"
+src="https://www.youtube.com/embed/N0yIZ1YB2aQ"
+frameborder="0"
+style="display: block; margin: auto;"
+allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
+2. Import proteomics data
+<iframe width="560" height="315"
+src="https://www.youtube.com/embed/sq-yuw4W6u8"
+frameborder="0"
+style="display: block; margin: auto;"
+allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
+3. Preprocessing
+
+    -   Log-transformation
+<iframe width="560" height="315"
+src="https://www.youtube.com/embed/dWGYeO-s_xw"
+frameborder="0"
+style="display: block; margin: auto;"
+allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
+    - Filtering
+<iframe width="560" height="315"
+src="https://www.youtube.com/embed/ayB1BcJau6E"
+frameborder="0"
+style="display: block; margin: auto;"
+allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
+    - Normalisation
+<iframe width="560" height="315"
+src="https://www.youtube.com/embed/SoSkIWreRiQ"
+frameborder="0"
+style="display: block; margin: auto;"
+allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
+    - Summarization
+<iframe width="560" height="315"
+src="https://www.youtube.com/embed/fWq4rMxmJTU"
+frameborder="0"
+style="display: block; margin: auto;"
+allow="autoplay; encrypted-media" allowfullscreen></iframe>    
+
+

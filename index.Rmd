@@ -67,11 +67,11 @@ BiocManager::install("msqrob2gui")
   1. Identification
 
   2. Preprocessing & Analysis of Label Free Quantitative Proteomics Experiments with Simple Designs
-  - Slides: [Preprocessing](./pda_quantification_preprocessing.Rmd)
+  - Lecture: [Preprocessing](./pda_quantification_preprocessing.html)
   - Tutorial: 
 
   3. Statistical Inference & Analysis of Experiments with Factorial Designs
-  - Slides: 
+  - Lecture: [Differential Abundance Analysis](./pda_quantification_inference.html)
   - Tutorial: 
 
 ---
