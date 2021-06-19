@@ -11,9 +11,8 @@
 
 
 
-<title>Proteomics Data Analysis (2021)</title>
+<title>Proteomics Data Analysis 2021 (PDA21)</title>
 
-<script src="site_libs/header-attrs-2.8/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
@@ -30,8 +29,7 @@
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
-<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
-<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
 <link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
 <script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
 <link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
@@ -46,16 +44,6 @@
   ul.task-list{list-style: none;}
     </style>
 
-<style type="text/css">code{white-space: pre;}</style>
-<script type="text/javascript">
-if (window.hljs) {
-  hljs.configure({languages: []});
-  hljs.initHighlightingOnLoad();
-  if (document.readyState && document.readyState === "complete") {
-    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
-  }
-}
-</script>
 
 
 
@@ -241,22 +229,41 @@ $(document).ready(function () {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">My Website</a>
+      <a class="navbar-brand" href="index.html">PDA21</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
   <a href="index.html">
-    <span class="fas fa-home"></span>
+    <span class="fa fa-home"></span>
+     
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-chalkboard-teacher"></span>
+     
+    Lectures
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="pda_quantification_preprocessing.html">Quantification - Preprocessing</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/statOmics/PDA21">
+    <span class="fab fa-github"></span>
      
   </a>
 </li>
 <li>
-  <a href="about.html">About</a>
+  <a href="http://statomics.github.io/">statOmics</a>
 </li>
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-        
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -266,12 +273,68 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Proteomics Data Analysis (2021)</h1>
+<h1 class="title toc-ignore">Proteomics Data Analysis 2021 (PDA21)</h1>
 
 </div>
 
 
+<hr />
 <p><img src="figures/IntroFig.png" /><!-- --></p>
+<div id="course-description" class="section level3">
+<h3>Course Description</h3>
+<p>Mass spectrometry based proteomic experiments generate ever larger datasets and, as a consequence, complex data interpretation challenges. This course focuses on the statistical concepts for peptide identification, quantification, and differential analysis. Moreover, more advanced experimental designs and blocking will also be introduced. The core focus will be on shotgun proteomics data, and quantification using label-free precursor peptide (MS1) ion intensities. The course will rely exclusively on free and userfriendly opensource tools in R/Bioconductor. The course will provide a solid basis for beginners, but will also bring new perspectives to those already familiar with standard data interpretation procedures in proteomics.</p>
+<p>Students can sharpen their background knowledge on Mass Spectrometry, Proteomics &amp; Bioinformatics for Proteomics here: <a href="pages/techVideos.md">Mass Spectrometry and Bioinformatics for Proteomics</a></p>
+</div>
+<div id="target-audience" class="section level3">
+<h3>Target Audience</h3>
+<p>This course is oriented towards biologists and bioinformaticians with a particular interest in differential analysis for quantitative proteomics.</p>
+</div>
+<div id="issues" class="section level3">
+<h3>Issues</h3>
+<p>If you encounter any problems related to the course material (e.g. package installation problems, bugs in the code, typos, …), please consider <a href="https://github.com/statOmics/PDA21/issues">posting an issue on GitHub</a>.</p>
+<hr />
+</div>
+<div id="statistical-data-analysis-for-proteomics" class="section level3">
+<h3>Statistical Data Analysis for Proteomics</h3>
+<div id="software-and-data" class="section level4">
+<h4>Software and Data</h4>
+<ul>
+<li>Install [R version 4.1 or higher] (<a href="https://cran.r-project.org/" class="uri">https://cran.r-project.org/</a>)</li>
+<li>Install <a href="https://www.rstudio.com/products/rstudio/download/">Rstudio</a></li>
+<li>To install the current version of <em>msqrob2</em>, start R and run the following command.</li>
+</ul>
+<pre><code>if(!requireNamespace(&quot;BiocManager&quot;, quietly = TRUE)) {
+ install.packages(&quot;BiocManager&quot;)
+}
+BiocManager::install(&quot;msqrob2&quot;)</code></pre>
+<ul>
+<li>To install the msqrob2 GUI, start R and run the following commands</li>
+</ul>
+<pre><code>if(!requireNamespace(&quot;BiocManager&quot;, quietly = TRUE)) {
+ install.packages(&quot;BiocManager&quot;)
+}
+BiocManager::install(&quot;msqrob2gui&quot;)</code></pre>
+</div>
+<div id="detailed-program" class="section level4">
+<h4>Detailed Program</h4>
+<ol style="list-style-type: decimal">
+<li><p>Identification</p></li>
+<li><p>Preprocessing &amp; Analysis of Label Free Quantitative Proteomics Experiments with Simple Designs</p></li>
+</ol>
+<ul>
+<li>Slides: <a href="./pda_quantification_preprocessing.Rmd">Preprocessing</a></li>
+<li>Tutorial:</li>
+</ul>
+<ol start="3" style="list-style-type: decimal">
+<li>Statistical Inference &amp; Analysis of Experiments with Factorial Designs</li>
+</ol>
+<ul>
+<li>Slides:</li>
+<li>Tutorial:</li>
+</ul>
+<hr />
+</div>
+</div>
 
 
 
