@@ -13,6 +13,7 @@ output:
     pdf_document:
       toc: true
       number_sections: true
+      keep_tex: true
 ---
 
 
@@ -141,8 +142,8 @@ experiments.
 
 
 
-```{r fig.cap = "Conceptual representation of a `SummarizedExperiment` object.  Assays contain information on the measured omics features (rows) for different samples (columns). The `rowData` contains information on the omics features, the `colData` contains information on the samples, i.e. experimental design etc.", echo=FALSE, out.width="50%"}
-knitr::include_graphics("./figures/SE.svg")
+```{r fig.cap = "Conceptual representation of a `SummarizedExperiment` object.  Assays contain information on the measured omics features (rows) for different samples (columns). The `rowData` contains information on the omics features, the `colData` contains information on the samples, i.e. experimental design etc.", echo=FALSE, out.width="80%"}
+knitr::include_graphics("./figures/SE.png")
 ```
 
 - Assays in a QFeatures object have a

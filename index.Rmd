@@ -2,7 +2,7 @@
 title: Proteomics Data Analysis 2021 (PDA21)
 output:
     html_document:
-      theme: default
+      theme: cosmo      
       code_download: false
       toc: false
       toc_float: false
