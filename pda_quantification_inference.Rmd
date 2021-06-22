@@ -3,6 +3,7 @@ title: "Statistical Methods for Quantitative MS-based Proteomics: Part II. Diffe
 author: "Lieven Clement"
 date: '`r format(Sys.Date(), "%B %d, %Y")`'
 output:
+
     html_document:
       code_download: true
       theme: cosmo
@@ -13,6 +14,7 @@ output:
     pdf_document:
       toc: true
       number_sections: true
+      keep_tex: true
 ---
 
 # Outline {-}
@@ -669,7 +671,7 @@ $\rightarrow$ if number of bio-repeats increases we have a higher power!
 
 ## Nature methods: Points of significance - Blocking 
 
-![](https://www.nature.com/articles/nmeth.3005.pdf){ width=100% }
+[https://www.nature.com/articles/nmeth.3005.pdf](https://www.nature.com/articles/nmeth.3005.pdf)
 
 
 ## Mouse example 
