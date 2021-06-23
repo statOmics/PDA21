@@ -13,7 +13,6 @@ output:
     pdf_document:
       toc: true
       number_sections: true
-      keep_tex: true
       
 ---
 
@@ -578,6 +577,7 @@ A general class of moderated test statistics is given by
 $$
   \tilde{S}_g=\sqrt{\frac{d_gS_g^2+d_0S_0^2}{d_g+d_0}},
 $$
+
 - $S_0^2$: common variance (over all proteins) 
 - Moderated t-statistic is t-distributed with $d_0+d_g$ degrees of freedom. 
 - Note that the degrees of freedom increase by borrowing strength across proteins!
@@ -605,6 +605,10 @@ gridExtra::grid.arrange(volcanoT +    xlim(-3,3)
 ,nrow=2)
 ```
 
+- The volcano plot opens up when using the EB variance estimator
+
+-  Borrowing strength to estimate the variance using empirical Bayes solves the issue of returning proteins with a low fold change as significant due to a low variance. 
+
 
 ### Shrinkage of the  variance and moderated t-statistics
 
@@ -623,6 +627,10 @@ qplot(
   geom_abline(intercept = 0,slope = 1) +
   geom_hline(yintercept = ) 
 ```
+
+- Small variances are shrunken towards the common variance resulting in large EB variance estimates
+- Large variances are shrunken towards the common variance resulting in smaller EB variance estimates 
+- Pooled degrees of freedom of the EB variance estimator are larger because information is borrowed across proteins to estimate the variance
 
 ## Plots 
 

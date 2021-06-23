@@ -13,7 +13,6 @@ output:
     pdf_document:
       toc: true
       number_sections: true
-      keep_tex: true
 
 ---
 
