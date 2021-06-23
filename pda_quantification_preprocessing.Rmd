@@ -36,6 +36,9 @@ allow="autoplay; encrypted-media" allowfullscreen></iframe>
     - Normalization
     - Summarization
 
+Note, that the R-code is included for learners who are aiming to develop R/markdown scripts to automate their quantitative proteomics data analyses.
+According to the target audience of the course we either work with a graphical user interface (GUI) in a R/shiny App msqrob2gui (e.g. Proteomics Bioinformatics course of the EBI and the Proteomics Data Analysis course at the Gulbenkian institute) or with R/markdowns scripts (e.g. Bioinformatics Summer School at UCLouvain or the Statistical Genomics Course at Ghent University). 
+
 ---
 
 # Intro: Challenges in Label-Free Quantitative Proteomics

@@ -1,0 +1,1231 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={Statistical Methods for Quantitative MS-based Proteomics: Part II. Differential Abundance Analysis},
+  pdfauthor={Lieven Clement},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+\ifluatex
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+
+\title{Statistical Methods for Quantitative MS-based Proteomics: Part
+II. Differential Abundance Analysis}
+\author{Lieven Clement}
+\date{June 23, 2021}
+
+\begin{document}
+\maketitle
+
+{
+\setcounter{tocdepth}{2}
+\tableofcontents
+}
+\hypertarget{outline}{%
+\section*{Outline}\label{outline}}
+\addcontentsline{toc}{section}{Outline}
+
+\begin{itemize}
+\tightlist
+\item
+  Francisella tularensis Example
+\item
+  Hypothesis testing
+\item
+  Multiple testing
+\item
+  Moderated statistics
+\item
+  Experimental design
+\end{itemize}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\hypertarget{francisella-tularensis-experiment}{%
+\section{Francisella tularensis
+experiment}\label{francisella-tularensis-experiment}}
+
+\includegraphics{./figures/francisella.jpg}
+
+\includegraphics{./figures/tularemia_lesion.jpg}
+
+\begin{itemize}
+\tightlist
+\item
+  Pathogen: causes tularemia
+\item
+  Metabolic adaptation key for intracellular life cycle of pathogenic
+  microorganisms.
+\item
+  Upon entry into host cells quick phasomal escape and active
+  multiplication in cytosolic compartment.
+\item
+  Franciscella is auxotroph for several amino acids, including arginine.
+\item
+  Inactivation of arginine transporter delayed bacterial phagosomal
+  escape and intracellular multiplication.
+\item
+  Experiment to assess difference in proteome using 3 WT vs 3 ArgP KO
+  mutants
+\end{itemize}
+
+\hypertarget{import-the-data-in-r}{%
+\subsection{Import the data in R}\label{import-the-data-in-r}}
+
+Click to see code
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Load libraries
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(tidyverse)}
+\FunctionTok{library}\NormalTok{(limma)}
+\FunctionTok{library}\NormalTok{(QFeatures)}
+\FunctionTok{library}\NormalTok{(msqrob2)}
+\FunctionTok{library}\NormalTok{(plotly)}
+\FunctionTok{library}\NormalTok{(ggplot2)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  We use a peptides.txt file from MS-data quantified with maxquant that
+  contains MS1 intensities summarized at the peptide level.
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{peptidesFile }\OtherTok{\textless{}{-}} \StringTok{"https://raw.githubusercontent.com/statOmics/PDA20/data/quantification/francisella/peptides.txt"}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{2}
+\tightlist
+\item
+  Maxquant stores the intensity data for the different samples in
+  columnns that start with Intensity. We can retreive the column names
+  with the intensity data with the code below:
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{ecols }\OtherTok{\textless{}{-}} \FunctionTok{grep}\NormalTok{(}\StringTok{"Intensity}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{."}\NormalTok{, }\FunctionTok{names}\NormalTok{(}\FunctionTok{read.delim}\NormalTok{(peptidesFile)))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{3}
+\tightlist
+\item
+  Read the data and store it in QFeatures object
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pe }\OtherTok{\textless{}{-}} \FunctionTok{readQFeatures}\NormalTok{(}
+  \AttributeTok{table =}\NormalTok{ peptidesFile,}
+  \AttributeTok{fnames =} \DecValTok{1}\NormalTok{,}
+  \AttributeTok{ecol =}\NormalTok{ ecols,}
+  \AttributeTok{name =} \StringTok{"peptideRaw"}\NormalTok{, }\AttributeTok{sep=}\StringTok{"}\SpecialCharTok{\textbackslash{}t}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{4}
+\tightlist
+\item
+  Update data with information on design
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{colData}\NormalTok{(pe)}\SpecialCharTok{$}\NormalTok{genotype }\OtherTok{\textless{}{-}}\NormalTok{ pe[[}\DecValTok{1}\NormalTok{]] }\SpecialCharTok{\%\textgreater{}\%} 
+\NormalTok{  colnames }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{substr}\NormalTok{(}\DecValTok{12}\NormalTok{,}\DecValTok{13}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+\NormalTok{  as.factor }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{relevel}\NormalTok{(}\StringTok{"WT"}\NormalTok{)}
+\NormalTok{pe }\SpecialCharTok{\%\textgreater{}\%}\NormalTok{ colData}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## DataFrame with 6 rows and 1 column
+##                          genotype
+##                          <factor>
+## Intensity.1WT_20_2h_n3_3       WT
+## Intensity.1WT_20_2h_n4_3       WT
+## Intensity.1WT_20_2h_n5_3       WT
+## Intensity.3D8_20_2h_n3_3       D8
+## Intensity.3D8_20_2h_n4_3       D8
+## Intensity.3D8_20_2h_n5_3       D8
+\end{verbatim}
+
+\hypertarget{preprocessing}{%
+\subsection{Preprocessing}\label{preprocessing}}
+
+Click to see code to log-transfrom the data
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Log transform
+\end{enumerate}
+
+\begin{itemize}
+\tightlist
+\item
+  Calculate number of non zero intensities for each peptide
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{rowData}\NormalTok{(pe[[}\StringTok{"peptideRaw"}\NormalTok{]])}\SpecialCharTok{$}\NormalTok{nNonZero }\OtherTok{\textless{}{-}} \FunctionTok{rowSums}\NormalTok{(}\FunctionTok{assay}\NormalTok{(pe[[}\StringTok{"peptideRaw"}\NormalTok{]]) }\SpecialCharTok{\textgreater{}} \DecValTok{0}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{itemize}
+\tightlist
+\item
+  Peptides with zero intensities are missing peptides and should be
+  represent with a \texttt{NA} value rather than \texttt{0}.
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pe }\OtherTok{\textless{}{-}} \FunctionTok{zeroIsNA}\NormalTok{(pe, }\StringTok{"peptideRaw"}\NormalTok{) }\CommentTok{\# convert 0 to NA}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{itemize}
+\tightlist
+\item
+  Logtransform data with base 2
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pe }\OtherTok{\textless{}{-}} \FunctionTok{logTransform}\NormalTok{(pe, }\AttributeTok{base =} \DecValTok{2}\NormalTok{, }\AttributeTok{i =} \StringTok{"peptideRaw"}\NormalTok{, }\AttributeTok{name =} \StringTok{"peptideLog"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  Filtering
+\end{enumerate}
+
+\begin{itemize}
+\tightlist
+\item
+  Handling overlapping protein groups
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pe[[}\StringTok{"peptideLog"}\NormalTok{]] }\OtherTok{\textless{}{-}}
+\NormalTok{ pe[[}\StringTok{"peptideLog"}\NormalTok{]][}\FunctionTok{rowData}\NormalTok{(pe[[}\StringTok{"peptideLog"}\NormalTok{]])}\SpecialCharTok{$}\NormalTok{Proteins}
+ \SpecialCharTok{\%in\%} \FunctionTok{smallestUniqueGroups}\NormalTok{(}\FunctionTok{rowData}\NormalTok{(pe[[}\StringTok{"peptideLog"}\NormalTok{]])}\SpecialCharTok{$}\NormalTok{Proteins),]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{itemize}
+\tightlist
+\item
+  Remove reverse sequences (decoys) and contaminants. Note that this is
+  indicated by the column names Reverse and depending on the version of
+  maxQuant with Potential.contaminants or Contaminants.
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pe[[}\StringTok{"peptideLog"}\NormalTok{]] }\OtherTok{\textless{}{-}}\NormalTok{ pe[[}\StringTok{"peptideLog"}\NormalTok{]][}\FunctionTok{rowData}\NormalTok{(pe[[}\StringTok{"peptideLog"}\NormalTok{]])}\SpecialCharTok{$}\NormalTok{Reverse }\SpecialCharTok{!=} \StringTok{"+"}\NormalTok{, ]}
+\NormalTok{pe[[}\StringTok{"peptideLog"}\NormalTok{]] }\OtherTok{\textless{}{-}}\NormalTok{ pe[[}\StringTok{"peptideLog"}\NormalTok{]][}\FunctionTok{rowData}\NormalTok{(pe[[}\StringTok{"peptideLog"}\NormalTok{]])}\SpecialCharTok{$}
+\NormalTok{    Contaminant }\SpecialCharTok{!=} \StringTok{"+"}\NormalTok{, ]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{itemize}
+\tightlist
+\item
+  Drop peptides that were only identified in one sample
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pe[[}\StringTok{"peptideLog"}\NormalTok{]] }\OtherTok{\textless{}{-}}\NormalTok{ pe[[}\StringTok{"peptideLog"}\NormalTok{]][}\FunctionTok{rowData}\NormalTok{(pe[[}\StringTok{"peptideLog"}\NormalTok{]])}\SpecialCharTok{$}\NormalTok{nNonZero }\SpecialCharTok{\textgreater{}=} \DecValTok{2}\NormalTok{, ]}
+\FunctionTok{nrow}\NormalTok{(pe[[}\StringTok{"peptideLog"}\NormalTok{]])}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 6525
+\end{verbatim}
+
+We keep 6525 peptides upon filtering.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{2}
+\tightlist
+\item
+  Normalization by median centering
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pe }\OtherTok{\textless{}{-}} \FunctionTok{normalize}\NormalTok{(pe, }
+                \AttributeTok{i =} \StringTok{"peptideLog"}\NormalTok{, }
+                \AttributeTok{name =} \StringTok{"peptideNorm"}\NormalTok{, }
+                \AttributeTok{method =} \StringTok{"center.median"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{3}
+\tightlist
+\item
+  Summarization. We use the standard sumarisation in aggregateFeatures,
+  which is a robust summarisation method.
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pe }\OtherTok{\textless{}{-}} \FunctionTok{aggregateFeatures}\NormalTok{(pe,}
+    \AttributeTok{i =} \StringTok{"peptideNorm"}\NormalTok{, }
+    \AttributeTok{fcol =} \StringTok{"Proteins"}\NormalTok{, }
+    \AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{,}
+    \AttributeTok{name =} \StringTok{"protein"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Your quantitative and row data contain missing values. Please read the
+## relevant section(s) in the aggregateFeatures manual page regarding the
+## effects of missing values on data aggregation.
+\end{verbatim}
+
+Plot of preprocessed data
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pe[[}\StringTok{"peptideNorm"}\NormalTok{]] }\SpecialCharTok{\%\textgreater{}\%} 
+\NormalTok{  assay }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{as.data.frame}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{gather}\NormalTok{(sample, intensity) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{genotype =} \FunctionTok{colData}\NormalTok{(pe)[sample,}\StringTok{"genotype"}\NormalTok{]) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ intensity,}\AttributeTok{group =}\NormalTok{ sample,}\AttributeTok{color =}\NormalTok{ genotype)) }\SpecialCharTok{+} 
+    \FunctionTok{geom\_density}\NormalTok{() }\SpecialCharTok{+}
+    \FunctionTok{ggtitle}\NormalTok{(}\StringTok{"Peptide{-}level"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: Removed 7561 rows containing non-finite values (stat_density).
+\end{verbatim}
+
+\includegraphics{pda_quantification_inference_files/figure-latex/unnamed-chunk-16-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pe[[}\StringTok{"protein"}\NormalTok{]] }\SpecialCharTok{\%\textgreater{}\%} 
+\NormalTok{  assay }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{as.data.frame}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{gather}\NormalTok{(sample, intensity) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{genotype =} \FunctionTok{colData}\NormalTok{(pe)[sample,}\StringTok{"genotype"}\NormalTok{]) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ intensity,}\AttributeTok{group =}\NormalTok{ sample,}\AttributeTok{color =}\NormalTok{ genotype)) }\SpecialCharTok{+} 
+    \FunctionTok{geom\_density}\NormalTok{() }\SpecialCharTok{+}
+    \FunctionTok{ggtitle}\NormalTok{(}\StringTok{"Protein{-}level"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: Removed 428 rows containing non-finite values (stat_density).
+\end{verbatim}
+
+\includegraphics{pda_quantification_inference_files/figure-latex/unnamed-chunk-16-2.pdf}
+
+\hypertarget{summarized-data-structure}{%
+\subsection{Summarized data structure}\label{summarized-data-structure}}
+
+\hypertarget{design}{%
+\subsubsection{Design}\label{design}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pe }\SpecialCharTok{\%\textgreater{}\%} 
+\NormalTok{  colData }\SpecialCharTok{\%\textgreater{}\%} 
+\NormalTok{  knitr}\SpecialCharTok{::}\FunctionTok{kable}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+& genotype \\
+\midrule
+\endhead
+Intensity.1WT\_20\_2h\_n3\_3 & WT \\
+Intensity.1WT\_20\_2h\_n4\_3 & WT \\
+Intensity.1WT\_20\_2h\_n5\_3 & WT \\
+Intensity.3D8\_20\_2h\_n3\_3 & D8 \\
+Intensity.3D8\_20\_2h\_n4\_3 & D8 \\
+Intensity.3D8\_20\_2h\_n5\_3 & D8 \\
+\bottomrule
+\end{longtable}
+
+\begin{itemize}
+\tightlist
+\item
+  WT vs KO
+\item
+  3 vs 3 repeats
+\end{itemize}
+
+\hypertarget{summarized-intensity-matrix}{%
+\subsubsection{Summarized intensity
+matrix}\label{summarized-intensity-matrix}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pe[[}\StringTok{"protein"}\NormalTok{]] }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{assay}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{head}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%}\NormalTok{ knitr}\SpecialCharTok{::}\FunctionTok{kable}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.08}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.15}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.15}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.15}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.15}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.15}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.15}}@{}}
+\toprule
+& Intensity.1WT\_20\_2h\_n3\_3 & Intensity.1WT\_20\_2h\_n4\_3 &
+Intensity.1WT\_20\_2h\_n5\_3 & Intensity.3D8\_20\_2h\_n3\_3 &
+Intensity.3D8\_20\_2h\_n4\_3 & Intensity.3D8\_20\_2h\_n5\_3 \\
+\midrule
+\endhead
+WP\_003013731 & -0.2748775 & -0.0856247 & 0.1595370 & -0.2809009 &
+0.0035526 & 0.0567110 \\
+WP\_003013860 & NA & NA & -0.2512039 & NA & NA & -0.4865646 \\
+WP\_003013909 & -0.6851118 & -0.8161658 & -0.7557906 & -0.4591476 &
+-0.5449424 & -0.4962482 \\
+WP\_003014068 & 0.6495386 & 0.8522239 & 1.1344852 & 0.5459176 &
+0.9187714 & 0.5974741 \\
+WP\_003014122 & -0.7630863 & -1.0430741 & -0.8091715 & -1.1743951 &
+-1.1924725 & -1.2565893 \\
+WP\_003014123 & -0.2051672 & -0.3361704 & -0.2151930 & -0.3855747 &
+-0.2802011 & -0.5801771 \\
+\bottomrule
+\end{longtable}
+
+\begin{itemize}
+\tightlist
+\item
+  1115 proteins
+\end{itemize}
+
+\hypertarget{hypothesis-testing-a-single-protein}{%
+\subsubsection{Hypothesis testing: a single
+protein}\label{hypothesis-testing-a-single-protein}}
+
+\includegraphics{pda_quantification_inference_files/figure-latex/unnamed-chunk-19-1.pdf}
+
+\hypertarget{t-test}{%
+\paragraph{T-test}\label{t-test}}
+
+\[
+ \log_2 \text{FC} = \bar{y}_{p1}-\bar{y}_{p2}
+\]
+
+\[
+T_g=\frac{\log_2 \text{FC}}{\text{se}_{\log_2 \text{FC}}}
+\]
+
+\[
+T_g=\frac{\widehat{\text{signal}}}{\widehat{\text{Noise}}}
+\]
+
+If we can assume equal variance in both treatment groups:
+
+\[
+\text{se}_{\log_2 \text{FC}}=\text{SD}\sqrt{\frac{1}{n_1}+\frac{1}{n_2}}
+\]
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{WP\_003023392 }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}
+    \AttributeTok{intensity =} \FunctionTok{assay}\NormalTok{(pe[[}\StringTok{"protein"}\NormalTok{]][}\StringTok{"WP\_003023392"}\NormalTok{,]) }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{c}\NormalTok{(), }
+    \AttributeTok{genotype =} \FunctionTok{colData}\NormalTok{(pe)[,}\DecValTok{1}\NormalTok{]) }
+
+\NormalTok{WP\_003023392 }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{genotype,}\AttributeTok{y=}\NormalTok{intensity)) }\SpecialCharTok{+} 
+  \FunctionTok{geom\_point}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{ggtitle}\NormalTok{(}\StringTok{"Protein WP\_003023392"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{pda_quantification_inference_files/figure-latex/unnamed-chunk-20-1.pdf}
+
+\[
+t=\frac{\log_2\widehat{\text{FC}}}{\text{se}_{\log_2\widehat{\text{FC}}}}=\frac{-1.43}{0.0577}=-24.7
+\]
+
+\begin{itemize}
+\item
+  Is t = -24.7 indicating that there is an effect?
+\item
+  How likely is it to observe t = -24.7 when there is no effect of the
+  argP KO on the protein expression?
+\end{itemize}
+
+\hypertarget{null-hypothesis-h_0-and-alternative-hypothesis-h_1}{%
+\paragraph{\texorpdfstring{Null hypothesis (\(H_0\)) and alternative
+hypothesis
+(\(H_1\))}{Null hypothesis (H\_0) and alternative hypothesis (H\_1)}}\label{null-hypothesis-h_0-and-alternative-hypothesis-h_1}}
+
+\begin{itemize}
+\item
+  With data we can never prove a hypothesis (falsification principle of
+  Popper)
+\item
+  With data we can only reject a hypothesis
+\item
+  In general we start from \emph{alternative hypothese} \(H_1\): we want
+  to show an effect of the KO on a protein
+\end{itemize}
+
+\(H_1\): On average the protein abundance in WT is different from that
+in KO
+
+\begin{itemize}
+\tightlist
+\item
+  But, we will assess this by falsifying the opposite:
+
+  \(H_0\): On average the protein abundance in WT is equal to that in
+  KO\textless-
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{t.test}\NormalTok{(intensity }\SpecialCharTok{\textasciitilde{}}\NormalTok{ genotype, }\AttributeTok{data =}\NormalTok{ WP\_003023392)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  Welch Two Sample t-test
+## 
+## data:  intensity by genotype
+## t = 24.747, df = 3.1653, p-value = 9.911e-05
+## alternative hypothesis: true difference in means between group WT and group D8 is not equal to 0
+## 95 percent confidence interval:
+##  1.249550 1.606175
+## sample estimates:
+## mean in group WT mean in group D8 
+##       -0.1821147       -1.6099769
+\end{verbatim}
+
+\begin{itemize}
+\item
+  How likely is it to observe an equal or more extreme effect than the
+  one observed in the sample when the null hypothesis is true?
+\item
+  When we make assumptions about the distribution of our test statistic
+  we can quantify this probability: \emph{p-value}. The p-value will
+  only be calculated correctly if the underlying assumptions hold!
+\item
+  When we repeat the experiment, the probability to observe a fold
+  change more extreme than a 0.372 fold (\(\log_2 FC=-1.43\)) down or up
+  regulation by random change (if \(H_0\) is true) is 3 out of
+  100.000.\\
+\item
+  If the p-value is below a significance threshold \(\alpha\) we reject
+  the null hypothesis. \emph{We control the probability on a false
+  positive result at the \(\alpha\)-level (type I error)}
+\item
+  Note, that the p-values are uniform under the null hypothesis,
+  i.e.~when \(H_0\) is true all p-values are equally likely.
+\end{itemize}
+
+\hypertarget{multiple-hypothesis-testing}{%
+\subsection{Multiple hypothesis
+testing}\label{multiple-hypothesis-testing}}
+
+\begin{itemize}
+\item
+  Consider testing DA for all \(m=1115\) proteins simultaneously
+\item
+  What if we assess each individual test at level \(\alpha\)?
+  \(\rightarrow\) Probability to have a false positive among all m
+  simultatenous test \(>>> \alpha= 0.05\)
+\item
+  Suppose that 800 proteins are non-DA, then we could expect to discover
+  on average 800 × 0.05 = 40 false positive proteins. Hence, we are
+  bound to call false positive proteins each time we run the experiment.
+\end{itemize}
+
+\hypertarget{multiple-testing}{%
+\subsubsection{Multiple testing}\label{multiple-testing}}
+
+When we want to infer on differential abundance of multiple proteins we
+have to address the multiple testing issue.
+
+\hypertarget{family-wise-error-rate}{%
+\paragraph{Family-wise error rate}\label{family-wise-error-rate}}
+
+The family-wise error rate (FWER) addresses the multiple testing issue
+by no longer controlling the individual type I error for each protein,
+instead it controls:
+
+\[
+   \text{FWER}=\text{P}\left[\text{reject at least one }H_{0i} \mid H_0\text{ is true}\right].
+\]
+
+The Bonferroni method is widely used to control the type I error:
+
+\begin{itemize}
+\tightlist
+\item
+  assess each test at \[\alpha_\text{adj}=\frac{\alpha}{m}\]
+\item
+  or use adjusted p-values and compare them to \(\alpha\):
+  \[p_\text{adj}=\text{min}\left(p \times m,1\right)\]
+\end{itemize}
+
+Problem, the method is very conservative!
+
+\hypertarget{false-discovery-rate}{%
+\paragraph{False discovery rate}\label{false-discovery-rate}}
+
+\begin{itemize}
+\tightlist
+\item
+  FDR: Expected proportion of false positives on the total number of
+  positives you return.
+\item
+  An FDR of 1\% means that on average we expect 1\% false positive
+  proteins in the list of proteins that are called significant.
+\item
+  Defined by Benjamini and Hochberg in their seminal paper Benjamini, Y.
+  and Hochberg, Y. (1995). ``Controlling the false discovery rate: a
+  practical and powerful approach to multiple testing''. Journal of the
+  Royal Statistical Society Series B, 57 (1): 289--300.
+\end{itemize}
+
+The table shows the results of \(m\) hypothesis tests in a single
+experiment.
+
+\begin{longtable}[]{@{}llll@{}}
+\toprule
+& accept \(H_{0i}\) & reject \(H_{0i}\) & Total \\
+\midrule
+\endhead
+null & TN & FP & \(m_0\) \\
+non-null & FN & TP & \(m_1\) \\
+Total & NR & R & m \\
+\bottomrule
+\end{longtable}
+
+\begin{itemize}
+\tightlist
+\item
+  \(TN\): number of true negative: random and unobserved
+\item
+  \(FP\): number of false positives: random and unobserved
+\item
+  \(FN\): number of false negatives: random and unobserved
+\item
+  \(TP\): number of true positives: random and unobserved
+\item
+  \(NR\): number of acceptances (negative results): random and observed
+\item
+  \(R\): number of rejections (positive results): random and observed
+\item
+  \(m_0\) and \(m_1\): fixed and unobserved
+\item
+  \(m\): fixed and observed
+\end{itemize}
+
+The \textbf{False Discovery Proportion (FDP)} is the fraction of false
+positives that are returned, i.e.~
+
+\[
+FDP = \frac{FP}{R}
+\] However, this quantity cannot be observed because in practice we only
+know \(R\) but we do not know \(FP\).
+
+Therefore, Benjamini and Hochberg, 1995, defined The \textbf{False
+Discovery Rate (FDR)} as \[
+   \text{FDR} = \text{E}\left[\frac{FP}{R}\right] =\text{E}\left[\text{FDP}\right]
+\] the expected FDP.
+
+\begin{itemize}
+\tightlist
+\item
+  Controlling the FDR allows for more discoveries (i.e.~longer lists
+  with significant results), while the fraction of false discoveries
+  among the significant results in well controlled on average. As a
+  consequence, more of the true positive hypotheses will be detected.
+\end{itemize}
+
+The Benjamini and Hochberg (1995) procedure for controlling the FDR at
+\(\alpha\):
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  Let \(p_{(1)}\leq \ldots \leq p_{(m)}\) denote the ordered
+  \(p\)-values.
+\item
+  Let \(k=\max\{i: p_{(i)}\leq i \alpha/m\}\), i.e.~\(k\) is the largest
+  integer so that \(p_{(k)}\leq k \alpha/m\).
+\item
+  If such a \(k\) exists, reject the \(k\) null hypotheses associated
+  with \(p_{(1)}, \ldots, p_{(k)}\). Otherwise none of the null
+  hypotheses is rejected.
+\end{enumerate}
+
+The adjusted \(p\)-value (also known as the \(q\)-value in FDR
+literature): \[
+   q_{(i)}=\tilde{p}_{(i)} = \min\left[\min_{j=i,\ldots, m}\left(m p_{(j)}/j\right), 1 \right].
+ \]
+
+Click to see code
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{ttestMx }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(y,group) \{}
+\NormalTok{    test }\OtherTok{\textless{}{-}} \FunctionTok{try}\NormalTok{(}\FunctionTok{t.test}\NormalTok{(y[group],y[}\SpecialCharTok{!}\NormalTok{group],}\AttributeTok{var.equal=}\ConstantTok{TRUE}\NormalTok{),}\AttributeTok{silent=}\ConstantTok{TRUE}\NormalTok{)}
+    \ControlFlowTok{if}\NormalTok{(}\FunctionTok{is}\NormalTok{(test,}\StringTok{"try{-}error"}\NormalTok{)) \{}
+      \FunctionTok{return}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\AttributeTok{log2FC=}\ConstantTok{NA}\NormalTok{,}\AttributeTok{se=}\ConstantTok{NA}\NormalTok{,}\AttributeTok{tstat=}\ConstantTok{NA}\NormalTok{,}\AttributeTok{p=}\ConstantTok{NA}\NormalTok{))}
+\NormalTok{      \} }\ControlFlowTok{else}\NormalTok{ \{}
+      \FunctionTok{return}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\AttributeTok{log2FC=}\NormalTok{ (test}\SpecialCharTok{$}\NormalTok{estimate}\SpecialCharTok{\%*\%}\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\SpecialCharTok{{-}}\DecValTok{1}\NormalTok{)),}\AttributeTok{se=}\NormalTok{test}\SpecialCharTok{$}\NormalTok{stderr,}\AttributeTok{tstat=}\NormalTok{test}\SpecialCharTok{$}\NormalTok{statistic,}\AttributeTok{pval=}\NormalTok{test}\SpecialCharTok{$}\NormalTok{p.value))}
+\NormalTok{      \}}
+\NormalTok{ \}}
+ 
+\NormalTok{ res }\OtherTok{\textless{}{-}} \FunctionTok{apply}\NormalTok{(}
+    \FunctionTok{assay}\NormalTok{(pe[[}\StringTok{"protein"}\NormalTok{]]), }
+    \DecValTok{1}\NormalTok{, }
+\NormalTok{    ttestMx,}
+    \AttributeTok{group =} \FunctionTok{colData}\NormalTok{(pe)}\SpecialCharTok{$}\NormalTok{genotype}\SpecialCharTok{==}\StringTok{"D8"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+\NormalTok{  t }
+ \FunctionTok{colnames}\NormalTok{(res) }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"logFC"}\NormalTok{,}\StringTok{"se"}\NormalTok{,}\StringTok{"tstat"}\NormalTok{,}\StringTok{"pval"}\NormalTok{)}
+\NormalTok{ res }\OtherTok{\textless{}{-}}\NormalTok{ res }\SpecialCharTok{\%\textgreater{}\%}\NormalTok{ as.data.frame }\SpecialCharTok{\%\textgreater{}\%}\NormalTok{ na.exclude }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{arrange}\NormalTok{(pval)}
+\NormalTok{ res}\SpecialCharTok{$}\NormalTok{adjPval }\OtherTok{\textless{}{-}} \FunctionTok{p.adjust}\NormalTok{(res}\SpecialCharTok{$}\NormalTok{pval, }\StringTok{"fdr"}\NormalTok{)}
+\NormalTok{ alpha }\OtherTok{\textless{}{-}} \FloatTok{0.05}
+\NormalTok{res}\SpecialCharTok{$}\NormalTok{adjAlphaForm }\OtherTok{\textless{}{-}} \FunctionTok{paste0}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\FunctionTok{nrow}\NormalTok{(res),}\StringTok{" x 0.05/"}\NormalTok{,}\FunctionTok{nrow}\NormalTok{(res))}
+\NormalTok{res}\SpecialCharTok{$}\NormalTok{adjAlpha }\OtherTok{\textless{}{-}}\NormalTok{ alpha }\SpecialCharTok{*}\NormalTok{ (}\DecValTok{1}\SpecialCharTok{:}\FunctionTok{nrow}\NormalTok{(res))}\SpecialCharTok{/}\FunctionTok{nrow}\NormalTok{(res) }
+\NormalTok{res}\SpecialCharTok{$}\StringTok{"pval \textless{} adjAlpha"} \OtherTok{\textless{}{-}}\NormalTok{ res}\SpecialCharTok{$}\NormalTok{pval }\SpecialCharTok{\textless{}}\NormalTok{ res}\SpecialCharTok{$}\NormalTok{adjAlpha }
+\NormalTok{res}\SpecialCharTok{$}\StringTok{"adjPval \textless{} alpha"} \OtherTok{\textless{}{-}}\NormalTok{ res}\SpecialCharTok{$}\NormalTok{adjPval }\SpecialCharTok{\textless{}}\NormalTok{ alpha }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}lrrrlrll@{}}
+\toprule
+& logFC & pval & adjPval & adjAlphaForm & adjAlpha & pval \textless{}
+adjAlpha & adjPval \textless{} alpha \\
+\midrule
+\endhead
+WP\_003038940 & -0.2876290 & 0.0000146 & 0.0084347 & 1 x 0.05/1066 &
+0.0000469 & TRUE & TRUE \\
+WP\_003023392 & -1.4278622 & 0.0000158 & 0.0084347 & 2 x 0.05/1066 &
+0.0000938 & TRUE & TRUE \\
+WP\_003039212 & -0.2658247 & 0.0000820 & 0.0291520 & 3 x 0.05/1066 &
+0.0001407 & TRUE & TRUE \\
+WP\_003026016 & -1.0800305 & 0.0001395 & 0.0346124 & 4 x 0.05/1066 &
+0.0001876 & TRUE & TRUE \\
+WP\_003039615 & -0.3992190 & 0.0001623 & 0.0346124 & 5 x 0.05/1066 &
+0.0002345 & TRUE & TRUE \\
+WP\_011733588 & -0.4323262 & 0.0002291 & 0.0407034 & 6 x 0.05/1066 &
+0.0002814 & TRUE & TRUE \\
+WP\_003014552 & -0.9843865 & 0.0003224 & 0.0440266 & 7 x 0.05/1066 &
+0.0003283 & TRUE & TRUE \\
+WP\_003040849 & -1.2780743 & 0.0003304 & 0.0440266 & 8 x 0.05/1066 &
+0.0003752 & TRUE & TRUE \\
+WP\_003038430 & -0.4331987 & 0.0004505 & 0.0489078 & 9 x 0.05/1066 &
+0.0004221 & FALSE & TRUE \\
+WP\_003033975 & -0.2949061 & 0.0005047 & 0.0489078 & 10 x 0.05/1066 &
+0.0004690 & FALSE & TRUE \\
+\bottomrule
+\end{longtable}
+
+Click to see code
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{volcanoT }\OtherTok{\textless{}{-}}\NormalTok{ res }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ logFC, }\AttributeTok{y =} \SpecialCharTok{{-}}\FunctionTok{log10}\NormalTok{(pval), }\AttributeTok{color =}\NormalTok{ adjPval }\SpecialCharTok{\textless{}} \FloatTok{0.05}\NormalTok{)) }\SpecialCharTok{+}
+    \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{cex =} \FloatTok{2.5}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{scale\_color\_manual}\NormalTok{(}\AttributeTok{values =} \FunctionTok{alpha}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{"black"}\NormalTok{, }\StringTok{"red"}\NormalTok{), }\FloatTok{0.5}\NormalTok{)) }\SpecialCharTok{+}
+    \FunctionTok{theme\_minimal}\NormalTok{() }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{volcanoT}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{pda_quantification_inference_files/figure-latex/unnamed-chunk-26-1.pdf}
+
+\hypertarget{moderated-statistics}{%
+\subsection{Moderated Statistics}\label{moderated-statistics}}
+
+Problems with ordinary t-test
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{res }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ logFC, }\AttributeTok{y =}\NormalTok{ se, }\AttributeTok{color =}\NormalTok{ adjPval }\SpecialCharTok{\textless{}} \FloatTok{0.05}\NormalTok{)) }\SpecialCharTok{+}
+    \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{cex =} \FloatTok{2.5}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{scale\_color\_manual}\NormalTok{(}\AttributeTok{values =} \FunctionTok{alpha}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{"black"}\NormalTok{, }\StringTok{"red"}\NormalTok{), }\FloatTok{0.5}\NormalTok{)) }\SpecialCharTok{+}
+    \FunctionTok{theme\_minimal}\NormalTok{() }
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{pda_quantification_inference_files/figure-latex/unnamed-chunk-27-1.pdf}
+
+A general class of moderated test statistics is given by \[
+   T_g^{mod} = \frac{\bar{Y}_{g1} - \bar{Y}_{g2}}{C \quad \tilde{S}_g} ,
+ \] where \(\tilde{S}_g\) is a moderated standard deviation estimate.
+
+\begin{itemize}
+\tightlist
+\item
+  \(C\) is a constant depending on the design
+  e.g.~\(\sqrt{1/{n_1}+1/n_2}\) for a t-test and of another form for
+  linear models.
+\item
+  \(\tilde{S}_g=S_g+S_0\): add small positive constant to denominator of
+  t-statistic.
+\item
+  This can be adopted in Perseus.
+\end{itemize}
+
+Click to see code
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{simI}\OtherTok{\textless{}{-}}\FunctionTok{sapply}\NormalTok{(res}\SpecialCharTok{$}\NormalTok{se}\SpecialCharTok{/}\FunctionTok{sqrt}\NormalTok{(}\DecValTok{1}\SpecialCharTok{/}\DecValTok{3}\SpecialCharTok{+}\DecValTok{1}\SpecialCharTok{/}\DecValTok{3}\NormalTok{),}\ControlFlowTok{function}\NormalTok{(n,mean,sd) }\FunctionTok{rnorm}\NormalTok{(n,mean,sd),}\AttributeTok{n=}\DecValTok{6}\NormalTok{,}\AttributeTok{mean=}\DecValTok{0}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}\NormalTok{ t}
+\NormalTok{resSim }\OtherTok{\textless{}{-}} \FunctionTok{apply}\NormalTok{(}
+\NormalTok{    simI, }
+    \DecValTok{1}\NormalTok{, }
+\NormalTok{    ttestMx,}
+    \AttributeTok{group =} \FunctionTok{colData}\NormalTok{(pe)}\SpecialCharTok{$}\NormalTok{genotype}\SpecialCharTok{==}\StringTok{"D8"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+\NormalTok{  t }
+ \FunctionTok{colnames}\NormalTok{(resSim) }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"logFC"}\NormalTok{,}\StringTok{"se"}\NormalTok{,}\StringTok{"tstat"}\NormalTok{,}\StringTok{"pval"}\NormalTok{)}
+\NormalTok{ resSim }\OtherTok{\textless{}{-}} \FunctionTok{as.data.frame}\NormalTok{(resSim)}
+\NormalTok{ tstatSimPlot }\OtherTok{\textless{}{-}}\NormalTok{ resSim }\SpecialCharTok{\%\textgreater{}\%} 
+   \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{tstat)) }\SpecialCharTok{+}
+     \FunctionTok{geom\_histogram}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{y=}\NormalTok{..density.., }\AttributeTok{fill=}\NormalTok{..count..),}\AttributeTok{bins=}\DecValTok{30}\NormalTok{) }\SpecialCharTok{+}
+     \FunctionTok{stat\_function}\NormalTok{(}\AttributeTok{fun=}\NormalTok{dt,}
+    \AttributeTok{color=}\StringTok{"red"}\NormalTok{,}
+    \AttributeTok{args=}\FunctionTok{list}\NormalTok{(}\AttributeTok{df=}\DecValTok{4}\NormalTok{)) }\SpecialCharTok{+} 
+   \FunctionTok{ylim}\NormalTok{(}\DecValTok{0}\NormalTok{,.}\DecValTok{6}\NormalTok{) }\SpecialCharTok{+}
+   \FunctionTok{ggtitle}\NormalTok{(}\StringTok{"t{-}statistic"}\NormalTok{)}
+
+ 
+\NormalTok{ resSim}\SpecialCharTok{$}\NormalTok{C }\OtherTok{\textless{}{-}} \FunctionTok{sqrt}\NormalTok{(}\DecValTok{1}\SpecialCharTok{/}\DecValTok{3}\SpecialCharTok{+}\DecValTok{1}\SpecialCharTok{/}\DecValTok{3}\NormalTok{) }
+\NormalTok{ resSim}\SpecialCharTok{$}\NormalTok{sd }\OtherTok{\textless{}{-}}\NormalTok{ resSim}\SpecialCharTok{$}\NormalTok{se}\SpecialCharTok{/}\NormalTok{resSim}\SpecialCharTok{$}\NormalTok{C }
+\NormalTok{ tstatSimPerseus }\OtherTok{\textless{}{-}}\NormalTok{ resSim }\SpecialCharTok{\%\textgreater{}\%} 
+   \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{logFC}\SpecialCharTok{/}\NormalTok{((sd}\FloatTok{+.1}\NormalTok{)}\SpecialCharTok{*}\NormalTok{C))) }\SpecialCharTok{+}
+     \FunctionTok{geom\_histogram}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{y=}\NormalTok{..density.., }\AttributeTok{fill=}\NormalTok{..count..),}\AttributeTok{bins=}\DecValTok{30}\NormalTok{) }\SpecialCharTok{+}
+     \FunctionTok{stat\_function}\NormalTok{(}\AttributeTok{fun=}\NormalTok{dt,}
+                   \AttributeTok{color=}\StringTok{"red"}\NormalTok{,}
+                  \AttributeTok{args=}\FunctionTok{list}\NormalTok{(}\AttributeTok{df=}\DecValTok{4}\NormalTok{)) }\SpecialCharTok{+} 
+     \FunctionTok{ylim}\NormalTok{(}\DecValTok{0}\NormalTok{,.}\DecValTok{6}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{ggtitle}\NormalTok{(}\StringTok{"Persues"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{itemize}
+\tightlist
+\item
+  The choice of \(S_0\) in Perseus is ad hoc and the t-statistic is
+  no-longer t-distributed.
+\item
+  Permutation test, but is difficult for more complex designs.
+\item
+  Allows for Data Dredging because user can choose \(S_0\)
+\end{itemize}
+
+\hypertarget{empirical-bayes}{%
+\subsubsection{Empirical Bayes}\label{empirical-bayes}}
+
+A general class of moderated test statistics is given by \[
+   T_g^{mod} = \frac{\bar{Y}_{g1} - \bar{Y}_{g2}}{C \quad \tilde{S}_g} ,
+ \] where \(\tilde{S}_g\) is a moderated standard deviation estimate.
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{empirical Bayes} theory provides formal framework for
+  borrowing strength across proteins,
+\item
+  Implemented in popular bioconductor package \textbf{limma} and
+  \textbf{msqrob2}
+\end{itemize}
+
+\[
+  \tilde{S}_g=\sqrt{\frac{d_gS_g^2+d_0S_0^2}{d_g+d_0}},
+\] - \(S_0^2\): common variance (over all proteins) - Moderated
+t-statistic is t-distributed with \(d_0+d_g\) degrees of freedom. - Note
+that the degrees of freedom increase by borrowing strength across
+proteins!
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pe }\OtherTok{\textless{}{-}} \FunctionTok{msqrob}\NormalTok{(}\AttributeTok{object =}\NormalTok{ pe, }\AttributeTok{i =} \StringTok{"protein"}\NormalTok{, }\AttributeTok{formula =} \SpecialCharTok{\textasciitilde{}}\NormalTok{genotype)}
+\NormalTok{L }\OtherTok{\textless{}{-}} \FunctionTok{makeContrast}\NormalTok{(}\StringTok{"genotypeD8 = 0"}\NormalTok{, }\AttributeTok{parameterNames =} \FunctionTok{c}\NormalTok{(}\StringTok{"genotypeD8"}\NormalTok{))}
+\NormalTok{pe }\OtherTok{\textless{}{-}} \FunctionTok{hypothesisTest}\NormalTok{(}\AttributeTok{object =}\NormalTok{ pe, }\AttributeTok{i =} \StringTok{"protein"}\NormalTok{, }\AttributeTok{contrast =}\NormalTok{ L)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{volcano }\OtherTok{\textless{}{-}} \FunctionTok{ggplot}\NormalTok{(}
+    \FunctionTok{rowData}\NormalTok{(pe[[}\StringTok{"protein"}\NormalTok{]])}\SpecialCharTok{$}\NormalTok{genotypeD8,}
+    \FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ logFC, }\AttributeTok{y =} \SpecialCharTok{{-}}\FunctionTok{log10}\NormalTok{(pval), }\AttributeTok{color =}\NormalTok{ adjPval }\SpecialCharTok{\textless{}} \FloatTok{0.05}\NormalTok{)}
+\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{cex =} \FloatTok{2.5}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{scale\_color\_manual}\NormalTok{(}\AttributeTok{values =} \FunctionTok{alpha}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{"black"}\NormalTok{, }\StringTok{"red"}\NormalTok{), }\FloatTok{0.5}\NormalTok{)) }\SpecialCharTok{+}
+    \FunctionTok{theme\_minimal}\NormalTok{() }\SpecialCharTok{+}
+    \FunctionTok{ggtitle}\NormalTok{(}\StringTok{"Default workflow"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{gridExtra}\SpecialCharTok{::}\FunctionTok{grid.arrange}\NormalTok{(volcanoT }\SpecialCharTok{+}    \FunctionTok{xlim}\NormalTok{(}\SpecialCharTok{{-}}\DecValTok{3}\NormalTok{,}\DecValTok{3}\NormalTok{)}
+\NormalTok{,volcano }\SpecialCharTok{+}     \FunctionTok{xlim}\NormalTok{(}\SpecialCharTok{{-}}\DecValTok{3}\NormalTok{,}\DecValTok{3}\NormalTok{)}
+\NormalTok{,}\AttributeTok{nrow=}\DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: Removed 109 rows containing missing values (geom_point).
+\end{verbatim}
+
+\includegraphics{pda_quantification_inference_files/figure-latex/unnamed-chunk-31-1.pdf}
+
+\hypertarget{shrinkage-of-the-variance-and-moderated-t-statistics}{%
+\subsubsection{Shrinkage of the variance and moderated
+t-statistics}\label{shrinkage-of-the-variance-and-moderated-t-statistics}}
+
+\includegraphics{./figures/limmaShrinkage.png}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{qplot}\NormalTok{(}
+  \FunctionTok{sapply}\NormalTok{(}\FunctionTok{rowData}\NormalTok{(pe[[}\StringTok{"protein"}\NormalTok{]])}\SpecialCharTok{$}\NormalTok{msqrobModels,getSigma),}
+  \FunctionTok{sapply}\NormalTok{(}\FunctionTok{rowData}\NormalTok{(pe[[}\StringTok{"protein"}\NormalTok{]])}\SpecialCharTok{$}\NormalTok{msqrobModels,getSigmaPosterior)) }\SpecialCharTok{+}
+  \FunctionTok{xlab}\NormalTok{(}\StringTok{"SD"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{ylab}\NormalTok{(}\StringTok{"moderated SD"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_abline}\NormalTok{(}\AttributeTok{intercept =} \DecValTok{0}\NormalTok{,}\AttributeTok{slope =} \DecValTok{1}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_hline}\NormalTok{(}\AttributeTok{yintercept =}\NormalTok{ ) }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: Removed 109 rows containing missing values (geom_point).
+\end{verbatim}
+
+\includegraphics{pda_quantification_inference_files/figure-latex/unnamed-chunk-33-1.pdf}
+
+\hypertarget{plots}{%
+\subsection{Plots}\label{plots}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sigNames }\OtherTok{\textless{}{-}} \FunctionTok{rowData}\NormalTok{(pe[[}\StringTok{"protein"}\NormalTok{]])}\SpecialCharTok{$}\NormalTok{genotypeD8 }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{rownames\_to\_column}\NormalTok{(}\StringTok{"protein"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{filter}\NormalTok{(adjPval }\SpecialCharTok{\textless{}} \FloatTok{0.05}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{pull}\NormalTok{(protein)}
+\FunctionTok{heatmap}\NormalTok{(}\FunctionTok{assay}\NormalTok{(pe[[}\StringTok{"protein"}\NormalTok{]])[sigNames, ])}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{pda_quantification_inference_files/figure-latex/unnamed-chunk-34-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ControlFlowTok{for}\NormalTok{ (protName }\ControlFlowTok{in}\NormalTok{ sigNames)}
+\NormalTok{    \{}
+\NormalTok{        pePlot }\OtherTok{\textless{}{-}}\NormalTok{ pe[protName, , }\FunctionTok{c}\NormalTok{(}\StringTok{"peptideNorm"}\NormalTok{, }\StringTok{"protein"}\NormalTok{)]}
+\NormalTok{        pePlotDf }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}\FunctionTok{longFormat}\NormalTok{(pePlot))}
+\NormalTok{        pePlotDf}\SpecialCharTok{$}\NormalTok{assay }\OtherTok{\textless{}{-}} \FunctionTok{factor}\NormalTok{(pePlotDf}\SpecialCharTok{$}\NormalTok{assay,}
+            \AttributeTok{levels =} \FunctionTok{c}\NormalTok{(}\StringTok{"peptideNorm"}\NormalTok{, }\StringTok{"protein"}\NormalTok{)}
+\NormalTok{        )}
+\NormalTok{        pePlotDf}\SpecialCharTok{$}\NormalTok{genotype }\OtherTok{\textless{}{-}} \FunctionTok{as.factor}\NormalTok{(}\FunctionTok{colData}\NormalTok{(pePlot)[pePlotDf}\SpecialCharTok{$}\NormalTok{colname, }\StringTok{"genotype"}\NormalTok{])}
+
+        \CommentTok{\# plotting}
+\NormalTok{        p1 }\OtherTok{\textless{}{-}} \FunctionTok{ggplot}\NormalTok{(}
+            \AttributeTok{data =}\NormalTok{ pePlotDf,}
+            \FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ colname, }\AttributeTok{y =}\NormalTok{ value, }\AttributeTok{group =}\NormalTok{ rowname)}
+\NormalTok{        ) }\SpecialCharTok{+}
+            \FunctionTok{geom\_line}\NormalTok{() }\SpecialCharTok{+}
+            \FunctionTok{geom\_point}\NormalTok{() }\SpecialCharTok{+}
+            \FunctionTok{theme\_minimal}\NormalTok{() }\SpecialCharTok{+}
+            \FunctionTok{facet\_grid}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{assay) }\SpecialCharTok{+}
+            \FunctionTok{ggtitle}\NormalTok{(protName)}
+        \FunctionTok{print}\NormalTok{(p1)}
+
+        \CommentTok{\# plotting 2}
+\NormalTok{        p2 }\OtherTok{\textless{}{-}} \FunctionTok{ggplot}\NormalTok{(pePlotDf, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ colname, }\AttributeTok{y =}\NormalTok{ value, }\AttributeTok{fill =}\NormalTok{ genotype)) }\SpecialCharTok{+}
+            \FunctionTok{geom\_boxplot}\NormalTok{(}\AttributeTok{outlier.shape =} \ConstantTok{NA}\NormalTok{) }\SpecialCharTok{+}
+            \FunctionTok{geom\_point}\NormalTok{(}
+                \AttributeTok{position =} \FunctionTok{position\_jitter}\NormalTok{(}\AttributeTok{width =}\NormalTok{ .}\DecValTok{1}\NormalTok{),}
+                \FunctionTok{aes}\NormalTok{(}\AttributeTok{shape =}\NormalTok{ rowname)}
+\NormalTok{            ) }\SpecialCharTok{+}
+            \FunctionTok{scale\_shape\_manual}\NormalTok{(}\AttributeTok{values =} \DecValTok{1}\SpecialCharTok{:}\FunctionTok{nrow}\NormalTok{(pePlotDf)) }\SpecialCharTok{+}
+            \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =}\NormalTok{ protName, }\AttributeTok{x =} \StringTok{"sample"}\NormalTok{, }\AttributeTok{y =} \StringTok{"peptide intensity (log2)"}\NormalTok{) }\SpecialCharTok{+}
+            \FunctionTok{theme\_minimal}\NormalTok{()}
+        \FunctionTok{facet\_grid}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{assay)}
+        \FunctionTok{print}\NormalTok{(p2)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{pda_quantification_inference_files/figure-latex/unnamed-chunk-35-1.pdf}
+\includegraphics{pda_quantification_inference_files/figure-latex/unnamed-chunk-35-2.pdf}
+\includegraphics{pda_quantification_inference_files/figure-latex/unnamed-chunk-35-3.pdf}
+\includegraphics{pda_quantification_inference_files/figure-latex/unnamed-chunk-35-4.pdf}
+\includegraphics{pda_quantification_inference_files/figure-latex/unnamed-chunk-35-5.pdf}
+\includegraphics{pda_quantification_inference_files/figure-latex/unnamed-chunk-35-6.pdf}
+\includegraphics{pda_quantification_inference_files/figure-latex/unnamed-chunk-35-7.pdf}
+\includegraphics{pda_quantification_inference_files/figure-latex/unnamed-chunk-35-8.pdf}
+\includegraphics{pda_quantification_inference_files/figure-latex/unnamed-chunk-35-9.pdf}
+\includegraphics{pda_quantification_inference_files/figure-latex/unnamed-chunk-35-10.pdf}
+\includegraphics{pda_quantification_inference_files/figure-latex/unnamed-chunk-35-11.pdf}
+\includegraphics{pda_quantification_inference_files/figure-latex/unnamed-chunk-35-12.pdf}
+\includegraphics{pda_quantification_inference_files/figure-latex/unnamed-chunk-35-13.pdf}
+\includegraphics{pda_quantification_inference_files/figure-latex/unnamed-chunk-35-14.pdf}
+\includegraphics{pda_quantification_inference_files/figure-latex/unnamed-chunk-35-15.pdf}
+\includegraphics{pda_quantification_inference_files/figure-latex/unnamed-chunk-35-16.pdf}
+\includegraphics{pda_quantification_inference_files/figure-latex/unnamed-chunk-35-17.pdf}
+\includegraphics{pda_quantification_inference_files/figure-latex/unnamed-chunk-35-18.pdf}
+\includegraphics{pda_quantification_inference_files/figure-latex/unnamed-chunk-35-19.pdf}
+\includegraphics{pda_quantification_inference_files/figure-latex/unnamed-chunk-35-20.pdf}
+\includegraphics{pda_quantification_inference_files/figure-latex/unnamed-chunk-35-21.pdf}
+\includegraphics{pda_quantification_inference_files/figure-latex/unnamed-chunk-35-22.pdf}
+\includegraphics{pda_quantification_inference_files/figure-latex/unnamed-chunk-35-23.pdf}
+\includegraphics{pda_quantification_inference_files/figure-latex/unnamed-chunk-35-24.pdf}
+
+\hypertarget{experimental-design}{%
+\section{Experimental Design}\label{experimental-design}}
+
+\hypertarget{sample-size}{%
+\subsection{Sample size}\label{sample-size}}
+
+\[
+ \log_2 \text{FC} = \bar{y}_{p1}-\bar{y}_{p2}
+\]
+
+\[
+T_g=\frac{\log_2 \text{FC}}{\text{se}_{\log_2 \text{FC}}}
+\]
+
+\[
+T_g=\frac{\widehat{\text{signal}}}{\widehat{\text{Noise}}}
+\]
+
+If we can assume equal variance in both treatment groups:
+
+\[
+\text{se}_{\log_2 \text{FC}}=\text{SD}\sqrt{\frac{1}{n_1}+\frac{1}{n_2}}
+\]
+
+\(\rightarrow\) if number of bio-repeats increases we have a higher
+power!
+
+\begin{itemize}
+\tightlist
+\item
+  cfr. Study of tamoxifen treated Estrogen Recepter (ER) positive breast
+  cancer patients
+\end{itemize}
+
+\hypertarget{blocking}{%
+\subsection{Blocking}\label{blocking}}
+
+\[\sigma^2= \sigma^2_{bio}+\sigma^2_\text{lab} +\sigma^2_\text{extraction} + \sigma^2_\text{run} + \ldots\]
+
+\begin{itemize}
+\tightlist
+\item
+  Biological: fluctuations in protein level between mice, fluctations in
+  protein level between cells, \ldots{}
+\item
+  Technical: cage effect, lab effect, week effect, plasma extraction,
+  MS-run, \ldots{}
+\end{itemize}
+
+\hypertarget{nature-methods-points-of-significance---blocking}{%
+\subsection{Nature methods: Points of significance -
+Blocking}\label{nature-methods-points-of-significance---blocking}}
+
+\url{https://www.nature.com/articles/nmeth.3005.pdf}
+
+\hypertarget{mouse-example}{%
+\subsection{Mouse example}\label{mouse-example}}
+
+\includegraphics[width=0.5\linewidth]{./figures/mouseTcell_RCB_design}
+
+\begin{itemize}
+\tightlist
+\item
+  All treatments of interest are present within block!
+\item
+  We can estimate the effect of the treatment within block!
+\item
+  We can isolate the between block variability from the analysis using
+  linear model: \[ 
+  y \sim \text{type} + \text{mouse}
+  \]
+\item
+  Not possible with Perseus!
+\end{itemize}
+
+\hypertarget{assess-the-impact-of-blocking-in-the-tutorial-session}{%
+\subsubsection{Assess the impact of blocking in the tutorial
+session!}\label{assess-the-impact-of-blocking-in-the-tutorial-session}}
+
+\begin{itemize}
+\tightlist
+\item
+  Completely randomized design with only one cell type per mouse (Treg
+  and Tconv)
+\end{itemize}
+
+\[\updownarrow\]
+
+\begin{itemize}
+\tightlist
+\item
+  Randomized complete block design assessing Treg and Tconv on each
+  mouse
+\end{itemize}
+
+\end{document}
