@@ -10,6 +10,10 @@ output:
       toc_float: true
       highlight: tango
       number_sections: true
+    pdf_document:
+      toc: true
+      number_sections: true
+
       
 ---
 

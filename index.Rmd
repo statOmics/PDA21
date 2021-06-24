@@ -7,9 +7,6 @@ output:
       toc: false
       toc_float: false
       number_sections: false
-    pdf_document:
-      toc: true
-      number_sections: true
 
 ---
 
