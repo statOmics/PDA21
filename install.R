@@ -8,6 +8,10 @@ if (!require("BiocManager"))
 
 ## ----pkgs----------------------------------------------------------------
 pkgs <- c("tidyverse",
+          "devtools", 
+          "rmarkdown", 
+          "knitr",
+          "latex2exp",
           "limma",
           "plotly",
           "QFeatures",
