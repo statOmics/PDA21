@@ -24,10 +24,14 @@ jobs:
 
       - name: Set up pandoc
         uses: r-lib/actions/setup-pandoc@master
+        
+      - name: Set up TinyTex
+        uses: r-lib/actions/setup-tinytex@v1
 
       - name: Install dependencies
         run: |
           install.packages("rmarkdown")
+          install.packages("knitr")
           source("install.R")
         shell: Rscript {0}
 
