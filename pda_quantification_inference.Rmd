@@ -18,6 +18,12 @@ output:
 
 # Outline {-}
 
+<iframe width="560" height="315"
+src="https://www.youtube.com/embed/1mhg3BCuEm8"
+frameborder="0"
+style="display: block; margin: auto;"
+allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
 - Francisella tularensis Example
 - Hypothesis testing
 - Multiple testing
@@ -31,6 +37,12 @@ According to the target audience of the course we either work with a graphical u
 ---
 
 # Francisella tularensis experiment
+
+<iframe width="560" height="315"
+src="https://www.youtube.com/embed/TW5rk1y7aOc"
+frameborder="0"
+style="display: block; margin: auto;"
+allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 ```{r echo=FALSE,out.width="50%"}
 knitr::include_graphics("./figures/francisella.jpg")
@@ -49,6 +61,13 @@ knitr::include_graphics("./figures/tularemia_lesion.jpg")
 
 
 ## Import the data in R 
+
+<iframe width="560" height="315"
+src="https://www.youtube.com/embed/pxJWt71pzns"
+frameborder="0"
+style="display: block; margin: auto;"
+allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
 
 <details><summary> Click to see code </summary><p>
 1. Load libraries 
@@ -217,6 +236,12 @@ pe[["protein"]] %>% assay() %>% head() %>% knitr::kable()
 
 ### Hypothesis testing: a single protein 
 
+<iframe width="560" height="315"
+src="https://www.youtube.com/embed/NaBu251AW10"
+frameborder="0"
+style="display: block; margin: auto;"
+allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
 ```{r echo=FALSE}
 if ("pi"%in%ls()) rm("pi")
 kopvoeter<-function(x,y,angle=0,l=.2,cex.dot=.5,pch=19,col="black")
@@ -266,6 +291,13 @@ text(7.5,.5,"Data exploration",col="black",cex=1.2)
 ```
 
 #### T-test
+
+<iframe width="560" height="315"
+src="https://www.youtube.com/embed/xoZXE-LONd0"
+frameborder="0"
+style="display: block; margin: auto;"
+allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
 
 $$
  \log_2 \text{FC} = \bar{y}_{p1}-\bar{y}_{p2}
@@ -341,39 +373,32 @@ The p-value will only be calculated correctly if the underlying assumptions hold
 
 ## Multiple hypothesis testing
 
-- Consider testing DA for all $m=`r nrow(pe[["protein"]])`$ proteins simultaneously
+<iframe width="560" height="315"
+src="https://www.youtube.com/embed/cLn-CFyA6ps"
+frameborder="0"
+style="display: block; margin: auto;"
+allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
+- Consider testing DA for all $m=1066$ proteins simultaneously
 - What if we assess each individual test at level $\alpha$?
-$\rightarrow$ Probability to have a false positive among all m simultatenous
+$\rightarrow$ Probability to have a false positive (FP) among all m simultatenous
 test $>>>  \alpha= 0.05$
 
-- Suppose that 800 proteins are non-DA, then we could expect to discover on average 800 × 0.05 = 40 false positive proteins. Hence, we are bound to call false positive proteins each time we run the experiment.
+- Indeed for each non DA protein we have a probability of 5% to return a FP.
+- In a typical experiment the majority of the proteins are non DA. 
+- So an upperbound of the expected FP is $m \times \alpha$ or $1066 \times 0.05=`r round(1066*0.05,0)`$. 
+
+$\rightarrow$ Hence, we are bound to call many false positive proteins each time we run the experiment.
 
 ### Multiple testing
 
-When we want to infer on differential abundance of $m$ multiple proteins we have to address the multiple testing issue. 
-
-
-The table shows the results of $m$ hypothesis tests in a single experiment.
-
-|                          | accept $H_{0i}$ | reject $H_{0i}$ | Total |
-|--------------------------|-----------------|------------------|-------|
-|  null     | TN              | FP              | $m_0$ |
-|  non-null | FN              | TP              | $m_1$ |
-| Total                    | NR              | R               | m     |
-
-
-- $TN$: number of true negative: random and unobserved
-- $FP$: number of false positives: random and unobserved
-- $FN$: number of false negatives: random and unobserved
-- $TP$: number of true positives: random and unobserved
-- $NR$: number of acceptances (negative results): random and observed
-- $R$: number of rejections (positive results): random and observed
-- $m_0$ and $m_1$: fixed and unobserved
-- $m$: fixed and observed
-
-
-
 #### Family-wise error rate
+
+<iframe width="560" height="315"
+src="https://www.youtube.com/embed/IL_eUSyRDRA"
+frameborder="0"
+style="display: block; margin: auto;"
+allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 The family-wise error rate (FWER) addresses the multiple testing issue by no longer controlling the individual type I error for each protein, instead it controls:  
 
@@ -393,6 +418,12 @@ Problem, the method is very conservative!
 
 #### False discovery rate
 
+<iframe width="560" height="315"
+src="https://www.youtube.com/embed/X1JCUk8gFDk"
+frameborder="0"
+style="display: block; margin: auto;"
+allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
 - FDR: Expected proportion of false positives on the total number of positives you return.
 - An FDR of 1% means that on average we expect 1% false positive proteins in the list of proteins that are called significant.
 - Defined by Benjamini and Hochberg in their seminal paper Benjamini, Y. and Hochberg, Y. (1995). "Controlling the false discovery rate: a practical and powerful approach to multiple testing". Journal of the Royal Statistical Society Series B, 57 (1): 289–300. 
@@ -402,7 +433,9 @@ The **False Discovery Proportion (FDP)** is the fraction of false positives that
 \[
 FDP = \frac{FP}{R}
 \]
-However, this quantity cannot be observed because in practice we only know $R$ but we do not know $FP$.
+
+- However, this quantity cannot be observed because in practice we only know the number of proteins for which we rejected $H_0$, $R$. 
+- But, we do not know the number of false positives, $FP$.
 
 Therefore, Benjamini and Hochberg, 1995, defined The **False Discovery Rate (FDR)** as
 \[
@@ -413,11 +446,36 @@ the expected FDP.
 - Controlling the FDR allows for more discoveries (i.e. longer lists with significant results), while the fraction of false discoveries among the significant results in well controlled on average. As a consequence, more of the true positive hypotheses will be detected.
 
 
-The Benjamini and Hochberg (1995) procedure for controlling the FDR at $\alpha$:
+#### Intuition of BH-FDR procedure
+
+Consider $m = 1000$ tests
+
+- Suppose that a researcher rejects all null hypotheses for which $p < 0.01$. 
+
+- If we use $p < 0.01$, we expect $0.01 \times m_0$ tests to return false positives. 
+- A conservative estimate of the number of false positives that we can expect can be obtained by considering that the null hypotheses are true for all features, $m_0 = m =  1000$. 
+- We then would expect $0.01 \times 1000 = 10$ false positives ($FP=10$).
+
+- Suppose that the researcher found 200 genes with $p<0.01$ ($R=200$).
+
+- The proportion of false positive results (FDP = false positive proportion) among the list of $R=200$ genes can then be estimated as
+ \[
+   \widehat{\text{FDP}}=\frac{FP}{R}=\frac{10}{200}=\frac{0.01 \times 1000}{200} = 0.05.
+ \]
+
+
+#### Benjamini and Hochberg (1995) procedure for controlling the FDR at $\alpha$
 
 1. Let $p_{(1)}\leq \ldots \leq p_{(m)}$ denote the ordered $p$-values.
 
-2. Let $k=\max\{i: p_{(i)}\leq i \alpha/m\}$, i.e. $k$ is the largest integer so that $p_{(k)}\leq k \alpha/m$.
+2. Find the largest integer $k$ so that 
+$$
+\frac{p_{(k)} \times m}{k} \leq \alpha
+$$
+$$\text{or}$$
+$$
+p_{(k)} \leq k \times \alpha/m
+$$
 
 3. If such a $k$ exists, reject the $k$ null hypotheses associated with $p_{(1)}, \ldots, p_{(k)}$.
 Otherwise none of the null hypotheses is rejected.
@@ -426,7 +484,16 @@ The adjusted $p$-value (also known as the $q$-value in FDR literature):
  $$
    q_{(i)}=\tilde{p}_{(i)} = \min\left[\min_{j=i,\ldots, m}\left(m p_{(j)}/j\right), 1 \right].
  $$
- 
+ In the hypothetical example above: $k=200$, $p_{(k)}=0.01$, $m=1000$ and $\alpha=0.05$.
+
+#### Francisella Example
+
+<iframe width="560" height="315"
+src="https://www.youtube.com/embed/030cHjuoNhk"
+frameborder="0"
+style="display: block; margin: auto;"
+allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
 <details><summary> Click to see code </summary><p>
 ```{r}
 ttestMx <- function(y,group) {
@@ -458,9 +525,14 @@ res$"adjPval < alpha" <- res$adjPval < alpha
 ```{r echo=FALSE} 
 head(res[,-c(2:3)],sum(res$adjPval < alpha)+2) %>% knitr::kable()
 ```
+| ... | ... | ... | ... | ... | ... | ... | ... |
+|WP_003040562 | 0.0039480| 0.9976429| 0.9985797|1065 x 0.05/1066 | 0.0499531|FALSE           |FALSE    
+|WP_003041130 | 0.0002941| 0.9992812| 0.9992812|1066 x 0.05/1066 |     0.05|FALSE           |FALSE           |
 
 
 
+
+#### Results
 <details><summary> Click to see code </summary><p>
 ```{r}
 volcanoT <- res %>% 
@@ -476,29 +548,8 @@ volcanoT <- res %>%
 volcanoT
 ```
 
-#### Intuition of BH-FDR procedure
-
-Consider $m = 10,000$ tests
-
-- Suppose that a researcher rejects all null hypotheses for which $p < 0.001$. 
-
-- If we use $p < 0.001$, we expect $0.001 \times m_0$ tests to return false positives. A conservative estimate of the number of false positives that we can expect can be obtained by considering that the null hypotheses are true for all features, $m_0 = m =  10000$. We then would expect $0.001 \times 10,000 = 10$ false positives ($FP=10$).
-
-- Suppose that the researcher found 200 genes with $p<0.001$ ($R=200$).
-
-- The proportion of false positive results (FDP = false positive proportion) among the list of $R=200$ genes can then be estimated as
- \[
-   \widehat{\text{FDP}}=\frac{FP}{R}=\frac{10}{200}=\frac{0.001 \times 10000}{200} = 0.05.
- \]
-
-Recall that the B\&H (1995) procedure involves finding the
-largest integer $k$ so that $p_{(k)} \leq k \alpha /m$, or,
-equivalently, $p_{(k)} m /k \leq \alpha$.
-
-In this example: $k=200$, $p_{(k)}=0.001$, $m=10,000$ and $\alpha=0.05$.
-
-
 ## Moderated Statistics
+
 
 Problems with ordinary t-test
 
@@ -558,6 +609,7 @@ resSim <- apply(
 ```{r}
 gridExtra::grid.arrange(tstatSimPlot,tstatSimPerseus,nrow=1)
 ```
+
 - The choice of $S_0$ in Perseus is ad hoc and the t-statistic is no-longer t-distributed. 
 - Permutation test, but is difficult for more complex designs.
 - Allows for Data Dredging because user can choose $S_0$ 
@@ -581,7 +633,8 @@ $$
 - $S_0^2$: common variance (over all proteins) 
 - Moderated t-statistic is t-distributed with $d_0+d_g$ degrees of freedom. 
 - Note that the degrees of freedom increase by borrowing strength across proteins!
-   
+
+<details><summary> Click to see the code </summary><p>   
 ```{r warning=FALSE}
 pe <- msqrob(object = pe, i = "protein", formula = ~genotype)
 L <- makeContrast("genotypeD8 = 0", parameterNames = c("genotypeD8"))
@@ -598,6 +651,7 @@ volcano <- ggplot(
     theme_minimal() +
     ggtitle("Default workflow")
 ```
+</p></details>
 
 ```{r}
 gridExtra::grid.arrange(volcanoT +    xlim(-3,3)
@@ -613,9 +667,10 @@ gridExtra::grid.arrange(volcanoT +    xlim(-3,3)
 ### Shrinkage of the  variance and moderated t-statistics
 
 
-```{r echo=FALSE}
+```{r echo=FALSE, out.width="100%"}
 knitr::include_graphics("./figures/limmaShrinkage.png")
 ```
+
 Figure courtesy to Rafael Irizarry
 
 ```{r}
