@@ -16,13 +16,16 @@ output:
 
 ---
 
-# Outline {-}
 
 <iframe width="560" height="315"
 src="https://www.youtube.com/embed/1mhg3BCuEm8"
 frameborder="0"
 style="display: block; margin: auto;"
 allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
+- [Playlist PDA Preprocessing](https://www.youtube.com/watch?v=1mhg3BCuEm8&list=PLZH1hP8_LbJKqnPSS4hxTkn-tQolSCGjP)
+
+# Outline {-}
 
 - Francisella tularensis Example
 - Hypothesis testing
