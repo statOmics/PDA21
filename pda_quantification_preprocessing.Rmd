@@ -20,7 +20,7 @@ output:
 
 
 <iframe width="560" height="315"
-src="https://www.youtube.com/embed/JOdiYzCFhBE"
+src="https://www.youtube.com/embed/V6Ik-SORoKo"
 frameborder="0"
 style="display: block; margin: auto;"
 allow="autoplay; encrypted-media" allowfullscreen></iframe>
@@ -47,7 +47,7 @@ According to the target audience of the course we either work with a graphical u
 
 
 <iframe width="560" height="315"
-src="https://www.youtube.com/embed/HdpjkoZIm9k"
+src="https://www.youtube.com/embed/3w_K4S_GUzE"
 frameborder="0"
 style="display: block; margin: auto;"
 allow="autoplay; encrypted-media" allowfullscreen></iframe>
@@ -444,7 +444,7 @@ We keep `r nrow(pe[["peptideLog"]])` peptides upon filtering.
 ## Normalization 
 
 <iframe width="560" height="315"
-src="https://www.youtube.com/embed/RpHbgEFj9U4"
+src="https://www.youtube.com/embed/RE26GB29uII"
 frameborder="0"
 style="display: block; margin: auto;"
 allow="autoplay; encrypted-media" allowfullscreen></iframe>
@@ -679,7 +679,7 @@ allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 2. Import proteomics data
 <iframe width="560" height="315"
-src="https://www.youtube.com/embed/sq-yuw4W6u8"
+src="https://www.youtube.com/embed/DPHtrGj8skk"
 frameborder="0"
 style="display: block; margin: auto;"
 allow="autoplay; encrypted-media" allowfullscreen></iframe>
@@ -688,14 +688,14 @@ allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
     -   Log-transformation
 <iframe width="560" height="315"
-src="https://www.youtube.com/embed/dWGYeO-s_xw"
+src="https://www.youtube.com/embed/axDT2tJNLwM"
 frameborder="0"
 style="display: block; margin: auto;"
 allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
     - Filtering
 <iframe width="560" height="315"
-src="https://www.youtube.com/embed/ayB1BcJau6E"
+src="https://www.youtube.com/embed/cIwAxfJ5CGo"
 frameborder="0"
 style="display: block; margin: auto;"
 allow="autoplay; encrypted-media" allowfullscreen></iframe>
