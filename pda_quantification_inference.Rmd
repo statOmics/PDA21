@@ -334,7 +334,7 @@ t.test(intensity ~ genotype, data = WP_003023392, var.equal=TRUE)
 - How likely is it to observe an equal or more extreme effect than the one observed in the sample when the null hypothesis is true?
 - When we make assumptions about the distribution of our test statistic we can quantify this probability: *p-value*. 
 The p-value will only be calculated correctly if the underlying assumptions hold!
-- When we repeat the experiment, the probability to observe a fold change for this gene that is more extreme than a `r format(2^abs(lmHlp$coef[2]),digits=3)` fold ($\log_2 FC=`r format(lmHlp$coef[2],digits=3)`$) down or up regulation by random change (if $H_0$ is true) is `round(summary(lmHlp)$coef[2,4]*1e6,0)` out of 1 000 000.  
+- When we repeat the experiment, the probability to observe a fold change for this gene that is more extreme than a `r format(2^abs(lmHlp$coef[2]),digits=3)` fold ($\log_2 FC=`r format(lmHlp$coef[2],digits=3)`$) down or up regulation by random change (if $H_0$ is true) is `r round(summary(lmHlp)$coef[2,4]*1e6,0)` out of 1 000 000.  
 - If the p-value is below a significance threshold $\alpha$ we reject the null hypothesis. *We control the probability on a false positive result at the $\alpha$-level (type I error)*
 
 - Note, that the p-values are uniform under the null hypothesis, i.e. when $H_0$ is true all p-values are equally likely. 
