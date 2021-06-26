@@ -17,11 +17,6 @@ output:
 ---
 
 
-<iframe width="560" height="315"
-src="https://www.youtube.com/embed/1mhg3BCuEm8"
-frameborder="0"
-style="display: block; margin: auto;"
-allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 - [Playlist PDA Preprocessing](https://www.youtube.com/watch?v=1mhg3BCuEm8&list=PLZH1hP8_LbJKqnPSS4hxTkn-tQolSCGjP)
 
@@ -41,12 +36,6 @@ According to the target audience of the course we either work with a graphical u
 
 # Francisella tularensis experiment
 
-<iframe width="560" height="315"
-src="https://www.youtube.com/embed/TW5rk1y7aOc"
-frameborder="0"
-style="display: block; margin: auto;"
-allow="autoplay; encrypted-media" allowfullscreen></iframe>
-
 ```{r echo=FALSE,out.width="50%"}
 knitr::include_graphics("./figures/francisella.jpg")
 ```
@@ -64,12 +53,6 @@ knitr::include_graphics("./figures/tularemia_lesion.jpg")
 
 
 ## Import the data in R 
-
-<iframe width="560" height="315"
-src="https://www.youtube.com/embed/pxJWt71pzns"
-frameborder="0"
-style="display: block; margin: auto;"
-allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 
 <details><summary> Click to see code </summary><p>
@@ -239,12 +222,6 @@ pe[["protein"]] %>% assay() %>% head() %>% knitr::kable()
 
 ### Hypothesis testing: a single protein 
 
-<iframe width="560" height="315"
-src="https://www.youtube.com/embed/NaBu251AW10"
-frameborder="0"
-style="display: block; margin: auto;"
-allow="autoplay; encrypted-media" allowfullscreen></iframe>
-
 ```{r echo=FALSE}
 if ("pi"%in%ls()) rm("pi")
 kopvoeter<-function(x,y,angle=0,l=.2,cex.dot=.5,pch=19,col="black")
@@ -294,12 +271,6 @@ text(7.5,.5,"Data exploration",col="black",cex=1.2)
 ```
 
 #### T-test
-
-<iframe width="560" height="315"
-src="https://www.youtube.com/embed/xoZXE-LONd0"
-frameborder="0"
-style="display: block; margin: auto;"
-allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 
 $$
@@ -376,12 +347,6 @@ The p-value will only be calculated correctly if the underlying assumptions hold
 
 ## Multiple hypothesis testing
 
-<iframe width="560" height="315"
-src="https://www.youtube.com/embed/cLn-CFyA6ps"
-frameborder="0"
-style="display: block; margin: auto;"
-allow="autoplay; encrypted-media" allowfullscreen></iframe>
-
 - Consider testing DA for all $m=1066$ proteins simultaneously
 - What if we assess each individual test at level $\alpha$?
 $\rightarrow$ Probability to have a false positive (FP) among all m simultatenous
@@ -396,12 +361,6 @@ $\rightarrow$ Hence, we are bound to call many false positive proteins each time
 ### Multiple testing
 
 #### Family-wise error rate
-
-<iframe width="560" height="315"
-src="https://www.youtube.com/embed/IL_eUSyRDRA"
-frameborder="0"
-style="display: block; margin: auto;"
-allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 The family-wise error rate (FWER) addresses the multiple testing issue by no longer controlling the individual type I error for each protein, instead it controls:  
 
@@ -421,15 +380,8 @@ Problem, the method is very conservative!
 
 #### False discovery rate
 
-<iframe width="560" height="315"
-src="https://www.youtube.com/embed/envDqvEwRcc"
-frameborder="0"
-style="display: block; margin: auto;"
-allow="autoplay; encrypted-media" allowfullscreen></iframe>
-
 - FDR: Expected proportion of false positives on the total number of positives you return.
 - An FDR of 1% means that on average we expect 1% false positive proteins in the list of proteins that are called significant.
-- Defined by Benjamini and Hochberg in their seminal paper Benjamini, Y. and Hochberg, Y. (1995). "Controlling the false discovery rate: a practical and powerful approach to multiple testing". Journal of the Royal Statistical Society Series B, 57 (1): 289–300. 
 
 The **False Discovery Proportion (FDP)** is the fraction of false positives that are returned, i.e. 
 
@@ -490,12 +442,6 @@ The adjusted $p$-value (also known as the $q$-value in FDR literature):
  In the hypothetical example above: $k=200$, $p_{(k)}=0.01$, $m=1000$ and $\alpha=0.05$.
 
 #### Francisella Example
-
-<iframe width="560" height="315"
-src="https://www.youtube.com/embed/B3BmnOLkYg4"
-frameborder="0"
-style="display: block; margin: auto;"
-allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 <details><summary> Click to see code </summary><p>
 ```{r}
