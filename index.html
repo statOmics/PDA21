@@ -291,17 +291,15 @@ $(document).ready(function () {
 <div id="target-audience" class="section level3">
 <h3>Target Audience</h3>
 <p>This course is oriented towards biologists and bioinformaticians with a particular interest in differential analysis for quantitative proteomics.</p>
-<p>According to the target audience of the course we either work with a graphical user interface (GUI) in a R/shiny App msqrob2gui (e.g. Proteomics Bioinformatics course of the EBI and the Proteomics Data Analysis course at the Gulbenkian institute) or with R/markdowns scripts (e.g. Bioinformatics Summer School at UCLouvain or the Statistical Genomics Course at Ghent University).</p>
+<p>According to the target audience of the course we either work with a graphical user interface (GUI) in a R/shiny App msqrob2gui e.g.  - Proteomics Bioinformatics course of the EBI - Proteomics Data Analysis course at the Gulbenkian institute) - BePA introduction: What can proteomics do for you?</p>
+<p>or with R/markdowns scripts e.g. </p>
+<ul>
+<li>Bioinformatics Summer School at UCLouvain</li>
+<li>Statistical Genomics Course at Ghent University.</li>
+</ul>
 </div>
-<div id="issues" class="section level3">
-<h3>Issues</h3>
-<p>If you encounter any problems related to the course material (e.g. package installation problems, bugs in the code, typos, …), please consider <a href="https://github.com/statOmics/PDA21/issues">posting an issue on GitHub</a>.</p>
-<hr />
-</div>
-<div id="statistical-data-analysis-for-proteomics" class="section level3">
-<h3>Statistical Data Analysis for Proteomics</h3>
-<div id="software-and-data" class="section level4">
-<h4>Software and Data</h4>
+<div id="software" class="section level3">
+<h3>Software</h3>
 <ul>
 <li>Install [R version 4.1 or higher] (<a href="https://cran.r-project.org/" class="uri">https://cran.r-project.org/</a>)</li>
 <li>Install <a href="https://www.rstudio.com/products/rstudio/download/">Rstudio</a></li>
@@ -317,19 +315,23 @@ BiocManager::install(&quot;msqrob2&quot;)</code></pre>
 <pre><code>if(!requireNamespace(&quot;BiocManager&quot;, quietly = TRUE)) {
  install.packages(&quot;BiocManager&quot;)
 }
-BiocManager::install(&quot;msqrob2gui&quot;)</code></pre>
+BiocManager::install(&quot;statomics/msqrob2gui&quot;)</code></pre>
 </div>
-<div id="detailed-program" class="section level4">
-<h4>Detailed Program</h4>
+<div id="issues" class="section level3">
+<h3>Issues</h3>
+<p>If you encounter problems related to the course material (e.g. package installation problems, bugs in the code, typos, …), please consider <a href="https://github.com/statOmics/PDA21/issues">posting an issue on GitHub</a>.</p>
+<hr />
+</div>
+<div id="detailed-program" class="section level3">
+<h3>Detailed Program</h3>
 <ol style="list-style-type: decimal">
-<li><p>Identification</p></li>
-<li><p>Preprocessing &amp; Analysis of Label Free Quantitative Proteomics Experiments with Simple Designs</p></li>
+<li>Preprocessing &amp; Analysis of Label Free Quantitative Proteomics Experiments with Simple Designs</li>
 </ol>
 <ul>
 <li>Lecture: <a href="./pda_quantification_preprocessing.html">Preprocessing</a>, [<a href="./pda_quantification_preprocessing.pdf">PDF</a>]</li>
 <li>Tutorial:</li>
 </ul>
-<ol start="3" style="list-style-type: decimal">
+<ol start="2" style="list-style-type: decimal">
 <li>Statistical Inference &amp; Analysis of Experiments with Factorial Designs</li>
 </ol>
 <ul>
@@ -337,7 +339,6 @@ BiocManager::install(&quot;msqrob2gui&quot;)</code></pre>
 <li>Tutorial:</li>
 </ul>
 <hr />
-</div>
 </div>
 
 
