@@ -499,17 +499,38 @@ volcanoT <- res %>%
 volcanoT
 ```
 
+
 ## Moderated Statistics
 
 
 Problems with ordinary t-test
 
+<details><summary> Click to see code </summary><p>
 ```{r}
-res %>% 
+problemPlots <- list() 
+problemPlots[[1]] <- res %>% 
   ggplot(aes(x = logFC, y = se, color = adjPval < 0.05)) +
     geom_point(cex = 2.5) +
     scale_color_manual(values = alpha(c("black", "red"), 0.5)) +
     theme_minimal() 
+
+for (i in 2:3)
+{
+problemPlots[[i]] <- colData(pe) %>% 
+    as.data.frame %>% 
+    mutate(intensity = pe[["protein"]][rownames(res)[i],] %>% 
+             assay %>% 
+             c) %>% 
+    ggplot(aes(x=genotype,y=intensity)) +
+    geom_point() + 
+    ylim(-3,0) +
+    ggtitle(rownames(res)[i])
+}
+```
+</p></details>
+
+```{r}
+problemPlots
 ```
 
 A general class of moderated test statistics is given by
@@ -567,12 +588,17 @@ gridExtra::grid.arrange(tstatSimPlot,tstatSimPerseus,nrow=1)
 
 
 ### Empirical Bayes 
-   
-A general class of moderated test statistics is given by
- $$
+
+
+```{r echo=FALSE, out.width="50%"}
+knitr::include_graphics("./figures/limmaShrinkage.png")
+```
+
+Figure courtesy to Rafael Irizarry
+
+$$
    T_g^{mod} = \frac{\bar{Y}_{g1} - \bar{Y}_{g2}}{C \quad \tilde{S}_g} ,
  $$
- where $\tilde{S}_g$ is a moderated standard deviation estimate. 
 
 - **empirical Bayes** theory provides formal framework for borrowing strength across proteins,
 - Implemented in popular bioconductor package **limma** and **msqrob2**
@@ -600,12 +626,12 @@ volcano <- ggplot(
     geom_point(cex = 2.5) +
     scale_color_manual(values = alpha(c("black", "red"), 0.5)) +
     theme_minimal() +
-    ggtitle("Default workflow")
+    ggtitle("msqrob2")
 ```
 </p></details>
 
 ```{r}
-gridExtra::grid.arrange(volcanoT +    xlim(-3,3)
+gridExtra::grid.arrange(volcanoT +    xlim(-3,3) + ggtitle("ordinary t-test")
 ,volcano +     xlim(-3,3)
 ,nrow=2)
 ```
@@ -616,13 +642,6 @@ gridExtra::grid.arrange(volcanoT +    xlim(-3,3)
 
 
 ### Shrinkage of the  variance and moderated t-statistics
-
-
-```{r echo=FALSE, out.width="100%"}
-knitr::include_graphics("./figures/limmaShrinkage.png")
-```
-
-Figure courtesy to Rafael Irizarry
 
 ```{r}
 qplot(
