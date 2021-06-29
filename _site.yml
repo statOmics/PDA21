@@ -18,6 +18,8 @@ navbar:
       menu:
       - text: Quantification - Preprocessing
         href: pda_tutorialPreprocessing.html
+      - text: Quantification - Design
+        href: pda_tutorialDesign.html
         
   right:
     - icon: fab fa-github      

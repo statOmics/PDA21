@@ -66,7 +66,7 @@ If you encounter problems related to the course material (e.g. package installat
 
   2. Statistical Inference & Analysis of Experiments with Factorial Designs
   - Lecture: [Differential Abundance Analysis](./pda_quantification_inference.html), [[PDF](./pda_quantification_inference.pdf)]
-  - Tutorial: 
+  - Tutorial: [Design](da_tutorialDesign.html)
 
 ---
 
