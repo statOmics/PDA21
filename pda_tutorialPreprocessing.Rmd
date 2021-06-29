@@ -33,13 +33,12 @@ We limited ourselves to the data of LTQ-Orbitrap W at site 56. The data were sea
 - Note, that participants who use R/Rmarkdown scripts do not have to download the data as they can directly import the data from the web in R within their script. 
 
 
-[2.3.a] Participants can perform an analysis using the [GUI](./cptac_medianGui.html) or an [Rmarkdown script](./cptac_median.html)
+[2.3.a] Participants can perform an analysis using the [GUI](./cptac_robust_gui.html) or an [Rmarkdown script](./cptac_robust.html)
 
 Follow the steps in the GUI or in the script and try to understand each of the analysis steps. We know the real FC for the spike in proteins and the yeast proteins (see description of the data). What do you observe?
 
-[2.3.b] Repeat the analysis for the robust summarization method. What do you observe, how does that compare to the median summarisation and try to explain this?
+[2.3.b] Repeat the analysis for the median summarization method. What do you observe, how does that compare to the robust summarisation and try to explain this?
 
-[2.3.c] Repeat the analysis using MaqLFQ summarization, the default summarization by MaxQuant/Perseus. You can use the proteinGroups.txt file for this purpose. Note, that the summarization has already be conducted by the MaxQuant software. So only log2 transformation and normalisation has to be conducted.  What do you observe, how does that compare to the robust summarisation and try to explain this?
 
 
 #### 2.3 Breast cancer example

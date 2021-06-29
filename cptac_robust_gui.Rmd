@@ -1,5 +1,5 @@
 ---
-title: "Introduction to proteomics data analysis: median summarization"
+title: "Introduction to proteomics data analysis: impact summarization"
 author: "Lieven Clement"
 date: "statOmics, Ghent University (https://statomics.github.io)"
 output:
@@ -13,7 +13,7 @@ output:
 ---
 
 
-#### 2.2. Starting MSqRob
+### 2.2. Starting MSqRob
 
 ### 2.2.1. The Input tab
 
@@ -27,6 +27,7 @@ Similarly, upload the experimental annotation file which is called “label-free
 You can generate an empty annotation file after uploading the peptide.txt file by clicking on the button generate annotation file. Then a download button will appear. The annotation file will contain one column named run with the names of the different runs in the peptide.txt file. 
 
 ![Figure 5. Lab 3 Annotation](./figures/lab3Annotation.png)
+
 Experimental annotation file have a typical structure. For the CPTAC dataset analyzed with MaxQuant, the first column equals the names given in MaxQuant’s “Experiment” column. Other columns indicate other variables related to the study design. Here it is only the treatment (“spike-in condition”).
 
 *Hint: If the file location was already specified and the peptides file was uploaded, you can generate the “run” column of this file automatically in the output folder by clicking the “Create annotation file” button. The other columns need to be filled in manually based on the experimental design.*
@@ -37,7 +38,7 @@ After setting your output location and uploading your files, your input screen s
 
 At this stage, everything is set for preprocessing and data exploration, which are implemented in the preprocessing tab.
 
-#### 2.3.2. The Preprocessing tab
+### 2.3.2. The Preprocessing tab
 
 The preprocessing tab features different preprocessing options, many of which can be safely left at their default state. When you click the preprocessing tab, it should now look as follows:
 
@@ -61,7 +62,7 @@ Razor peptides are peptides that cannot be uniquely attributed to a single prote
 
 You can further filter out reverse sequences (left over from the MaxQuant search) and potential contaminants proteins (such as keratin from the operator's skin and hair, or leftover trypsin from digestion) [10], by providing the column names of the peptides file that indicate these sequences in the “Filter columns” field.
 
-#### 2.3.3. The Summarization tab
+### 2.3.3. The Summarization tab
 The preprocessing tab features different summarization options. When you click the preprocessing tab, the following screen is obtained:
 
 ![msqrob2 Summarization tab](./figures/guiSummarization.png)
@@ -75,11 +76,12 @@ We then select the robust method, which we will use in the downstream data analy
 What do you see upon summarization with the robust method and why would that be the case? [2.3.3.a]
 
 
-##### 2.3.4. The Model tab
+### 2.3.4. The Model tab
 
 When you click the Model tab, the following screen is obtained:
 
 ![msqrob2 Model tab](./figures/guiModel.png)
+
 The Model tab shows information on the experimental design (annotation) in the right panel. 
 In the left panel we have to propose the model to model the intensities of the preprocessed and summarized data. 
 
@@ -130,7 +132,7 @@ We now have to click the `Fit Model!` button to fit the models for each protein.
 
 We are now ready for assessing differential abundance of each protein using formal hypothesis testing. 
 
-##### 2.3.4. The Inference tab
+### 2.3.4. The Inference tab
 
 When you click the Model tab, the following screen is obtained:
 
@@ -160,24 +162,38 @@ and a volcano plot appears that gives you a view on statistical significance in 
 You also get a table with selected feature. By default this are all proteins that are significant with the specified significance level in the `Significance field`. 
 You also obtain a boxplot of the log2-fold changes for all proteins that are selected in the table. 
 
-Note that only two proteins are displayed, because with median summarisation only two proteins can be picked up at the 5% FDR level. Fortunately both proteins are UPS proteins that were spiked-in. 
+Note that 20 proteins are displayed. The majority of them are UPS proteins that were spiked-in. Only one yeast protein is recovered in the top 20.
 
 If you tick of the option `only significant features in table` all proteins are shown in the table. 
 
-Select an area on the plot and double click to zoom in. Double click on an unselected area to reset the plot window. Selecting a protein in the “Results table” results in selecting it on the Volcano plot.
+You can also select proteins by selecting an area on the volcano plot. 
+- Click on the left mouse button and keep the button pressed and drag the mouse: a blue area appears
+- Double click to zoom in now the proteins are selected in the results table. - Double click on an unselected area to reset the plot window.
 
-##### 2.3.4. Evaluate Summarization
+- Selecting a protein(s) in the “Results table” results in selecting it on the Volcano plot.
+
+- If you select one protein in the table or on the volcano-plot you can also explore the underlying normalised peptide intensities and protein intensities of the underlying data in the detail plots. 
+
+### 2.3.4 The DetailPlots Tab
+
+If you select one protein in the table or on the volcano-plot of the inference tab you can also explore the underlying normalised peptide intensities and protein intensities of the underlying data in the detail plots. Clicking on the DetailPlot tab is visualising the data for your selected protein. 
+
+![msqrob2 Model tab](./figures/guiDetailPlot.png)
+
+You can further inspect the plot by coloring the data according to a design variable or by splitting the data horizontally or vertically according to design variables. 
+
+##### 2.3.5. Evaluate Summarization
 
 We further explore the difference between summarization methods.
 We first assess the quality of the fold change estimates for the robust summarization.
 We will make use of the boxplot at the bottom of the quantification tab.
 
-![Figure 10. MSqRob Fold Change Boxplot](./figures/msqrobRobSumFCAll.png)
 
-It visualizes the log2 fold change (FC) estimates of the current contrast for all proteins in the table.
+If you tick of the option `only significant features in table` all proteins are shown in the table. And the boxplot below the table visualizes the log2 fold change (FC) estimates for all proteins in the table.
+
 We can now filter the ups proteins by typing "ups" in the search field above the table. Now all yeast proteins are removed from the results table and a boxplot of the ups protein log2 FCs will be made.
 
-![Figure 10. MSqRob Fold Change Boxplot](./figures/msqrobSumFCups.png)
+![Robust Fold Change Boxplot UPS](./figures/guiRobustUps.png)
 
 [2.3.4.a] We know the real FC for the spike in proteins (see description of the data 2.3). Note, that the boxplot is showing the log2 FC. What do you observe?
 
@@ -185,6 +201,9 @@ We can now filter the ups proteins by typing "ups" in the search field above the
 
 [2.3.4.c] Repeat this for the median summarization method. What do you observe, how does that compare to the robust summarisation and try to explain this?
 
-[2.3.4.c] Repeat the analysis using the MaqLFQ summarization. You can use the proteinGroupsModForMsQrobAnalysis.txt file for this purpose. We will have to repeat the entire analysis for this purpose. Read the file as the peptides file. Note, that the summarization has already be conducted by the MaxQuant software so you can select the summarisation method none in the summarization tab. What do you observe, how does that compare to the robust summarisation and try to explain this?
+Note, that the shiny app is an interface to the statistical programming software R. The analysis can also be conducted using scripts, which gives the user much more functionality and the ability to document their analysis in a reproducible way. An R/markdown file for the analysis we performed above can be found here, if you click on the code button at the top a script with the code for the html file will be downloaded:
+[RMarkdown script](cptac_robust.html)
 
-Note, that the shiny app is an interface to the statistical programming software R. The analysis can also be conducted using scripts, which gives the user much more functionality and the ability to document their analysis in a reproducible way. An R/markdown notebook for the analysis we performed above can be downloaded here: [cptacAvsB_lab3.Rmd](https://raw.githubusercontent.com/statOmics/pda/gh-pages/assets/cptacAvsB_lab3.Rmd) and [cptacAvsB_lab3.html](./cptacAvsB_lab3.nb.html).
+
+
+
