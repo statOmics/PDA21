@@ -43,27 +43,13 @@ or with R/markdowns scripts e.g.
 - Bioinformatics Summer School at UCLouvain 
 - Statistical Genomics Course at Ghent University. 
 
-### Software 
+### Software & Data 
 
-- Install [R version 4.1 or higher] (https://cran.r-project.org/)
-- Install [Rstudio](https://www.rstudio.com/products/rstudio/download/)
-- To install the current version of *msqrob2*, start R and run the following command.
+- [Install msqrob2 software](./software.html)
+- [Download data](https://github.com/statOmics/pda/archive/refs/heads/data.zip)
 
-```
-if(!requireNamespace("BiocManager", quietly = TRUE)) {
- install.packages("BiocManager")
-}
-BiocManager::install("msqrob2")
-```
+Note, that users who develop R/markdown scripts can access data both from the web or from disk within their scripts. So they do not need to download the data first. The msqrob2gui Shiny App only works with data that is available on disk.  
 
-- To install the msqrob2 GUI, start R and run the following commands
-
-```
-if(!requireNamespace("BiocManager", quietly = TRUE)) {
- install.packages("BiocManager")
-}
-BiocManager::install("statomics/msqrob2gui")
-```
 
 ### Issues
 
@@ -83,3 +69,6 @@ If you encounter problems related to the course material (e.g. package installat
   - Tutorial: 
 
 ---
+
+All materials are licensed under the [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)](https://creativecommons.org/licenses/by-nc-sa/4.0)
+

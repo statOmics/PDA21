@@ -16,7 +16,7 @@ output:
 
 ---
 
-
+All materials are licensed under the [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)](https://creativecommons.org/licenses/by-nc-sa/4.0)
 
 - [Playlist PDA Preprocessing](https://www.youtube.com/watch?v=1mhg3BCuEm8&list=PLZH1hP8_LbJKqnPSS4hxTkn-tQolSCGjP)
 
@@ -70,7 +70,7 @@ library(ggplot2)
 2. We use a peptides.txt file from MS-data quantified with maxquant that 
 contains MS1 intensities summarized at the peptide level. 
 ```{r}
-peptidesFile <- "https://raw.githubusercontent.com/statOmics/PDA20/data/quantification/francisella/peptides.txt"
+peptidesFile <- "https://raw.githubusercontent.com/statOmics/PDA21/data/quantification/francisella/peptides.txt"
 ```
 
 3. Maxquant stores the intensity data for the different samples in columnns that start with Intensity. We can retreive the column names with the intensity data with the code below: 

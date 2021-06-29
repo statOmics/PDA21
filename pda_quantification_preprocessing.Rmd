@@ -17,7 +17,7 @@ output:
       
 ---
 
-
+All materials are licensed under the [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)](https://creativecommons.org/licenses/by-nc-sa/4.0)
 
 <iframe width="560" height="315"
 src="https://www.youtube.com/embed/V6Ik-SORoKo"
@@ -224,7 +224,7 @@ library(ggplot2)
 1. We use a peptides.txt file from MS-data quantified with maxquant that 
 contains MS1 intensities summarized at the peptide level. 
 ```{r}
-peptidesFile <- "https://raw.githubusercontent.com/statOmics/PDA20/data/quantification/cptac/peptides.txt"
+peptidesFile <- "https://raw.githubusercontent.com/statOmics/PDA21/data/quantification/fullCptacDatasSetNotForTutorial/peptides.txt"
 ```
 
 2. Maxquant stores the intensity data for the different samples in columnns that start with Intensity. We can retreive the column names with the intensity data with the code below: 
