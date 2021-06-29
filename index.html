@@ -221,7 +221,7 @@ $(document).ready(function () {
 
 
 
-<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
@@ -253,6 +253,23 @@ $(document).ready(function () {
     </li>
     <li>
       <a href="pda_quantification_inference.html">Quantification - Differential Abundance Analysis</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-laptop"></span>
+     
+    tutorials
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="pda_tutorialPreprocessing.html">Quantification - Preprocessing</a>
+    </li>
+    <li>
+      <a href="pda_tutorialDesign.html">Quantification - Design</a>
     </li>
   </ul>
 </li>
@@ -298,24 +315,13 @@ $(document).ready(function () {
 <li>Statistical Genomics Course at Ghent University.</li>
 </ul>
 </div>
-<div id="software" class="section level3">
-<h3>Software</h3>
+<div id="software-data" class="section level3">
+<h3>Software &amp; Data</h3>
 <ul>
-<li>Install [R version 4.1 or higher] (<a href="https://cran.r-project.org/" class="uri">https://cran.r-project.org/</a>)</li>
-<li>Install <a href="https://www.rstudio.com/products/rstudio/download/">Rstudio</a></li>
-<li>To install the current version of <em>msqrob2</em>, start R and run the following command.</li>
+<li><a href="./software.html">Install msqrob2 software</a></li>
+<li><a href="https://github.com/statOmics/pda/archive/refs/heads/data.zip">Download data</a></li>
 </ul>
-<pre><code>if(!requireNamespace(&quot;BiocManager&quot;, quietly = TRUE)) {
- install.packages(&quot;BiocManager&quot;)
-}
-BiocManager::install(&quot;msqrob2&quot;)</code></pre>
-<ul>
-<li>To install the msqrob2 GUI, start R and run the following commands</li>
-</ul>
-<pre><code>if(!requireNamespace(&quot;BiocManager&quot;, quietly = TRUE)) {
- install.packages(&quot;BiocManager&quot;)
-}
-BiocManager::install(&quot;statomics/msqrob2gui&quot;)</code></pre>
+<p>Note, that users who develop R/markdown scripts can access data both from the web or from disk within their scripts. So they do not need to download the data first. The msqrob2gui Shiny App only works with data that is available on disk.</p>
 </div>
 <div id="issues" class="section level3">
 <h3>Issues</h3>
@@ -329,16 +335,17 @@ BiocManager::install(&quot;statomics/msqrob2gui&quot;)</code></pre>
 </ol>
 <ul>
 <li>Lecture: <a href="./pda_quantification_preprocessing.html">Preprocessing</a>, [<a href="./pda_quantification_preprocessing.pdf">PDF</a>]</li>
-<li>Tutorial:</li>
+<li>Tutorial: <a href="./pda_tutorialPreprocessing.html">preprocessing</a></li>
 </ul>
 <ol start="2" style="list-style-type: decimal">
 <li>Statistical Inference &amp; Analysis of Experiments with Factorial Designs</li>
 </ol>
 <ul>
 <li>Lecture: <a href="./pda_quantification_inference.html">Differential Abundance Analysis</a>, [<a href="./pda_quantification_inference.pdf">PDF</a>]</li>
-<li>Tutorial:</li>
+<li>Tutorial: <a href="da_tutorialDesign.html">Design</a></li>
 </ul>
 <hr />
+<p>All materials are licensed under the <a href="https://creativecommons.org/licenses/by-nc-sa/4.0">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)</a></p>
 </div>
 
 
