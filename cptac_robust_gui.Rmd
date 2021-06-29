@@ -15,6 +15,36 @@ output:
 
 ### 2.2. Starting MSqRob
 
+You can find the installation instructions for the installation of msqrob2 and the msqrob2gui graphical user interface (GUI)/shinyApp in [software](./software.html)
+
+Upon installation 
+
+1. Open Rstudio, you will see the following login window
+
+![Figure 1. RStudio](./figures/rstudio.png)
+
+
+2. Copy and paste following commands in the console window and type enter
+
+```
+library(msqrob2gui)
+launchMsqrob2App()
+```
+
+![Figure 2. Rstudio with launchcommand](./figures/rstudio2.png)
+
+
+The first line will load the msqrob2gui package and its dependencies
+The second line will launch the GUI/shinyApp
+
+3. A new window will open with the shinyApp
+
+![Figure 3. msqrob2 ShinyApp](./figures/shinyApp.png)
+
+4. It is advicable to open the shiny app in a webbrowser. You can do that by clicking on the button `open in webbrowser`, which you can find above the blue navigation bar and the shinyApp will pop up in a new browser tab/window. 
+
+![Figure 4. msqrob2gui in browser tab](./figures/msqrob2gui.png)
+
 ### 2.2.1. The Input tab
 
 Our first step is to choose an appropriate name for the project. This name, appended with a timestamp, will be used when downloading results from the analysis. Here, we use the name “project_CPTAC_AvsB”.
@@ -22,11 +52,11 @@ Our first step is to choose an appropriate name for the project. This name, appe
 Next, upload your peptides.txt file. This is the file that contains your peptide-level intensities. 
 For a MaxQuant search [6], this peptides.txt file can be found by default in the “path_to_raw_files/combined/txt/” folder from the MaxQuant output, with “path_to_raw_files” the folder where raw files were saved. In this tutorial, we will use a MaxQuant peptides file from MaxQuant that can be found on the pdaData repository.
 
-Similarly, upload the experimental annotation file which is called “label-free_CPTAC_annotation.xlsx”. This file should always be a tab-delimited file or an Office Open XML spreadsheet file (“.xlsx” file). Figure 4. shows how this file looks like for our experiment. One column (the “run” column in Fig. 3) of the experimental annotation file should always contain the names of the MS runs. For MaxQuant, these are the names given in the “Experiment” column when the data was searched. The names should be unique. Other columns indicate other variables related to the design that can affect protein expression; here this is only the treatment/spike-in condition.
+Similarly, upload the experimental annotation file which is called “experimental_annotation.xlsx”. This file should always be a tab-delimited file or an Office Open XML spreadsheet file (“.xlsx” file). Figure 2. shows how this file looks like for our experiment. One column (the “run” column in Fig. 3) of the experimental annotation file should always contain the names of the MS runs. For MaxQuant, these are the names given in the “Experiment” column when the data was searched. The names should be unique. Other columns indicate other variables related to the design that can affect protein expression; here this is only the treatment/spike-in condition.
 
 You can generate an empty annotation file after uploading the peptide.txt file by clicking on the button generate annotation file. Then a download button will appear. The annotation file will contain one column named run with the names of the different runs in the peptide.txt file. 
 
-![Figure 5. Lab 3 Annotation](./figures/lab3Annotation.png)
+![Figure 4. Lab 3 Annotation](./figures/lab3Annotation.png)
 
 Experimental annotation file have a typical structure. For the CPTAC dataset analyzed with MaxQuant, the first column equals the names given in MaxQuant’s “Experiment” column. Other columns indicate other variables related to the study design. Here it is only the treatment (“spike-in condition”).
 
@@ -34,7 +64,7 @@ Experimental annotation file have a typical structure. For the CPTAC dataset ana
 
 After setting your output location and uploading your files, your input screen should look as follows:
 
-![Figure 6. MSqRob Input tab](./figures/guiInput.png)
+![Figure 5. MSqRob Input tab](./figures/guiInput.png)
 
 At this stage, everything is set for preprocessing and data exploration, which are implemented in the preprocessing tab.
 
@@ -42,11 +72,11 @@ At this stage, everything is set for preprocessing and data exploration, which a
 
 The preprocessing tab features different preprocessing options, many of which can be safely left at their default state. When you click the preprocessing tab, it should now look as follows:
 
-![msqrob2 Preprocessing tab](./figures/guiPreprocessing.png)
+![Figure 6. msqrob2 Preprocessing tab](./figures/guiPreprocessing.png)
 
 The other normalization steps are performed upon hitting the “Start Normalization” button on the bottom of the Normalization tab. This is required to generate the normalized peptide object that is needed in the other panels of the app. Now, two additional plots are generated: the second plot shows the distributions of the peptides intensities In each runs after normalization and the third plot is an MDS plot. An MDS plot is a scatter plot that shows the runs in such a way that the distances on the plot are equal to the Euclidian distances of the top 500 most differing peptides between each pair of runs. If we log transform the data these distances are related to log fold changes.  Thus, runs that are plotted close to each other are more similar than samples that are far away from each other. Options are provided to show only dots, only labels or both. It is also possible to zoom in on a particular part of the plot by dragging the mouse to select a particular area on the plot and then double-click to zoom in.
 
-![msqrob2 Preprocessing tab upon normalization](./figures/guiPreprocessing2.png) 
+![Figure 7. msqrob2 Preprocessing tab upon normalization](./figures/guiPreprocessing2.png) 
 
 The first preprocessing step is log-transformation.
 Why is log-transformation needed? (Hint: untick the checkbox before “Log-transform data” and see what happens to the data distribution.) [2.3.2.a]
@@ -65,7 +95,7 @@ You can further filter out reverse sequences (left over from the MaxQuant search
 ### 2.3.3. The Summarization tab
 The preprocessing tab features different summarization options. When you click the preprocessing tab, the following screen is obtained:
 
-![msqrob2 Summarization tab](./figures/guiSummarization.png)
+![Figure 9. msqrob2 Summarization tab](./figures/guiSummarization.png)
 
 When robust summarization is applied, the novel and much faster two-stage approach is used to fit the MSqRob model. Mean and median summarization are also implemented, but mainly for didactical reasons and to show the problems related to naive summarization methods. You always have to invoke the “Start Summarization!” button in order to create an object needed for downstream quantification. Depending on the method, summarization might take a while.
 
@@ -80,7 +110,7 @@ What do you see upon summarization with the robust method and why would that be 
 
 When you click the Model tab, the following screen is obtained:
 
-![msqrob2 Model tab](./figures/guiModel.png)
+![Figure 10. msqrob2 Model tab](./figures/guiModel.png)
 
 The Model tab shows information on the experimental design (annotation) in the right panel. 
 In the left panel we have to propose the model to model the intensities of the preprocessed and summarized data. 
@@ -104,6 +134,9 @@ Here, we only have one factor 'treatment' in the experimental design with two le
 `~ treatment`
 
 Note that as soon as we do that, the design is visualised. 
+
+![Figure 11. msqrob2 Model tab with design](./figures/guiModel2.png)
+
 This visualisation shows the different group means that are modelled. 
 
 - Here we see that the group mean for the treatment A is modelled using the parameter 
@@ -136,7 +169,7 @@ We are now ready for assessing differential abundance of each protein using form
 
 When you click the Model tab, the following screen is obtained:
 
-![msqrob2 Model tab](./figures/guiInference.png)
+![Figure 12. msqrob2 Inference tab](./figures/guiInference.png)
 
 In the statistical analysis we will want to test the null hypothesis that
 
@@ -155,7 +188,7 @@ We will falsify this null hypothesis for each protein separately based on the li
 
 As soon as you specified the Null Hypothesis the window is updated 
 
-![msqrob2 Model tab](./figures/guiInference2.png)
+![Figure 13 msqrob2 Inference tab with contrast](./figures/guiInference2.png)
 
 and a volcano plot appears that gives you a view on statistical significance in the y-axis, i.e. the $-\log_{10}$ transformed p-value: a value of 1 equals to a p-value of 0.1, a value of 2 equals a p-value of 0.01, etc against biological relevance/the effect size in the x-axis, which is the $\log_2FC$. 
 
@@ -178,7 +211,7 @@ You can also select proteins by selecting an area on the volcano plot.
 
 If you select one protein in the table or on the volcano-plot of the inference tab you can also explore the underlying normalised peptide intensities and protein intensities of the underlying data in the detail plots. Clicking on the DetailPlot tab is visualising the data for your selected protein. 
 
-![msqrob2 Model tab](./figures/guiDetailPlot.png)
+![Figure 14. msqrob2 DetailPlot tab](./figures/guiDetailPlot.png)
 
 You can further inspect the plot by coloring the data according to a design variable or by splitting the data horizontally or vertically according to design variables. 
 
@@ -193,7 +226,7 @@ If you tick of the option `only significant features in table` all proteins are 
 
 We can now filter the ups proteins by typing "ups" in the search field above the table. Now all yeast proteins are removed from the results table and a boxplot of the ups protein log2 FCs will be made.
 
-![Robust Fold Change Boxplot UPS](./figures/guiRobustUps.png)
+![Figure 15. msqrob2 Inference tab with Fold Change Boxplot for all UPS proteins](./figures/guiRobustUps.png)
 
 [2.3.4.a] We know the real FC for the spike in proteins (see description of the data 2.3). Note, that the boxplot is showing the log2 FC. What do you observe?
 
