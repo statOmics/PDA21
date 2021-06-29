@@ -13,6 +13,12 @@ navbar:
         href: pda_quantification_preprocessing.html
       - text: Quantification - Differential Abundance Analysis
         href: pda_quantification_inference.html
+    - text: "tutorials"
+      icon: fa-laptop
+      menu:
+      - text: Quantification - Preprocessing
+        href: pda_tutorialPreprocessing.html
+        
   right:
     - icon: fab fa-github      
       href: https://github.com/statOmics/PDA21
