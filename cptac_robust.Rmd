@@ -10,6 +10,9 @@ output:
       toc_float: true
       highlight: tango
       number_sections: true
+    pdf_document:
+      toc: true
+      number_sections: true
 ---
 
 # Background
@@ -275,7 +278,7 @@ First, we extract the parameter names of the model by looking at the first model
 The models are stored in the row data of the assay under the default name msqrobModels. 
 
 ```{r}
-getCoef(rowData(pe[["proteinMedian"]])$msqrobModels[[1]])
+getCoef(rowData(pe[["protein"]])$msqrobModels[[1]])
 ```
 
 Spike-in condition `A` is the reference class. So the mean log2 expression
