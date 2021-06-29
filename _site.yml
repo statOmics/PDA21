@@ -1,0 +1,39 @@
+name : "PDA21"
+title : "Proteomics Data Analysis 2021 (PDA21)"
+navbar:
+  title: "PDA21"
+left:
+  - icon: fa-home
+href: index.html
+
+- text: "Lectures"
+icon: fa-chalkboard-teacher
+menu:
+  - text: Quantification - Preprocessing
+href: pda_quantification_preprocessing.html
+- text: Quantification - Differential Abundance Analysis
+href: pda_quantification_inference.html
+- text: "tutorials"
+icon: fa-laptop
+menu:
+  - text: Quantification - Preprocessing
+href: pda_tutorialPreprocessing.html
+- text: Quantification - Design
+href: pda_tutorialDesign.html
+
+right:
+  - icon: fab fa-github      
+href: https://github.com/statOmics/PDA21
+- text: "statOmics"
+href: http://statomics.github.io/
+  output:
+  html_document:
+  code_download: true
+theme: cosmo
+toc: true
+toc_float: true
+highlight: tango
+number_sections: true
+df_print: paged
+new_session: true
+exclude: ["install.R"]
