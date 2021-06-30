@@ -28,7 +28,7 @@ Mass spectrometry based proteomic experiments generate ever larger datasets and,
 
 Students can sharpen their background knowledge on Mass Spectrometry, Proteomics & Bioinformatics for Proteomics
  here:
-[Mass Spectrometry and Bioinformatics for Proteomics](pages/techVideos.md)
+[Mass Spectrometry and Bioinformatics for Proteomics](./techvid.Rmd)
 
 ### Target Audience
 This course is oriented towards biologists and bioinformaticians with a particular interest in differential analysis for quantitative proteomics.
