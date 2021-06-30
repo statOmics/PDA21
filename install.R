@@ -14,5 +14,6 @@ pkgs <- c("tidyverse",
           "plotly",
           "QFeatures",
           "msqrob2",
-          "gridExtra")
+          "gridExtra",
+          "ExploreModelMatrix")
 BiocManager::install(pkgs)
