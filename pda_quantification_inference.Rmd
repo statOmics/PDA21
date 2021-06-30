@@ -894,13 +894,20 @@ $$\updownarrow$$
 
 - Randomized complete block design assessing Treg and Tconv on each mouse
 
-# Code
+# Software & code
 
-- Our R/Bioconductor package `msqrob2` can be used in R markdown scripts or with a GUI/shinyApp in the `msqrob2gui` package or . 
+- Our R/Bioconductor package [msqrob2](https://www.bioconductor.org/packages/release/bioc/html/msqrob2.html) can be used in R markdown scripts or with a GUI/shinyApp in the [msqrob2gui](https://github.com/statOmics/msqrob2gui) package.
 
-- Users who want to learn how to code and automate proteomics data analyses in reproducible R markdown scripts can get more information on all code used in this script in the video below. 
+- The GUI is intended as a introduction to the key concepts of proteomics data analysis for users who have no experience in R. 
+
+- However, learning how to code data analyses in R markdown scripts is key for open en reproducible science and for reporting your proteomics data analyses and interpretation in a reproducible way. 
+
+
+- More information on our tools can be found in our papers [@goeminne2016], [@goeminne2020] and [@sticker2020]
 
 - Clips on the code on importing the data and preprocessing can be found in [Part I Preprocessing](./pda_quantification_preprocessing.html)
+
+- A clip on the code for modelling and statistical inference with msqrob2 is included below
 
 <iframe width="560" height="315"
 src="https://www.youtube.com/embed/eXxIdzGOPgY"
