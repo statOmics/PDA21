@@ -283,6 +283,13 @@ The models are stored in the row data of the assay under the default name msqrob
 getCoef(rowData(pe[["protein"]])$msqrobModels[[1]])
 ```
 
+We can also explore the design of the model that we specified using the the package `ExploreModelMatrix` 
+
+```{r}
+library(ExploreModelMatrix)
+VisualizeDesign(colData(pe),~condition)$plotlist[[1]]
+```
+
 Spike-in condition `A` is the reference class. So the mean log2 expression
 for samples from condition A is '(Intercept).
 The mean log2 expression for samples from condition B is '(Intercept)+conditionB'.

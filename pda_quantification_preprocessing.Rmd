@@ -664,12 +664,13 @@ Other summarization methods can be implemented by using the `fun` argument in th
 
 ---
 
-# Code
+# Code & GUI
 
 - Our R/Bioconductor package `msqrob2` can be used in R markdown scripts or with a GUI/shinyApp in the `msqrob2gui` package or . 
 
 - Users who want to learn how to code and automate proteomics data analyses in reproducible R markdown scripts can get more information on all code used in this script in the video below. 
 
+## Code 
 1. Data infrastructure
 <iframe width="560" height="315"
 src="https://www.youtube.com/embed/N0yIZ1YB2aQ"
@@ -714,4 +715,10 @@ frameborder="0"
 style="display: block; margin: auto;"
 allow="autoplay; encrypted-media" allowfullscreen></iframe>    
 
+## Data analysis with the GUI/shinyApp msqrob2gui
 
+<iframe width="560" height="315"
+src="https://www.youtube.com/embed/ISF4g-Xbwec"
+frameborder="0"
+style="display: block; margin: auto;"
+allow="autoplay; encrypted-media" allowfullscreen></iframe>   

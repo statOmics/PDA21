@@ -672,11 +672,61 @@ $$
 - Note that the degrees of freedom increase by borrowing strength across proteins!
 
 <details><summary> Click to see the code </summary><p>   
+
+1. We model the protein level expression values using the `msqrob` function.
+By default `msqrob2` estimates the model parameters using robust regression.
+
+We will model the data with a different group mean for every genotype. 
+The group is incoded in the variable `genotype` of the colData. 
+We can specify this model by using a formula with the factor condition as its predictor: 
+`formula = ~genotype`.
+
+Note, that a formula always starts with a symbol '~'.
 ```{r warning=FALSE}
 pe <- msqrob(object = pe, i = "protein", formula = ~genotype)
+```
+
+2. Inference 
+
+We first explore the design of the model that we specified using the the package `ExploreModelMatrix` 
+
+```{r}
+library(ExploreModelMatrix)
+VisualizeDesign(colData(pe),~genotype)$plotlist[[1]]
+```
+
+We have two model parameters, the (Intercept) and genotypeD8. 
+This results in a model with two group means: 
+
+1. For the wild type (WT) the expected value (mean) of the log2 transformed intensity y for a protein will be modelled using 
+
+$$\text{E}[Y\vert \text{genotype}=\text{WT}] = \text{(Intercept)}$$ 
+1. For the knockout genotype D8 the expected value (mean) of the log2 transformed intensity y for a protein will be modelled using 
+
+$$\text{E}[Y\vert \text{genotype}=\text{D8}] = \text{(Intercept)} + \text{genotypeD8}$$ 
+
+The average log2FC between D8 and WT is thus
+$$\log_2\text{FC}_{D8-WT}= \text{E}[Y\vert \text{genotype}=\text{D8}] - \text{E}[Y\vert \text{genotype}=\text{WT}] = \text{genotypeD8}
+$$
+
+Hence, assessing the null hypothesis that there is no differential abundance between D8 and WT can be reformulated as
+
+$$H_0:  \text{genotypeD8}=0$$
+We can implement a hypothesis test for each protein in msqrob2 using the code below: 
+
+```{r}
 L <- makeContrast("genotypeD8 = 0", parameterNames = c("genotypeD8"))
 pe <- hypothesisTest(object = pe, i = "protein", contrast = L)
 ```
+
+We can show the list with all significant DE proteins at the 5% FDR using 
+```{r}
+rowData(pe[["protein"]])$genotypeD8 %>% 
+  arrange(pval) %>%
+  filter(adjPval<0.05)
+```
+
+We can also visualise the results using a volcanoplot
 
 ```{r}
 volcano <- ggplot(
@@ -842,4 +892,16 @@ $$\updownarrow$$
 
 - Randomized complete block design assessing Treg and Tconv on each mouse
 
+# Code
 
+- Our R/Bioconductor package `msqrob2` can be used in R markdown scripts or with a GUI/shinyApp in the `msqrob2gui` package or . 
+
+- Users who want to learn how to code and automate proteomics data analyses in reproducible R markdown scripts can get more information on all code used in this script in the video below. 
+
+- Clips on the code on importing the data and preprocessing can be found in [Part I Preprocessing](./pda_quantification_preprocessing.html)
+
+<iframe width="560" height="315"
+src="https://www.youtube.com/embed/eXxIdzGOPgY"
+frameborder="0"
+style="display: block; margin: auto;"
+allow="autoplay; encrypted-media" allowfullscreen></iframe>

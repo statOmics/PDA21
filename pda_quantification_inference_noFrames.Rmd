@@ -608,13 +608,62 @@ $$
 - $S_0^2$: common variance (over all proteins) 
 - Moderated t-statistic is t-distributed with $d_0+d_g$ degrees of freedom. 
 - Note that the degrees of freedom increase by borrowing strength across proteins!
-
 <details><summary> Click to see the code </summary><p>   
+
+1. We model the protein level expression values using the `msqrob` function.
+By default `msqrob2` estimates the model parameters using robust regression.
+
+We will model the data with a different group mean for every genotype. 
+The group is incoded in the variable `genotype` of the colData. 
+We can specify this model by using a formula with the factor condition as its predictor: 
+`formula = ~genotype`.
+
+Note, that a formula always starts with a symbol '~'.
 ```{r warning=FALSE}
 pe <- msqrob(object = pe, i = "protein", formula = ~genotype)
+```
+
+2. Inference 
+
+We first explore the design of the model that we specified using the the package `ExploreModelMatrix` 
+
+```{r}
+library(ExploreModelMatrix)
+VisualizeDesign(colData(pe),~genotype)$plotlist[[1]]
+```
+
+We have two model parameters, the (Intercept) and genotypeD8. 
+This results in a model with two group means: 
+
+1. For the wild type (WT) the expected value (mean) of the log2 transformed intensity y for a protein will be modelled using 
+
+$$\text{E}[Y\vert \text{genotype}=\text{WT}] = \text{(Intercept)}$$ 
+1. For the knockout genotype D8 the expected value (mean) of the log2 transformed intensity y for a protein will be modelled using 
+
+$$\text{E}[Y\vert \text{genotype}=\text{D8}] = \text{(Intercept)} + \text{genotypeD8}$$ 
+
+The average log2FC between D8 and WT is thus
+$$\log_2\text{FC}_{D8-WT}= \text{E}[Y\vert \text{genotype}=\text{D8}] - \text{E}[Y\vert \text{genotype}=\text{WT}] = \text{genotypeD8}
+$$
+
+Hence, assessing the null hypothesis that there is no differential abundance between D8 and WT can be reformulated as
+
+$$H_0:  \text{genotypeD8}=0$$
+We can implement a hypothesis test for each protein in msqrob2 using the code below: 
+
+```{r}
 L <- makeContrast("genotypeD8 = 0", parameterNames = c("genotypeD8"))
 pe <- hypothesisTest(object = pe, i = "protein", contrast = L)
 ```
+
+We can show the list with all significant DE proteins at the 5% FDR using 
+```{r}
+rowData(pe[["protein"]])$genotypeD8 %>% 
+  arrange(pval) %>%
+  filter(adjPval<0.05)
+```
+
+We can also visualise the results using a volcanoplot
 
 ```{r}
 volcano <- ggplot(
@@ -627,6 +676,7 @@ volcano <- ggplot(
     ggtitle("msqrob2")
 ```
 </p></details>
+
 
 ```{r}
 gridExtra::grid.arrange(volcanoT +    xlim(-3,3) + ggtitle("ordinary t-test")
