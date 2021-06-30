@@ -321,7 +321,10 @@ launchMsqrob2App()</code></pre>
 <img src="figures/rstudio2.png" alt="" />
 <p class="caption">Figure 2. Rstudio with launchcommand</p>
 </div>
-<p>The first line will load the msqrob2gui package and its dependencies The second line will launch the GUI/shinyApp</p>
+<ul>
+<li>The first line will load the msqrob2gui package and its dependencies</li>
+<li>The second line will launch the GUI/shinyApp</li>
+</ul>
 <ol start="3" style="list-style-type: decimal">
 <li>A new window will open with the shinyApp</li>
 </ol>
@@ -330,7 +333,7 @@ launchMsqrob2App()</code></pre>
 <p class="caption">Figure 3. msqrob2 ShinyApp</p>
 </div>
 <ol start="4" style="list-style-type: decimal">
-<li>It is advicable to open the shiny app in a webbrowser. You can do that by clicking on the button <code>open in webbrowser</code>, which you can find above the blue navigation bar and the shinyApp will pop up in a new browser tab/window.</li>
+<li>It is advicable to open the shiny app in a webbrowser. You can do that by clicking on the button <code>Open in Browser</code>, which you can find above the blue navigation bar and the shinyApp will pop up in a new browser tab/window.</li>
 </ol>
 <div class="figure">
 <img src="figures/msqrob2gui.png" alt="" />
@@ -383,8 +386,10 @@ launchMsqrob2App()</code></pre>
 <p class="caption">Figure 9. msqrob2 Summarization tab</p>
 </div>
 <p>When robust summarization is applied, the novel and much faster two-stage approach is used to fit the MSqRob model. Mean and median summarization are also implemented, but mainly for didactical reasons and to show the problems related to naive summarization methods. You always have to invoke the “Start Summarization!” button in order to create an object needed for downstream quantification. Depending on the method, summarization might take a while.</p>
-<p>We first select the naive median summarization method and hit the “Start Summarization!” button. When the summarization is finished an MDS plot is generated based on the summarized intensities.</p>
-<p>We then select the robust method, which we will use in the downstream data analysis method so as to implement the two-stage MSqRob procedure.</p>
+<ol style="list-style-type: decimal">
+<li><p>We first select the naive median summarization method and hit the “Start Summarization!” button. When the summarization is finished an MDS plot is generated based on the summarized intensities.</p></li>
+<li><p>We then select the robust method, which we will use in the downstream data analysis method so as to implement the two-stage MSqRob procedure.</p></li>
+</ol>
 <p>What do you see upon summarization with the robust method and why would that be the case? [2.3.3.a]</p>
 </div>
 <div id="the-model-tab" class="section level3">
@@ -402,7 +407,10 @@ launchMsqrob2App()</code></pre>
 <li><p>A specification of the form ‘variable1:variable2’ indicates the set of terms obtained by taking the interactions of all terms in ‘variable1’ with all terms in ‘variable2’, i.e. the effect of ‘variable1’ can be altered according to the value of ‘variable2’.</p></li>
 <li><p>The specification ‘variable1*variable’ indicates the <em>cross</em> of ‘variable1’ and ‘variable2’. This is the same as ‘variable1 + variable2 + variable1:variable2’.</p></li>
 </ul>
-<p>Here, we only have one factor ‘treatment’ in the experimental design with two levels: spikein treatment A and B. So we will define the formula as</p>
+<p>Here, we only have one factor ‘treatment’ in the experimental design with two levels: spikein treatment A and B.</p>
+<ol style="list-style-type: decimal">
+<li>So we will define the formula as</li>
+</ol>
 <p><code>~ treatment</code></p>
 <p>Note that as soon as we do that, the design is visualised.</p>
 <div class="figure">
@@ -411,8 +419,8 @@ launchMsqrob2App()</code></pre>
 </div>
 <p>This visualisation shows the different group means that are modelled.</p>
 <ul>
-<li><p>Here we see that the group mean for the treatment A is modelled using the parameter <code>(intercept)</code></p></li>
-<li><p>The group mean for the treatment B is modelled using a linear combination of the two model parameters <code>(intercept) + treatmentB</code></p></li>
+<li><p>Here we see that the group mean for the treatment A is modelled using the parameter <code>(Intercept)</code></p></li>
+<li><p>The group mean for the treatment B is modelled using a linear combination of the two model parameters <code>(Intercept) + treatmentB</code></p></li>
 </ul>
 <p>Hence the average difference in preprocessed protein expression value between both conditions equals <code>treatmentB</code></p>
 <p>Remember that we log-transformed the intensities:</p>
@@ -421,8 +429,9 @@ launchMsqrob2App()</code></pre>
 \]</span></p>
 <p>Note that a linear combination of model parameters is als referred to as a contrast in statistics. This contrast has the interpretation of a log2 fold change between condition 6B and condition 6A. Positive estimates denote that the abundance of the protein is on average higher in condition B, negative estimates denote that the abundance is on average higher in condition A. An estimate equal to 0 indicates that the estimated abundances are equal.</p>
 <p>A log2 FC = 1 indicates that the average abundance in condition B is 2 x higher than the average abundance in condition A, i.e. an 2 fold upregulation in condition B as compared to condition A.</p>
-<p>In order to specify the contrast of interest in MSqRob we set condition 6A to − 1 and condition 6B to 1. That way, we subtract the average log2 intensity in condition 6A from that in condition 6B.</p>
-<p>We now have to click the <code>Fit Model!</code> button to fit the models for each protein.</p>
+<ol start="2" style="list-style-type: decimal">
+<li>We now have to click the <code>Fit Model!</code> button to fit the models for each protein.</li>
+</ol>
 <p>We are now ready for assessing differential abundance of each protein using formal hypothesis testing.</p>
 </div>
 <div id="the-inference-tab" class="section level3">
@@ -434,11 +443,16 @@ launchMsqrob2App()</code></pre>
 </div>
 <p>In the statistical analysis we will want to test the null hypothesis that</p>
 <p><span class="math display">\[ H_0: \log_2 B-\log_2 6A = 0 \]</span></p>
-<p>Against the alternative that <span class="math display">\[ H_1: \log_2 B - \log_2 A \neq 0 \]</span> We can specify the nulhypothesis as a linear combination of the model parameters, i.e. </p>
+<p>Against the alternative that <span class="math display">\[ H_1: \log_2 B - \log_2 A \neq 0 \]</span></p>
+<ol style="list-style-type: decimal">
+<li>We can specify the nulhypothesis as a linear combination of the model parameters, i.e. </li>
+</ol>
 <p><code>treatmentB = 0</code></p>
 <p>This is what we have to fill in the field null hypothesis.</p>
 <p>We will falsify this null hypothesis for each protein separately based on the linear model. So, under the null hypothesis we reason that there is no effect of the spike-in treatment on the abundance of a specific protein. The p-value of the statistical test than indicates the probability to observe an effect (fold change), that is as extreme or more extreme (equally or more up or down regulated) than what is observed in the sample, by random change (when the null hypothesis is true and when there is in reality no effect of the treatment).</p>
-<p>As soon as you specified the Null Hypothesis the window is updated</p>
+<ol start="2" style="list-style-type: decimal">
+<li>As soon as you specified the Null Hypothesis the window is updated</li>
+</ol>
 <div class="figure">
 <img src="figures/guiInference2.png" alt="" />
 <p class="caption">Figure 13 msqrob2 Inference tab with contrast</p>
@@ -446,35 +460,57 @@ launchMsqrob2App()</code></pre>
 <p>and a volcano plot appears that gives you a view on statistical significance in the y-axis, i.e. the <span class="math inline">\(-\log_{10}\)</span> transformed p-value: a value of 1 equals to a p-value of 0.1, a value of 2 equals a p-value of 0.01, etc against biological relevance/the effect size in the x-axis, which is the <span class="math inline">\(\log_2FC\)</span>.</p>
 <p>You also get a table with selected feature. By default this are all proteins that are significant with the specified significance level in the <code>Significance field</code>. You also obtain a boxplot of the log2-fold changes for all proteins that are selected in the table.</p>
 <p>Note that 20 proteins are displayed. The majority of them are UPS proteins that were spiked-in. Only one yeast protein is recovered in the top 20.</p>
-<p>If you tick of the option <code>only significant features in table</code> all proteins are shown in the table.</p>
-<p>You can also select proteins by selecting an area on the volcano plot. - Click on the left mouse button and keep the button pressed and drag the mouse: a blue area appears - Double click to zoom in now the proteins are selected in the results table. - Double click on an unselected area to reset the plot window.</p>
+<ol start="3" style="list-style-type: decimal">
+<li><p>If you untick the option <code>only significant features in table</code> all proteins are shown in the table.</p></li>
+<li><p>You can also select proteins by selecting an area on the volcano plot.</p></li>
+</ol>
 <ul>
-<li><p>Selecting a protein(s) in the “Results table” results in selecting it on the Volcano plot.</p></li>
-<li><p>If you select one protein in the table or on the volcano-plot you can also explore the underlying normalised peptide intensities and protein intensities of the underlying data in the detail plots.</p></li>
+<li><p>Click on the left mouse button and keep the button pressed and drag the mouse: a blue area appears</p></li>
+<li><p>Double click to zoom in now the proteins are selected in the results table. - Double click on an unselected area to reset the plot window.</p></li>
 </ul>
+<ol start="5" style="list-style-type: decimal">
+<li><p>Selecting a protein(s) in the “Results table” results in selecting it on the Volcano plot.</p></li>
+<li><p>You can search for specific proteins in the list by using the search field above the table. E.g. type <code>ups</code>.</p></li>
+<li><p>If you select one protein in the table or by clicking on a point in the volcano-plot you can also explore the underlying normalised peptide intensities and protein intensities of the underlying data in the tab DetailPlots.</p></li>
+</ol>
 </div>
 <div id="the-detailplots-tab" class="section level3">
 <h3>2.3.4 The DetailPlots Tab</h3>
-<p>If you select one protein in the table or on the volcano-plot of the inference tab you can also explore the underlying normalised peptide intensities and protein intensities of the underlying data in the detail plots. Clicking on the DetailPlot tab is visualising the data for your selected protein.</p>
+<ol style="list-style-type: decimal">
+<li><p>Select one protein in the table or by clicking on a point in the volcano-plot</p></li>
+<li><p>Clicking on the DetailPlot tab is visualising the data for your selected protein.</p></li>
+</ol>
 <div class="figure">
 <img src="figures/guiDetailPlot.png" alt="" />
 <p class="caption">Figure 14. msqrob2 DetailPlot tab</p>
 </div>
-<p>You can further inspect the plot by coloring the data according to a design variable or by splitting the data horizontally or vertically according to design variables.</p>
-<div id="evaluate-summarization" class="section level5">
-<h5>2.3.5. Evaluate Summarization</h5>
+<ol start="3" style="list-style-type: decimal">
+<li>You can further modify the plot by coloring the data according to a design variable or by splitting the data horizontally or vertically according to design variables.</li>
+</ol>
+</div>
+<div id="evaluate-summarization" class="section level3">
+<h3>2.3.5. Evaluate Summarization</h3>
 <p>We further explore the difference between summarization methods. We first assess the quality of the fold change estimates for the robust summarization. We will make use of the boxplot at the bottom of the quantification tab.</p>
-<p>If you tick of the option <code>only significant features in table</code> all proteins are shown in the table. And the boxplot below the table visualizes the log2 fold change (FC) estimates for all proteins in the table.</p>
-<p>We can now filter the ups proteins by typing “ups” in the search field above the table. Now all yeast proteins are removed from the results table and a boxplot of the ups protein log2 FCs will be made.</p>
+<ol style="list-style-type: decimal">
+<li><p>If you untick the option <code>only significant features in table</code> all proteins are shown in the table. The boxplot below the table visualizes the log2 fold change (FC) estimates for all proteins in the table.</p></li>
+<li><p>We can now filter the ups proteins by typing “ups” in the search field above the table. Now all yeast proteins are removed from the results table and a boxplot of the ups protein log2 FCs will be made.</p></li>
+</ol>
 <div class="figure">
 <img src="figures/guiRobustUps.png" alt="" />
 <p class="caption">Figure 15. msqrob2 Inference tab with Fold Change Boxplot for all UPS proteins</p>
 </div>
-<p>[2.3.4.a] We know the real FC for the spike in proteins (see description of the data 2.3). Note, that the boxplot is showing the log2 FC. What do you observe?</p>
-<p>[2.3.4.b] Now select all yeast proteins. What is the real fold change and what do you observe?</p>
-<p>[2.3.4.c] Repeat this for the median summarization method. What do you observe, how does that compare to the robust summarisation and try to explain this?</p>
-<p>Note, that the shiny app is an interface to the statistical programming software R. The analysis can also be conducted using scripts, which gives the user much more functionality and the ability to document their analysis in a reproducible way. An R/markdown file for the analysis we performed above can be found here, if you click on the code button at the top a script with the code for the html file will be downloaded: <a href="cptac_robust.html">RMarkdown script</a></p>
+<p>[2.3.5.a] We know the real FC for the spike in proteins (see description of the data 2.3). Note, that the boxplot is showing the log2 FC. What do you observe?</p>
+<p>[2.3.5.b] Now select all yeast proteins. What is the real fold change and what do you observe?</p>
+<p>[2.3.5.c] Repeat this for the median summarization method. What do you observe, how does that compare to the robust summarisation and try to explain this?</p>
 </div>
+<div id="final-remark" class="section level3">
+<h3>Final remark</h3>
+<ul>
+<li><p>Note, that the shiny app is an interface to the statistical programming software R.</p></li>
+<li><p>The analysis can also be conducted using scripts, which gives you much more functionality and the ability to streamline, automate and document your analyses in a reproducible way.</p></li>
+<li><p>An R/markdown file for the analysis we performed above can be found below. if you click on the code button at the top right of the compiled html file of the analysis, a script with the code for the html file will be downloaded.</p></li>
+</ul>
+<p><a href="cptac_robust.html">RMarkdown script</a></p>
 </div>
 
 
