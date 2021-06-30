@@ -57,7 +57,7 @@ Note, that users who develop R/markdown scripts can access data both from the we
 
 ### Instructor
 
-- Lieven Clement, Associate Professor of Statistical Genomics, [statOmics](https://statomics.github.io/), [Ghent University](https://www.ugent.be/), Belgium
+- [Lieven Clement](https://statomics.github.io/pages/about.html), Associate Professor of Statistical Genomics, [statOmics](https://statomics.github.io/), [Ghent University](https://www.ugent.be/), Belgium
 
 ### Issues
 
