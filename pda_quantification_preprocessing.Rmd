@@ -13,9 +13,10 @@ output:
     pdf_document:
       toc: true
       number_sections: true
-      header-includes: 
-        - \usepackage{hyperref}
+linkcolor: blue
 urlcolor: blue
+citecolor: blue
+
 bibliography: msqrob2.bib
       
 ---

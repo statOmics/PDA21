@@ -35,5 +35,8 @@ output:
     number_sections: true
     df_print: paged
     new_session: true
-    
+linkcolor: blue
+urlcolor: blue
+citecolor: blue
+
 exclude: ["install.R"]
