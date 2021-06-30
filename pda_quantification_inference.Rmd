@@ -678,7 +678,7 @@ By default `msqrob2` estimates the model parameters using robust regression.
 
 We will model the data with a different group mean for every genotype. 
 The group is incoded in the variable `genotype` of the colData. 
-We can specify this model by using a formula with the factor condition as its predictor: 
+We can specify this model by using a formula with the factor `genotype` as its predictor: 
 `formula = ~genotype`.
 
 Note, that a formula always starts with a symbol '~'.
@@ -701,7 +701,8 @@ This results in a model with two group means:
 1. For the wild type (WT) the expected value (mean) of the log2 transformed intensity y for a protein will be modelled using 
 
 $$\text{E}[Y\vert \text{genotype}=\text{WT}] = \text{(Intercept)}$$ 
-1. For the knockout genotype D8 the expected value (mean) of the log2 transformed intensity y for a protein will be modelled using 
+
+2. For the knockout genotype D8 the expected value (mean) of the log2 transformed intensity y for a protein will be modelled using 
 
 $$\text{E}[Y\vert \text{genotype}=\text{D8}] = \text{(Intercept)} + \text{genotypeD8}$$ 
 
