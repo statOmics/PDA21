@@ -13,6 +13,8 @@ output:
     pdf_document:
       toc: true
       number_sections: true
+      header-includes: 
+        - \usepackage{hyperref}
 urlcolor: blue
 bibliography: msqrob2.bib
 
@@ -634,7 +636,7 @@ resSim <- apply(
                    color="red",
                   args=list(df=4)) + 
      ylim(0,.6) +
-    ggtitle("Persues")
+    ggtitle("Perseus")
 ```
 
 </p></details>

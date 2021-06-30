@@ -16,9 +16,10 @@ bibliography: msqrob2.bib
 ### 2.1 The CPTAC A vs B dataset
 
 The result of a quantitative analysis is a list of peptide and/or protein abundances for every protein in different samples, or abundance ratios between the samples. In this chapter we will describe a generic workflow for differential analysis of quantitative datasets with simple experimental designs.
+
 In order to extract relevant information from these massive datasets, we will use our [msqrob2](https://www.bioconductor.org/packages/release/bioc/html/msqrob2.html) software tool [@goeminne2016], [@goeminne2020] and [@sticker2020]. 
 
-The tutorial can be done using a script or using the graphical user interface that is provided by the `msqrob2gui` Shiny App. 
+The tutorial can be done using R/Rmarkdown scripts or using the graphical user interface that is provided by the `msqrob2gui` Shiny App. 
 
 
 ### 2.2 The CPTAC A vs B dataset
@@ -42,7 +43,7 @@ Follow the steps in the GUI or in the script and try to understand each of the a
 
 
 
-#### 2.3 Breast cancer example
+### 2.3 Breast cancer example
 
 Eighteen Estrogen Receptor Positive Breast cancer tissues from from patients treated with tamoxifen upon recurrence have been assessed in a proteomics study. Nine patients had a good outcome (or) and the other nine had a poor outcome (pd).
 The proteomes have been assessed using an LTQ-Orbitrap  and the thermo output .RAW files were searched with MaxQuant (version 1.4.1.2) against the human proteome database (FASTA version 2012-09, human canonical proteome).
@@ -56,3 +57,4 @@ Three peptides txt files are available:
 
 
 
+### References
