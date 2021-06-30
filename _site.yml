@@ -35,4 +35,5 @@ output:
     number_sections: true
     df_print: paged
     new_session: true
+    
 exclude: ["install.R"]

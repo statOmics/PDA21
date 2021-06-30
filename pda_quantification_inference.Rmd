@@ -13,6 +13,7 @@ output:
     pdf_document:
       toc: true
       number_sections: true
+urlcolor: blue
 
 ---
 
