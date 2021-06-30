@@ -903,7 +903,7 @@ $$\updownarrow$$
 - However, learning how to code data analyses in R markdown scripts is key for open en reproducible science and for reporting your proteomics data analyses and interpretation in a reproducible way. 
 
 
-- More information on our tools can be found in our papers [@goeminne2016], [@goeminne2020] and [@sticker2020]
+- More information on our tools can be found in our papers [@goeminne2016], [@goeminne2020] and [@sticker2020]. Please refer to our work when using our tools. 
 
 - Clips on the code on importing the data and preprocessing can be found in [Part I Preprocessing](./pda_quantification_preprocessing.html)
 
