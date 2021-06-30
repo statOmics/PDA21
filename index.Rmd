@@ -55,6 +55,10 @@ Note, that users who develop R/markdown scripts can access data both from the we
 - More information on our tools can be found in our papers [@goeminne2016], [@goeminne2020] and [@sticker2020]. Please refer to our work when using our tools. 
 
 
+### Instructor
+
+- Lieven Clement, Associate Professor of Statistical Genomics, [statOmics](https://statomics.github.io/), [Ghent University](https://www.ugent.be/), Belgium
+
 ### Issues
 
 If you encounter problems related to the course material (e.g. package installation problems, bugs in the code, typos, ...), please consider [posting an issue on GitHub](https://github.com/statOmics/PDA21/issues).
@@ -83,3 +87,4 @@ This project is licensed under the [Creative Commons Attribution-NonCommercial-S
 ---
 
 ### References 
+

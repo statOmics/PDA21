@@ -13,12 +13,17 @@ output:
     pdf_document:
       toc: true
       number_sections: true
+linkcolor: blue
+urlcolor: blue
+citecolor: blue
 
 bibliography: msqrob2.bib
 
 ---
 
 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a>
+
+This is part of the online course [Proteomics Data Analysis 2021 (PDA21)](https://statomics.github.io/PDA21/)
 
 <iframe width="560" height="315"
 src="https://www.youtube.com/embed/1mhg3BCuEm8"
