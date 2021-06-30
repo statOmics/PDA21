@@ -11,7 +11,7 @@
 
 
 
-<title>2. Preprocessing and statistical analysis wit msqrob2 for experiments with simple designs</title>
+<title>License</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -28,12 +28,15 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
 <script src="site_libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
 <link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
 <script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
-<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
-<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -47,6 +50,11 @@
 
 
 
+<style type="text/css">
+#rmd-source-code {
+  display: none;
+}
+</style>
 
 
 
@@ -207,7 +215,73 @@ $(document).ready(function () {
 </style>
 
 <!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
 
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
 
 
 
@@ -217,6 +291,16 @@ $(document).ready(function () {
 
 
 <div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -291,56 +375,30 @@ $(document).ready(function () {
 
 <div id="header">
 
-
-
-<h1 class="title toc-ignore">2. Preprocessing and statistical analysis wit msqrob2 for experiments with simple designs</h1>
-
-</div>
-
-
-<p><a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a></p>
-<div id="the-cptac-a-vs-b-dataset" class="section level3">
-<h3>2.1 The CPTAC A vs B dataset</h3>
-<p>The result of a quantitative analysis is a list of peptide and/or protein abundances for every protein in different samples, or abundance ratios between the samples. In this chapter we will describe a generic workflow for differential analysis of quantitative datasets with simple experimental designs. In order to extract relevant information from these massive datasets, we will use our <a href="https://www.bioconductor.org/packages/release/bioc/html/msqrob2.html">msqrob2</a> software tool <span class="citation">(Goeminne, Gevaert, and Clement 2016)</span>, <span class="citation">(Goeminne et al. 2020)</span> and <span class="citation">(Sticker et al. 2020)</span>.</p>
-<p>The tutorial can be done using a script or using the graphical user interface that is provided by the <code>msqrob2gui</code> Shiny App.</p>
-</div>
-<div id="the-cptac-a-vs-b-dataset-1" class="section level3">
-<h3>2.2 The CPTAC A vs B dataset</h3>
-<p>Our first case-study is a subset of the data of the 6th study of the Clinical Proteomic Technology Assessment for Cancer (CPTAC). In this experiment, the authors spiked the Sigma Universal Protein Standard mixture 1 (UPS1) containing 48 different human proteins in a protein background of 60 ng/μL Saccharomyces cerevisiae strain BY4741 (MATa, leu2Δ0, met15Δ0, ura3Δ0, his3Δ1). Two different spike-in concentrations were used: 6A (0.25 fmol UPS1 proteins/μL) and 6B (0.74 fmol UPS1 proteins/μL) [5].</p>
-<p>We limited ourselves to the data of LTQ-Orbitrap W at site 56. The data were searched with MaxQuant version 1.5.2.8, and detailed search settings were described in <span class="citation">(Goeminne, Gevaert, and Clement 2016)</span>. Three replicates are available for each concentration.</p>
-<ul>
-<li><p>The raw data files can be downloaded from <a href="https://cptac-data-portal.georgetown.edu/cptac/public?scope=Phase+I" class="uri">https://cptac-data-portal.georgetown.edu/cptac/public?scope=Phase+I</a> (Study 6)</p></li>
-<li><p>The MaxQuant data can be downloaded <a href="https://github.com/statOmics/pda/archive/refs/heads/data.zip">zip file with data</a>. The peptides.txt file can be found in data/quantification/cptacAvsB_lab3.</p></li>
-<li><p>Note, that participants who use R/Rmarkdown scripts do not have to download the data as they can directly import the data from the web in R within their script.</p></li>
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
 </ul>
-<p>[2.3.a] Participants can perform an analysis using the <a href="./cptac_robust_gui.html">GUI</a> or an <a href="./cptac_robust.html">Rmarkdown script</a></p>
-<p>Follow the steps in the GUI or in the script and try to understand each of the analysis steps. We know the real FC for the spike in proteins and the yeast proteins (see description of the data). What do you observe?</p>
-<p>[2.3.b] Repeat the analysis for the median summarization method. What do you observe, how does that compare to the robust summarisation and try to explain this?</p>
-<div id="breast-cancer-example" class="section level4">
-<h4>2.3 Breast cancer example</h4>
-<p>Eighteen Estrogen Receptor Positive Breast cancer tissues from from patients treated with tamoxifen upon recurrence have been assessed in a proteomics study. Nine patients had a good outcome (or) and the other nine had a poor outcome (pd). The proteomes have been assessed using an LTQ-Orbitrap and the thermo output .RAW files were searched with MaxQuant (version 1.4.1.2) against the human proteome database (FASTA version 2012-09, human canonical proteome).</p>
-<p>Three peptides txt files are available:</p>
-<ol style="list-style-type: decimal">
-<li>For a 3 vs 3 comparison</li>
-<li>For a 6 vs 6 comparison</li>
-<li>For a 9 vs 9 comparison</li>
-</ol>
-<div id="refs" class="references">
-<div id="ref-goeminne2020">
-<p>Goeminne, L. J. E., A. Sticker, L. Martens, K. Gevaert, and L. Clement. 2020. “MSqRob Takes the Missing Hurdle: Uniting Intensity- and Count-Based Proteomics.” <em>Anal Chem</em> 92 (9): 6278–87.</p>
-</div>
-<div id="ref-goeminne2016">
-<p>Goeminne, L. J., K. Gevaert, and L. Clement. 2016. “Peptide-level Robust Ridge Regression Improves Estimation, Sensitivity, and Specificity in Data-dependent Quantitative Label-free Shotgun Proteomics.” <em>Mol Cell Proteomics</em> 15 (2): 657–68.</p>
-</div>
-<div id="ref-sticker2020">
-<p>Sticker, A., L. Goeminne, L. Martens, and L. Clement. 2020. “Robust Summarization and Inference in Proteome-wide Label-free Quantification.” <em>Mol Cell Proteomics</em> 19 (7): 1209–19.</p>
-</div>
-</div>
-</div>
 </div>
 
 
 
+
+</div>
+
+
+<p>The <a href="https://statomics.github.io/">statOmics</a> Group, headed by Prof. Lieven Clement, is part of the Department of Applied Mathematics, Computer Science and Statistics of the Faculty of Sciences of Ghent University, Belgium.</p>
+<p>We develop novel statistical methods and tools for the interpretation of omics data. Our research is structured according to two ‘omics domain: Transcriptomics (RNA-seq and single cell RNA-seq) and Proteomics (Identification and Differential Analysis in Mass Spectrometry based Quantitative Proteomics). We also leverage expertise in experimental design and data analysis for omics to researchers in the life sciences and have a keen interest in ‘omics data integration.</p>
+<p><a href="https://github.com/statOmics">statOmics</a> repositories in GitHub are licensed so that the training materiales are fully reusable, while proper acknowledgement is given to the authors.</p>
+<p>This work is published from Ghent, Belgium.</p>
+<p><a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">PDA21</span> by <span xmlns:cc="http://creativecommons.org/ns#" property="cc:attributionName">statOmics</span> is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0">Creative Commons Attribution 4.0 International License</a>.</p>
+
+<div id="rmd-source-code">VGhlIFtzdGF0T21pY3NdKGh0dHBzOi8vc3RhdG9taWNzLmdpdGh1Yi5pby8pIEdyb3VwLCBoZWFkZWQgYnkgUHJvZi4gTGlldmVuIENsZW1lbnQsIGlzIHBhcnQgb2YgdGhlIERlcGFydG1lbnQgb2YgQXBwbGllZCBNYXRoZW1hdGljcywgQ29tcHV0ZXIgU2NpZW5jZSBhbmQgU3RhdGlzdGljcyBvZiB0aGUgRmFjdWx0eSBvZiBTY2llbmNlcyBvZiBHaGVudCBVbml2ZXJzaXR5LCBCZWxnaXVtLgoKV2UgZGV2ZWxvcCBub3ZlbCBzdGF0aXN0aWNhbCBtZXRob2RzIGFuZCB0b29scyBmb3IgdGhlIGludGVycHJldGF0aW9uIG9mIG9taWNzIGRhdGEuIE91ciByZXNlYXJjaCBpcyBzdHJ1Y3R1cmVkIGFjY29yZGluZyB0byB0d28g4oCYb21pY3MgZG9tYWluOiBUcmFuc2NyaXB0b21pY3MgKFJOQS1zZXEgYW5kIHNpbmdsZSBjZWxsIFJOQS1zZXEpIGFuZCBQcm90ZW9taWNzIChJZGVudGlmaWNhdGlvbiBhbmQgRGlmZmVyZW50aWFsIEFuYWx5c2lzIGluIE1hc3MgU3BlY3Ryb21ldHJ5IGJhc2VkIFF1YW50aXRhdGl2ZSBQcm90ZW9taWNzKS4gV2UgYWxzbyBsZXZlcmFnZSBleHBlcnRpc2UgaW4gZXhwZXJpbWVudGFsIGRlc2lnbiBhbmQgZGF0YSBhbmFseXNpcyBmb3Igb21pY3MgdG8gcmVzZWFyY2hlcnMgaW4gdGhlIGxpZmUgc2NpZW5jZXMgYW5kIGhhdmUgYSBrZWVuIGludGVyZXN0IGluIOKAmG9taWNzIGRhdGEgaW50ZWdyYXRpb24uCgpbc3RhdE9taWNzXShodHRwczovL2dpdGh1Yi5jb20vc3RhdE9taWNzKSByZXBvc2l0b3JpZXMgaW4gR2l0SHViIGFyZSBsaWNlbnNlZCBzbyB0aGF0IHRoZSB0cmFpbmluZyBtYXRlcmlhbGVzIGFyZSBmdWxseSByZXVzYWJsZSwgd2hpbGUgcHJvcGVyIGFja25vd2xlZGdlbWVudCBpcyBnaXZlbiB0byB0aGUgYXV0aG9ycy4KClRoaXMgd29yayBpcyBwdWJsaXNoZWQgZnJvbSBHaGVudCwgQmVsZ2l1bS4KCjxhIHJlbD0ibGljZW5zZSIgaHJlZj0iaHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMCI+PGltZyBhbHQ9IkNyZWF0aXZlIENvbW1vbnMgTGljZW5zZSIgc3R5bGU9ImJvcmRlci13aWR0aDowIiBzcmM9Imh0dHBzOi8vaS5jcmVhdGl2ZWNvbW1vbnMub3JnL2wvYnktbmMtc2EvNC4wLzg4eDMxLnBuZyIgLz48L2E+PGJyIC8+PHNwYW4geG1sbnM6ZGN0PSJodHRwOi8vcHVybC5vcmcvZGMvdGVybXMvIiBwcm9wZXJ0eT0iZGN0OnRpdGxlIj5QREEyMTwvc3Bhbj4gYnkgPHNwYW4geG1sbnM6Y2M9Imh0dHA6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL25zIyIgcHJvcGVydHk9ImNjOmF0dHJpYnV0aW9uTmFtZSI+c3RhdE9taWNzPC9zcGFuPiBpcyBsaWNlbnNlZCB1bmRlciBhIDxhIHJlbD0ibGljZW5zZSIgaHJlZj0iaHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMCI+Q3JlYXRpdmUgQ29tbW9ucyBBdHRyaWJ1dGlvbiA0LjAgSW50ZXJuYXRpb25hbCBMaWNlbnNlPC9hPi4K</div>
+
+
+</div>
+</div>
 
 </div>
 
@@ -372,7 +430,41 @@ $(document).ready(function () {
 </script>
 
 <!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("License.md");
+});
+</script>
 
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
