@@ -1,5 +1,7 @@
 ---
 title: 2. Software for Proteomics Data Analysis 2021 (PDA21) 
+author: "Lieven Clement"
+date: "[statOmics](https://statomics.github.io), Ghent University"
 output:
     html_document:
       theme: cosmo      

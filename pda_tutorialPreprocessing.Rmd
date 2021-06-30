@@ -1,5 +1,7 @@
 ---
 title: 2. Preprocessing and statistical analysis wit msqrob2 for experiments with simple designs
+author: "Lieven Clement"
+date: "[statOmics](https://statomics.github.io), Ghent University"
 output:
     html_document:
       theme: cosmo      

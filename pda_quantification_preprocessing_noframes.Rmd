@@ -1,7 +1,7 @@
 ---
 title: "Statistical Methods for Quantitative MS-based Proteomics: Part I. Preprocessing"
 author: "Lieven Clement"
-date: '`r format(Sys.Date(), "%B %d, %Y")`'
+date: "[statOmics](https://statomics.github.io), Ghent University"
 output:
     html_document:
       code_download: true

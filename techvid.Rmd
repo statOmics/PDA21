@@ -1,5 +1,7 @@
 ---
 title: Mass Spectrometry & Bioinformatics for Proteomics
+author: "Lieven Clement"
+date: "[statOmics](https://statomics.github.io), Ghent University"
 output:
     html_document:
       theme: cosmo      
