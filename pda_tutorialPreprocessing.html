@@ -301,8 +301,9 @@ $(document).ready(function () {
 <p><a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a></p>
 <div id="the-cptac-a-vs-b-dataset" class="section level3">
 <h3>2.1 The CPTAC A vs B dataset</h3>
-<p>The result of a quantitative analysis is a list of peptide and/or protein abundances for every protein in different samples, or abundance ratios between the samples. In this chapter we will describe a generic workflow for differential analysis of quantitative datasets with simple experimental designs. In order to extract relevant information from these massive datasets, we will use our <a href="https://www.bioconductor.org/packages/release/bioc/html/msqrob2.html">msqrob2</a> software tool <span class="citation">(Goeminne, Gevaert, and Clement 2016)</span>, <span class="citation">(Goeminne et al. 2020)</span> and <span class="citation">(Sticker et al. 2020)</span>.</p>
-<p>The tutorial can be done using a script or using the graphical user interface that is provided by the <code>msqrob2gui</code> Shiny App.</p>
+<p>The result of a quantitative analysis is a list of peptide and/or protein abundances for every protein in different samples, or abundance ratios between the samples. In this chapter we will describe a generic workflow for differential analysis of quantitative datasets with simple experimental designs.</p>
+<p>In order to extract relevant information from these massive datasets, we will use our <a href="https://www.bioconductor.org/packages/release/bioc/html/msqrob2.html">msqrob2</a> software tool <span class="citation">(Goeminne, Gevaert, and Clement 2016)</span>, <span class="citation">(Goeminne et al. 2020)</span> and <span class="citation">(Sticker et al. 2020)</span>.</p>
+<p>The tutorial can be done using R/Rmarkdown scripts or using the graphical user interface that is provided by the <code>msqrob2gui</code> Shiny App.</p>
 </div>
 <div id="the-cptac-a-vs-b-dataset-1" class="section level3">
 <h3>2.2 The CPTAC A vs B dataset</h3>
@@ -316,8 +317,9 @@ $(document).ready(function () {
 <p>[2.3.a] Participants can perform an analysis using the <a href="./cptac_robust_gui.html">GUI</a> or an <a href="./cptac_robust.html">Rmarkdown script</a></p>
 <p>Follow the steps in the GUI or in the script and try to understand each of the analysis steps. We know the real FC for the spike in proteins and the yeast proteins (see description of the data). What do you observe?</p>
 <p>[2.3.b] Repeat the analysis for the median summarization method. What do you observe, how does that compare to the robust summarisation and try to explain this?</p>
-<div id="breast-cancer-example" class="section level4">
-<h4>2.3 Breast cancer example</h4>
+</div>
+<div id="breast-cancer-example" class="section level3">
+<h3>2.3 Breast cancer example</h3>
 <p>Eighteen Estrogen Receptor Positive Breast cancer tissues from from patients treated with tamoxifen upon recurrence have been assessed in a proteomics study. Nine patients had a good outcome (or) and the other nine had a poor outcome (pd). The proteomes have been assessed using an LTQ-Orbitrap and the thermo output .RAW files were searched with MaxQuant (version 1.4.1.2) against the human proteome database (FASTA version 2012-09, human canonical proteome).</p>
 <p>Three peptides txt files are available:</p>
 <ol style="list-style-type: decimal">
@@ -325,6 +327,9 @@ $(document).ready(function () {
 <li>For a 6 vs 6 comparison</li>
 <li>For a 9 vs 9 comparison</li>
 </ol>
+</div>
+<div id="references" class="section level3 unnumbered">
+<h3>References</h3>
 <div id="refs" class="references">
 <div id="ref-goeminne2020">
 <p>Goeminne, L. J. E., A. Sticker, L. Martens, K. Gevaert, and L. Clement. 2020. “MSqRob Takes the Missing Hurdle: Uniting Intensity- and Count-Based Proteomics.” <em>Anal Chem</em> 92 (9): 6278–87.</p>
@@ -334,7 +339,6 @@ $(document).ready(function () {
 </div>
 <div id="ref-sticker2020">
 <p>Sticker, A., L. Goeminne, L. Martens, and L. Clement. 2020. “Robust Summarization and Inference in Proteome-wide Label-free Quantification.” <em>Mol Cell Proteomics</em> 19 (7): 1209–19.</p>
-</div>
 </div>
 </div>
 </div>
