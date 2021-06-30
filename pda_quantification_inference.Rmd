@@ -67,7 +67,7 @@ knitr::include_graphics("./figures/tularemia_lesion.jpg")
 ## Import the data in R 
 
 <iframe width="560" height="315"
-src="https://www.youtube.com/embed/pxJWt71pzns"
+src="https://www.youtube.com/embed/2Ljd95IE_AY"
 frameborder="0"
 style="display: block; margin: auto;"
 allow="autoplay; encrypted-media" allowfullscreen></iframe>
@@ -241,7 +241,7 @@ pe[["protein"]] %>% assay() %>% head() %>% knitr::kable()
 ### Hypothesis testing: a single protein 
 
 <iframe width="560" height="315"
-src="https://www.youtube.com/embed/NaBu251AW10"
+src="https://www.youtube.com/embed/myP6SUlSwsM"
 frameborder="0"
 style="display: block; margin: auto;"
 allow="autoplay; encrypted-media" allowfullscreen></iframe>
@@ -297,7 +297,7 @@ text(7.5,.5,"Data exploration",col="black",cex=1.2)
 #### T-test
 
 <iframe width="560" height="315"
-src="https://www.youtube.com/embed/xoZXE-LONd0"
+src="https://www.youtube.com/embed/cVw5kdSRZCE"
 frameborder="0"
 style="display: block; margin: auto;"
 allow="autoplay; encrypted-media" allowfullscreen></iframe>
