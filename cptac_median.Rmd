@@ -12,6 +12,8 @@ output:
       number_sections: true
 ---
 
+All materials are licensed under the [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)](https://creativecommons.org/licenses/by-nc-sa/4.0)
+
 # Background
 This case-study is a subset of the data of the 6th study of the Clinical
 Proteomic Technology Assessment for Cancer (CPTAC).
@@ -387,4 +389,13 @@ p2 <- ggplot(pePlotDf, aes(x = colname, y = value, fill = condition)) +
   facet_grid(~assay)
 print(p2)
 }
+```
+
+
+# Session Info
+
+With respect to reproducibility, it is highly recommended to include a session info in your script so that readers of your output can see your particular setup of R. 
+
+```{r}
+sessionInfo()
 ```

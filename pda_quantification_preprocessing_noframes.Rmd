@@ -19,12 +19,6 @@ output:
 
 All materials are licensed under the [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)](https://creativecommons.org/licenses/by-nc-sa/4.0)
 
-<iframe width="560" height="315"
-src="https://www.youtube.com/embed/V6Ik-SORoKo"
-frameborder="0"
-style="display: block; margin: auto;"
-allow="autoplay; encrypted-media" allowfullscreen></iframe>
-
 - [Playlist PDA Preprocessing](https://www.youtube.com/playlist?list=PLZH1hP8_LbJJXQeQ_KYDNoq-AXyFBG6nX)
 
 # Outline {-}
@@ -45,12 +39,6 @@ According to the target audience of the course we either work with a graphical u
 
 # Intro: Challenges in Label-Free Quantitative Proteomics
 
-
-<iframe width="560" height="315"
-src="https://www.youtube.com/embed/3w_K4S_GUzE"
-frameborder="0"
-style="display: block; margin: auto;"
-allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 
 ## MS-based workflow
@@ -98,12 +86,6 @@ knitr::include_graphics("./figures/proteomicsDataAnalysis.png")
 ---
 
 ## CPTAC Spike-in Study
-
-<iframe width="560" height="315"
-src="https://www.youtube.com/embed/6V5GiA4Cg2U"
-frameborder="0"
-style="display: block; margin: auto;"
-allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 ```{r echo=FALSE, out.width="50%"}
 knitr::include_graphics("./figures/cptacLayoutLudger.png")
@@ -295,12 +277,6 @@ colData(pe)
 
 ## Log-transformation
 
-<iframe width="560" height="315"
-src="https://www.youtube.com/embed/APsdSbu1RBM"
-frameborder="0"
-style="display: block; margin: auto;"
-allow="autoplay; encrypted-media" allowfullscreen></iframe>
-
 ### Explore the data with plots
 
 Peptide AALEELVK from spiked-in UPS protein P12081. 
@@ -388,12 +364,6 @@ pe <- logTransform(pe, base = 2, i = "peptideRaw", name = "peptideLog")
 
 ## Filtering
 
-<iframe width="560" height="315"
-src="https://www.youtube.com/embed/3zVFqdTlB_c"
-frameborder="0"
-style="display: block; margin: auto;"
-allow="autoplay; encrypted-media" allowfullscreen></iframe>
-
 - Reverse sequences
 - Only identified by modification site (only modified peptides detected)
 - Razor peptides: non-unique peptides assigned to the protein group with the most other peptides 
@@ -442,12 +412,6 @@ We keep `r nrow(pe[["peptideLog"]])` peptides upon filtering.
 ---
 
 ## Normalization 
-
-<iframe width="560" height="315"
-src="https://www.youtube.com/embed/RE26GB29uII"
-frameborder="0"
-style="display: block; margin: auto;"
-allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 <details><summary> Click to see code to make plot </summary><p>
 
@@ -572,12 +536,6 @@ $$y_{ip}^\text{norm} = \frac{y_{ip} - \mu_i}{s_i}$$
 
 ## Summarization 
 
-<iframe width="560" height="315"
-src="https://www.youtube.com/embed/NUPJWPJgQUc"
-frameborder="0"
-style="display: block; margin: auto;"
-allow="autoplay; encrypted-media" allowfullscreen></iframe>
-
 - We illustrate summarization issues using a subset of the cptac study (Lab 2, condition A and E) for a spiked protein (UPS P12081).
 
 <details><summary> Click to see code to make plot </summary><p>
@@ -671,47 +629,16 @@ Other summarization methods can be implemented by using the `fun` argument in th
 - Users who want to learn how to code and automate proteomics data analyses in reproducible R markdown scripts can get more information on all code used in this script in the video below. 
 
 1. Data infrastructure
-<iframe width="560" height="315"
-src="https://www.youtube.com/embed/N0yIZ1YB2aQ"
-frameborder="0"
-style="display: block; margin: auto;"
-allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 2. Import proteomics data
-<iframe width="560" height="315"
-src="https://www.youtube.com/embed/DPHtrGj8skk"
-frameborder="0"
-style="display: block; margin: auto;"
-allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 3. Preprocessing
 
     -   Log-transformation
-<iframe width="560" height="315"
-src="https://www.youtube.com/embed/axDT2tJNLwM"
-frameborder="0"
-style="display: block; margin: auto;"
-allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
     - Filtering
-<iframe width="560" height="315"
-src="https://www.youtube.com/embed/cIwAxfJ5CGo"
-frameborder="0"
-style="display: block; margin: auto;"
-allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
     - Normalisation
-<iframe width="560" height="315"
-src="https://www.youtube.com/embed/9qCJEkdSShI"
-frameborder="0"
-style="display: block; margin: auto;"
-allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
     - Summarization
-<iframe width="560" height="315"
-src="https://www.youtube.com/embed/fWq4rMxmJTU"
-frameborder="0"
-style="display: block; margin: auto;"
-allow="autoplay; encrypted-media" allowfullscreen></iframe>    
-
 
