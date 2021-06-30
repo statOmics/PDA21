@@ -301,13 +301,13 @@ $(document).ready(function () {
 <p>All materials are licensed under the <a href="https://creativecommons.org/licenses/by-nc-sa/4.0">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)</a></p>
 <div id="the-cptac-a-vs-b-dataset" class="section level3">
 <h3>2.1 The CPTAC A vs B dataset</h3>
-<p>The result of a quantitative analysis is a list of peptide and/or protein abundances for every protein in different samples, or abundance ratios between the samples. In this chapter we will describe a generic workflow for differential analysis of quantitative datasets with simple experimental designs. In order to extract relevant information from these massive datasets, we will use our <a href="https://www.bioconductor.org/packages/release/bioc/html/msqrob2.html">msqrob2</a> software tool <span class="citation">[@goeminne2016]</span>, <span class="citation">[@goeminne2020]</span> and <span class="citation">[@sticker2020]</span>.</p>
+<p>The result of a quantitative analysis is a list of peptide and/or protein abundances for every protein in different samples, or abundance ratios between the samples. In this chapter we will describe a generic workflow for differential analysis of quantitative datasets with simple experimental designs. In order to extract relevant information from these massive datasets, we will use our <a href="https://www.bioconductor.org/packages/release/bioc/html/msqrob2.html">msqrob2</a> software tool <span class="citation">(Goeminne, Gevaert, and Clement 2016)</span>, <span class="citation">(Goeminne et al. 2020)</span> and <span class="citation">(Sticker et al. 2020)</span>.</p>
 <p>The tutorial can be done using a script or using the graphical user interface that is provided by the <code>msqrob2gui</code> Shiny App.</p>
 </div>
 <div id="the-cptac-a-vs-b-dataset-1" class="section level3">
 <h3>2.2 The CPTAC A vs B dataset</h3>
 <p>Our first case-study is a subset of the data of the 6th study of the Clinical Proteomic Technology Assessment for Cancer (CPTAC). In this experiment, the authors spiked the Sigma Universal Protein Standard mixture 1 (UPS1) containing 48 different human proteins in a protein background of 60 ng/μL Saccharomyces cerevisiae strain BY4741 (MATa, leu2Δ0, met15Δ0, ura3Δ0, his3Δ1). Two different spike-in concentrations were used: 6A (0.25 fmol UPS1 proteins/μL) and 6B (0.74 fmol UPS1 proteins/μL) [5].</p>
-<p>We limited ourselves to the data of LTQ-Orbitrap W at site 56. The data were searched with MaxQuant version 1.5.2.8, and detailed search settings were described in <span class="citation">[@goeminne2016]</span>. Three replicates are available for each concentration.</p>
+<p>We limited ourselves to the data of LTQ-Orbitrap W at site 56. The data were searched with MaxQuant version 1.5.2.8, and detailed search settings were described in <span class="citation">(Goeminne, Gevaert, and Clement 2016)</span>. Three replicates are available for each concentration.</p>
 <ul>
 <li><p>The raw data files can be downloaded from <a href="https://cptac-data-portal.georgetown.edu/cptac/public?scope=Phase+I" class="uri">https://cptac-data-portal.georgetown.edu/cptac/public?scope=Phase+I</a> (Study 6)</p></li>
 <li><p>The MaxQuant data can be downloaded <a href="https://github.com/statOmics/pda/archive/refs/heads/data.zip">zip file with data</a>. The peptides.txt file can be found in data/quantification/cptacAvsB_lab3.</p></li>
@@ -325,6 +325,17 @@ $(document).ready(function () {
 <li>For a 6 vs 6 comparison</li>
 <li>For a 9 vs 9 comparison</li>
 </ol>
+<div id="refs" class="references">
+<div id="ref-goeminne2020">
+<p>Goeminne, L. J. E., A. Sticker, L. Martens, K. Gevaert, and L. Clement. 2020. “MSqRob Takes the Missing Hurdle: Uniting Intensity- and Count-Based Proteomics.” <em>Anal Chem</em> 92 (9): 6278–87.</p>
+</div>
+<div id="ref-goeminne2016">
+<p>Goeminne, L. J., K. Gevaert, and L. Clement. 2016. “Peptide-level Robust Ridge Regression Improves Estimation, Sensitivity, and Specificity in Data-dependent Quantitative Label-free Shotgun Proteomics.” <em>Mol Cell Proteomics</em> 15 (2): 657–68.</p>
+</div>
+<div id="ref-sticker2020">
+<p>Sticker, A., L. Goeminne, L. Martens, and L. Clement. 2020. “Robust Summarization and Inference in Proteome-wide Label-free Quantification.” <em>Mol Cell Proteomics</em> 19 (7): 1209–19.</p>
+</div>
+</div>
 </div>
 </div>
 
