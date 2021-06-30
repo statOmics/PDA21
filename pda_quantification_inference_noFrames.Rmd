@@ -10,7 +10,7 @@ output:
       toc_float: true
       highlight: tango
       number_sections: true
-
+bibliography: msqrob2.bib
 
 ---
 

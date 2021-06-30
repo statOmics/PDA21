@@ -14,6 +14,7 @@ output:
       toc: true
       number_sections: true
 urlcolor: blue
+bibliography: msqrob2.bib
       
 ---
 

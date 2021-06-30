@@ -10,8 +10,8 @@ output:
       toc_float: true
       highlight: tango
       number_sections: true
+bibliography: msqrob2.bib
 
-      
 ---
 
 All materials are licensed under the [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)](https://creativecommons.org/licenses/by-nc-sa/4.0)

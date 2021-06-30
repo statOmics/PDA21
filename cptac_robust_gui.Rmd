@@ -9,6 +9,7 @@ output:
       toc: false
       toc_float: false
       number_sections: false
+bibliography: msqrob2.bib
 
 ---
 
