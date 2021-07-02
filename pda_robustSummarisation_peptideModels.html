@@ -12,7 +12,7 @@
 <meta name="author" content="Lieven Clement" />
 
 
-<title>Statistical Methods for Quantitative MS-based Proteomics: Part I. Preprocessing</title>
+<title>Statistical Methods for Quantitative MS-based Proteomics: Peptide-level Models for Summarization and Inference</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -487,7 +487,7 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Statistical Methods for Quantitative MS-based Proteomics: Part I. Preprocessing</h1>
+<h1 class="title toc-ignore">Statistical Methods for Quantitative MS-based Proteomics: Peptide-level Models for Summarization and Inference</h1>
 <h4 class="author">Lieven Clement</h4>
 <h4 class="date"><a href="https://statomics.github.io">statOmics</a>, Ghent University</h4>
 
@@ -495,129 +495,11 @@ div.tocify {
 
 
 <p><a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a></p>
-<ul>
-<li><a href="https://www.youtube.com/playlist?list=PLZH1hP8_LbJJXQeQ_KYDNoq-AXyFBG6nX">Playlist PDA Preprocessing</a></li>
-</ul>
-<div id="outline" class="section level1 unnumbered">
-<h1>Outline</h1>
-<ol style="list-style-type: decimal">
-<li><p>Introduction</p></li>
-<li><p>Preprocessing</p>
-<ul>
-<li>Log-transformation</li>
-<li>Filtering</li>
-<li>Normalization</li>
-<li>Summarization</li>
-</ul></li>
-</ol>
-<p>Note, that the R-code is included for learners who are aiming to develop R/markdown scripts to automate their quantitative proteomics data analyses. According to the target audience of the course we either work with a graphical user interface (GUI) in a R/shiny App msqrob2gui (e.g. Proteomics Bioinformatics course of the EBI and the Proteomics Data Analysis course at the Gulbenkian institute) or with R/markdowns scripts (e.g. Bioinformatics Summer School at UCLouvain or the Statistical Genomics Course at Ghent University).</p>
-<hr />
-</div>
-<div id="intro-challenges-in-label-free-quantitative-proteomics" class="section level1">
-<h1><span class="header-section-number">1</span> Intro: Challenges in Label-Free Quantitative Proteomics</h1>
-<div id="ms-based-workflow" class="section level2">
-<h2><span class="header-section-number">1.1</span> MS-based workflow</h2>
-<p><img src="figures/ProteomicsWorkflow.png" /><!-- --></p>
-<ul>
-<li><p>Peptide Characteristics</p>
-<ul>
-<li>Modifications</li>
-<li>Ionisation Efficiency: huge variability</li>
-<li>Identification
-<ul>
-<li>Misidentification <span class="math inline">\(\rightarrow\)</span> outliers</li>
-<li>MS<span class="math inline">\(^2\)</span> selection on peptide abundance</li>
-<li>Context depending missingness</li>
-<li>Non-random missingness</li>
-</ul></li>
-</ul></li>
-</ul>
-<p><span class="math inline">\(\rightarrow\)</span> Unbalanced pepide identifications across samples and messy data</p>
-<hr />
-</div>
-<div id="level-of-quantification" class="section level2">
-<h2><span class="header-section-number">1.2</span> Level of quantification</h2>
-<ul>
-<li>MS-based proteomics returns peptides: pieces of proteins</li>
-</ul>
-<p><img src="figures/challenges_peptides.png" /><!-- --></p>
-<ul>
-<li>Quantification commonly required on the protein level</li>
-</ul>
-<p><img src="figures/challenges_proteins.png" /><!-- --></p>
-<hr />
-</div>
-<div id="label-free-quantitative-proteomics-data-analysis-workflows" class="section level2">
-<h2><span class="header-section-number">1.3</span> Label-free Quantitative Proteomics Data Analysis Workflows</h2>
-<p><img src="figures/proteomicsDataAnalysis.png" /><!-- --></p>
-<hr />
-</div>
-<div id="cptac-spike-in-study" class="section level2">
-<h2><span class="header-section-number">1.4</span> CPTAC Spike-in Study</h2>
-<p><img src="figures/cptacLayoutLudger.png" width="50%" /></p>
-<ul>
-<li><p>Same trypsin-digested yeast proteome background in each sample</p></li>
-<li><p>Trypsin-digested Sigma UPS1 standard: 48 different human proteins spiked in at 5 different concentrations (treatment A-E)</p></li>
-<li><p>Samples repeatedly run on different instruments in different labs</p></li>
-<li><p>After MaxQuant search with match between runs option</p>
-<ul>
-<li>41% of all proteins are quantified in all samples</li>
-<li>6.6% of all peptides are quantified in all samples</li>
-</ul></li>
-</ul>
-<p><span class="math inline">\(\rightarrow\)</span> vast amount of missingness</p>
-</div>
-<div id="maxquant-output" class="section level2">
-<h2><span class="header-section-number">1.5</span> Maxquant output</h2>
-<p><img src="figures/maxquantOutputDir.png" /><!-- --></p>
-<hr />
-</div>
-</div>
+<p>This is part of the online course <a href="https://statomics.github.io/PDA21/">Proteomics Data Analysis 2021 (PDA21)</a></p>
 <div id="import-the-data-in-r" class="section level1">
-<h1><span class="header-section-number">2</span> Import the data in R</h1>
-<div id="data-infrastructure" class="section level2">
-<h2><span class="header-section-number">2.1</span> Data infrastructure</h2>
-<details>
-<summary> Click to see background on data infrastructure used in R to store proteomics data </summary>
-<p>
-<ul>
-<li>We use the <code>QFeatures</code> package that provides the infrastructure to
-<ul>
-<li>store,<br />
-</li>
-<li>process,</li>
-<li>manipulate and</li>
-<li>analyse quantitative data/features from mass spectrometry experiments.</li>
-</ul></li>
-<li>It is based on the <code>SummarizedExperiment</code> and <code>MultiAssayExperiment</code> classes.</li>
-</ul>
-<div class="figure">
-<img src="figures/SE.png" alt="Conceptual representation of a `SummarizedExperiment` object.  Assays contain information on the measured omics features (rows) for different samples (columns). The `rowData` contains information on the omics features, the `colData` contains information on the samples, i.e. experimental design etc." width="80%" />
-<p class="caption">
-Conceptual representation of a <code>SummarizedExperiment</code> object. Assays contain information on the measured omics features (rows) for different samples (columns). The <code>rowData</code> contains information on the omics features, the <code>colData</code> contains information on the samples, i.e. experimental design etc.
-</p>
-</div>
-<ul>
-<li><p>Assays in a QFeatures object have a hierarchical relation:</p>
-<ul>
-<li>proteins are composed of peptides,</li>
-<li>themselves produced by spectra</li>
-<li>relations between assays are tracked and recorded throughout data processing</li>
-</ul></li>
-</ul>
-<div class="figure">
-<img src="pda_quantification_preprocessing_noframes_files/figure-html/featuresplot-1.png" alt="Conceptual representation of a `QFeatures` object and the aggregative relation between different assays." width="672" />
-<p class="caption">
-Conceptual representation of a <code>QFeatures</code> object and the aggregative relation between different assays.
-</p>
-</div>
-</p>
-</details>
-</div>
-<div id="import-data-in-r" class="section level2">
-<h2><span class="header-section-number">2.2</span> Import data in R</h2>
-<div id="load-libraries" class="section level3">
-<h3><span class="header-section-number">2.2.1</span> Load libraries</h3>
+<h1><span class="header-section-number">1</span> Import the data in R</h1>
+<div id="load-libraries" class="section level2">
+<h2><span class="header-section-number">1.1</span> Load libraries</h2>
 <details>
 <summary> Click to see code </summary>
 <p>
@@ -626,12 +508,13 @@ Conceptual representation of a <code>QFeatures</code> object and the aggregative
 <span id="cb1-3"><a href="#cb1-3"></a><span class="kw">library</span>(QFeatures)</span>
 <span id="cb1-4"><a href="#cb1-4"></a><span class="kw">library</span>(msqrob2)</span>
 <span id="cb1-5"><a href="#cb1-5"></a><span class="kw">library</span>(plotly)</span>
-<span id="cb1-6"><a href="#cb1-6"></a><span class="kw">library</span>(ggplot2)</span></code></pre></div>
+<span id="cb1-6"><a href="#cb1-6"></a><span class="kw">library</span>(ggplot2)</span>
+<span id="cb1-7"><a href="#cb1-7"></a><span class="kw">library</span>(gridExtra)</span></code></pre></div>
 </p>
 </details>
 </div>
-<div id="read-data" class="section level3">
-<h3><span class="header-section-number">2.2.2</span> Read data</h3>
+<div id="read-data" class="section level2">
+<h2><span class="header-section-number">1.2</span> Read data</h2>
 <details>
 <summary> Click to see background and code </summary>
 <p>
@@ -654,8 +537,8 @@ Conceptual representation of a <code>QFeatures</code> object and the aggregative
 </p>
 </details>
 </div>
-<div id="explore-object" class="section level3">
-<h3><span class="header-section-number">2.2.3</span> Explore object</h3>
+<div id="explore-object" class="section level2">
+<h2><span class="header-section-number">1.3</span> Explore object</h2>
 <details>
 <summary> Click to see background and code </summary>
 <p>
@@ -1358,98 +1241,31 @@ Conceptual representation of a <code>QFeatures</code> object and the aggregative
 ## Intensity.6E_9     lab3         E                 20</code></pre>
 </p>
 </details>
-<hr />
 </div>
-</div>
-</div>
-<div id="preprocessing" class="section level1">
-<h1><span class="header-section-number">3</span> Preprocessing</h1>
-<div id="log-transformation" class="section level2">
-<h2><span class="header-section-number">3.1</span> Log-transformation</h2>
-<div id="explore-the-data-with-plots" class="section level3">
-<h3><span class="header-section-number">3.1.1</span> Explore the data with plots</h3>
-<p>Peptide AALEELVK from spiked-in UPS protein P12081. We only show data from lab1.</p>
-<details>
-<summary> Click to see code to make plot </summary>
-<p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a>subset &lt;-<span class="st"> </span>pe[<span class="st">&quot;AALEELVK&quot;</span>,<span class="kw">colData</span>(pe)<span class="op">$</span>lab<span class="op">==</span><span class="st">&quot;lab1&quot;</span>]</span>
-<span id="cb14-2"><a href="#cb14-2"></a>plotWhyLog &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">concentration =</span> <span class="kw">colData</span>(subset)<span class="op">$</span>spikeConcentration,</span>
-<span id="cb14-3"><a href="#cb14-3"></a>           <span class="dt">y =</span> <span class="kw">assay</span>(subset[[<span class="st">&quot;peptideRaw&quot;</span>]]) <span class="op">%&gt;%</span><span class="st"> </span>c</span>
-<span id="cb14-4"><a href="#cb14-4"></a>           ) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb14-5"><a href="#cb14-5"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(concentration, y)) <span class="op">+</span></span>
-<span id="cb14-6"><a href="#cb14-6"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></span>
-<span id="cb14-7"><a href="#cb14-7"></a><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;concentration (fmol/l)&quot;</span>) <span class="op">+</span></span>
-<span id="cb14-8"><a href="#cb14-8"></a><span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;peptide AALEELVK in lab1&quot;</span>)</span></code></pre></div>
-</p>
-</details>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>plotWhyLog</span></code></pre></div>
-<p><img src="pda_quantification_preprocessing_noframes_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
-<ul>
-<li>Variance increases with the mean <span class="math inline">\(\rightarrow\)</span> Multiplicative error structure</li>
-</ul>
-<details>
-<summary> Click to see code to make plot </summary>
-<p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a>plotLog &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">concentration =</span> <span class="kw">colData</span>(subset)<span class="op">$</span>spikeConcentration,</span>
-<span id="cb16-2"><a href="#cb16-2"></a>           <span class="dt">y =</span> <span class="kw">assay</span>(subset[[<span class="st">&quot;peptideRaw&quot;</span>]]) <span class="op">%&gt;%</span><span class="st"> </span>c</span>
-<span id="cb16-3"><a href="#cb16-3"></a>           ) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb16-4"><a href="#cb16-4"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(concentration, y)) <span class="op">+</span></span>
-<span id="cb16-5"><a href="#cb16-5"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span></span>
-<span id="cb16-6"><a href="#cb16-6"></a><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">trans=</span><span class="st">&#39;log2&#39;</span>) <span class="op">+</span><span class="st"> </span></span>
-<span id="cb16-7"><a href="#cb16-7"></a><span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="dt">trans=</span><span class="st">&#39;log2&#39;</span>) <span class="op">+</span></span>
-<span id="cb16-8"><a href="#cb16-8"></a><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;concentration (fmol/l)&quot;</span>) <span class="op">+</span></span>
-<span id="cb16-9"><a href="#cb16-9"></a><span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;peptide AALEELVK in lab1 with axes on log scale&quot;</span>)</span></code></pre></div>
-</p>
-</details>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a>plotLog</span></code></pre></div>
-<p><img src="pda_quantification_preprocessing_noframes_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
-<ul>
-<li>Data seems to be homoscedastic on log-scale <span class="math inline">\(\rightarrow\)</span> log transformation of the intensity data</li>
-<li>In quantitative proteomics analysis on <span class="math inline">\(\log_2\)</span></li>
-</ul>
-<p><span class="math inline">\(\rightarrow\)</span> Differences on a <span class="math inline">\(\log_2\)</span> scale: <span class="math inline">\(\log_2\)</span> fold changes</p>
-<p><span class="math display">\[
-\log_2 B - \log_2 A = \log_2 \frac{B}{A} = \log FC_\text{B - A}
-\]</span> <span class="math display">\[ 
-\begin{array} {l}
-log_2 FC = 1 \rightarrow FC = 2^1 =2\\
-log_2 FC = 2 \rightarrow FC = 2^2 = 4\\
-\end{array}
-\]</span></p>
-</div>
-<div id="log-transformation-of-the-data" class="section level3">
-<h3><span class="header-section-number">3.1.2</span> log-transformation of the data</h3>
+<div id="preprocessing" class="section level2">
+<h2><span class="header-section-number">1.4</span> Preprocessing</h2>
+<div id="log-transform" class="section level3">
+<h3><span class="header-section-number">1.4.1</span> Log-transform</h3>
 <details>
 <summary> Click to see code to log-transfrom the data </summary>
 <p>
 <ul>
 <li>We calculate how many non zero intensities we have for each peptide and this can be useful for filtering.</li>
 </ul>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a><span class="kw">rowData</span>(pe[[<span class="st">&quot;peptideRaw&quot;</span>]])<span class="op">$</span>nNonZero &lt;-<span class="st"> </span><span class="kw">rowSums</span>(<span class="kw">assay</span>(pe[[<span class="st">&quot;peptideRaw&quot;</span>]]) <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="kw">rowData</span>(pe[[<span class="st">&quot;peptideRaw&quot;</span>]])<span class="op">$</span>nNonZero &lt;-<span class="st"> </span><span class="kw">rowSums</span>(<span class="kw">assay</span>(pe[[<span class="st">&quot;peptideRaw&quot;</span>]]) <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>)</span></code></pre></div>
 <ul>
 <li>Peptides with zero intensities are missing peptides and should be represent with a <code>NA</code> value rather than <code>0</code>.</li>
 </ul>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a>pe &lt;-<span class="st"> </span><span class="kw">zeroIsNA</span>(pe, <span class="st">&quot;peptideRaw&quot;</span>) <span class="co"># convert 0 to NA</span></span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>pe &lt;-<span class="st"> </span><span class="kw">zeroIsNA</span>(pe, <span class="st">&quot;peptideRaw&quot;</span>) <span class="co"># convert 0 to NA</span></span></code></pre></div>
 <ul>
 <li>Logtransform data with base 2</li>
 </ul>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a>pe &lt;-<span class="st"> </span><span class="kw">logTransform</span>(pe, <span class="dt">base =</span> <span class="dv">2</span>, <span class="dt">i =</span> <span class="st">&quot;peptideRaw&quot;</span>, <span class="dt">name =</span> <span class="st">&quot;peptideLog&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a>pe &lt;-<span class="st"> </span><span class="kw">logTransform</span>(pe, <span class="dt">base =</span> <span class="dv">2</span>, <span class="dt">i =</span> <span class="st">&quot;peptideRaw&quot;</span>, <span class="dt">name =</span> <span class="st">&quot;peptideLog&quot;</span>)</span></code></pre></div>
 </p>
 </details>
-<hr />
 </div>
-</div>
-<div id="filtering" class="section level2">
-<h2><span class="header-section-number">3.2</span> Filtering</h2>
-<ul>
-<li>Reverse sequences</li>
-<li>Only identified by modification site (only modified peptides detected)</li>
-<li>Razor peptides: non-unique peptides assigned to the protein group with the most other peptides</li>
-<li>Contaminants</li>
-<li>Peptides few identifications</li>
-<li>Proteins that are only identified with one or a few peptides</li>
-</ul>
-<p>Filtering does not induce bias if the criterion is independent from the downstream data analysis!</p>
+<div id="filtering" class="section level3">
+<h3><span class="header-section-number">1.4.2</span> Filtering</h3>
 <details>
 <summary> Click to see code to filter the data </summary>
 <p>
@@ -1457,241 +1273,272 @@ log_2 FC = 2 \rightarrow FC = 2^2 = 4\\
 <li>Handling overlapping protein groups</li>
 </ol>
 <p>In our approach a peptide can map to multiple proteins, as long as there is none of these proteins present in a smaller subgroup.</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a>pe[[<span class="st">&quot;peptideLog&quot;</span>]] &lt;-</span>
-<span id="cb21-2"><a href="#cb21-2"></a><span class="st"> </span>pe[[<span class="st">&quot;peptideLog&quot;</span>]][<span class="kw">rowData</span>(pe[[<span class="st">&quot;peptideLog&quot;</span>]])<span class="op">$</span>Proteins</span>
-<span id="cb21-3"><a href="#cb21-3"></a> <span class="op">%in%</span><span class="st"> </span><span class="kw">smallestUniqueGroups</span>(<span class="kw">rowData</span>(pe[[<span class="st">&quot;peptideLog&quot;</span>]])<span class="op">$</span>Proteins),]</span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a>pe[[<span class="st">&quot;peptideLog&quot;</span>]] &lt;-</span>
+<span id="cb17-2"><a href="#cb17-2"></a><span class="st"> </span>pe[[<span class="st">&quot;peptideLog&quot;</span>]][<span class="kw">rowData</span>(pe[[<span class="st">&quot;peptideLog&quot;</span>]])<span class="op">$</span>Proteins</span>
+<span id="cb17-3"><a href="#cb17-3"></a> <span class="op">%in%</span><span class="st"> </span><span class="kw">smallestUniqueGroups</span>(<span class="kw">rowData</span>(pe[[<span class="st">&quot;peptideLog&quot;</span>]])<span class="op">$</span>Proteins),]</span></code></pre></div>
 <ol start="2" style="list-style-type: decimal">
 <li>Remove reverse sequences (decoys) and contaminants</li>
 </ol>
 <p>We now remove the contaminants, peptides that map to decoy sequences, and proteins which were only identified by peptides with modifications.</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a>pe[[<span class="st">&quot;peptideLog&quot;</span>]] &lt;-<span class="st"> </span>pe[[<span class="st">&quot;peptideLog&quot;</span>]][<span class="kw">rowData</span>(pe[[<span class="st">&quot;peptideLog&quot;</span>]])<span class="op">$</span>Reverse <span class="op">!=</span><span class="st"> &quot;+&quot;</span>, ]</span>
-<span id="cb22-2"><a href="#cb22-2"></a>pe[[<span class="st">&quot;peptideLog&quot;</span>]] &lt;-<span class="st"> </span>pe[[<span class="st">&quot;peptideLog&quot;</span>]][<span class="kw">rowData</span>(pe[[<span class="st">&quot;peptideLog&quot;</span>]])<span class="op">$</span></span>
-<span id="cb22-3"><a href="#cb22-3"></a><span class="st">    </span>Potential.contaminant <span class="op">!=</span><span class="st"> &quot;+&quot;</span>, ]</span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a>pe[[<span class="st">&quot;peptideLog&quot;</span>]] &lt;-<span class="st"> </span>pe[[<span class="st">&quot;peptideLog&quot;</span>]][<span class="kw">rowData</span>(pe[[<span class="st">&quot;peptideLog&quot;</span>]])<span class="op">$</span>Reverse <span class="op">!=</span><span class="st"> &quot;+&quot;</span>, ]</span>
+<span id="cb18-2"><a href="#cb18-2"></a>pe[[<span class="st">&quot;peptideLog&quot;</span>]] &lt;-<span class="st"> </span>pe[[<span class="st">&quot;peptideLog&quot;</span>]][<span class="kw">rowData</span>(pe[[<span class="st">&quot;peptideLog&quot;</span>]])<span class="op">$</span></span>
+<span id="cb18-3"><a href="#cb18-3"></a><span class="st">    </span>Potential.contaminant <span class="op">!=</span><span class="st"> &quot;+&quot;</span>, ]</span></code></pre></div>
 <ol start="3" style="list-style-type: decimal">
 <li>Drop peptides that were only identified in one sample</li>
 </ol>
 <p>We keep peptides that were observed at last twice.</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a>pe[[<span class="st">&quot;peptideLog&quot;</span>]] &lt;-<span class="st"> </span>pe[[<span class="st">&quot;peptideLog&quot;</span>]][<span class="kw">rowData</span>(pe[[<span class="st">&quot;peptideLog&quot;</span>]])<span class="op">$</span>nNonZero <span class="op">&gt;=</span><span class="st"> </span><span class="dv">2</span>, ]</span>
-<span id="cb23-2"><a href="#cb23-2"></a><span class="kw">nrow</span>(pe[[<span class="st">&quot;peptideLog&quot;</span>]])</span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a>pe[[<span class="st">&quot;peptideLog&quot;</span>]] &lt;-<span class="st"> </span>pe[[<span class="st">&quot;peptideLog&quot;</span>]][<span class="kw">rowData</span>(pe[[<span class="st">&quot;peptideLog&quot;</span>]])<span class="op">$</span>nNonZero <span class="op">&gt;=</span><span class="st"> </span><span class="dv">2</span>, ]</span>
+<span id="cb19-2"><a href="#cb19-2"></a><span class="kw">nrow</span>(pe[[<span class="st">&quot;peptideLog&quot;</span>]])</span></code></pre></div>
 <pre><code>## [1] 10478</code></pre>
 We keep 10478 peptides upon filtering.
 </p>
 </details>
-<hr />
+</div>
 </div>
 <div id="normalization" class="section level2">
-<h2><span class="header-section-number">3.3</span> Normalization</h2>
-<details>
-<summary> Click to see code to make plot </summary>
-<p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a>densityConditionD &lt;-<span class="st"> </span>pe[[<span class="st">&quot;peptideLog&quot;</span>]][,<span class="kw">colData</span>(pe)<span class="op">$</span>condition<span class="op">==</span><span class="st">&quot;D&quot;</span>] <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb25-2"><a href="#cb25-2"></a><span class="st">  </span>assay <span class="op">%&gt;%</span></span>
-<span id="cb25-3"><a href="#cb25-3"></a><span class="st">  </span><span class="kw">as.data.frame</span>() <span class="op">%&gt;%</span></span>
-<span id="cb25-4"><a href="#cb25-4"></a><span class="st">  </span><span class="kw">gather</span>(sample, intensity) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb25-5"><a href="#cb25-5"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">lab =</span> <span class="kw">colData</span>(pe)[sample,<span class="st">&quot;lab&quot;</span>]) <span class="op">%&gt;%</span></span>
-<span id="cb25-6"><a href="#cb25-6"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>intensity,<span class="dt">group=</span>sample,<span class="dt">color=</span>lab)) <span class="op">+</span><span class="st"> </span></span>
-<span id="cb25-7"><a href="#cb25-7"></a><span class="st">    </span><span class="kw">geom_density</span>() <span class="op">+</span></span>
-<span id="cb25-8"><a href="#cb25-8"></a><span class="st">    </span><span class="kw">ggtitle</span>(<span class="st">&quot;condition D&quot;</span>)</span>
-<span id="cb25-9"><a href="#cb25-9"></a></span>
-<span id="cb25-10"><a href="#cb25-10"></a>densityLab2 &lt;-<span class="st"> </span>pe[[<span class="st">&quot;peptideLog&quot;</span>]][,<span class="kw">colData</span>(pe)<span class="op">$</span>lab<span class="op">==</span><span class="st">&quot;lab2&quot;</span>] <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb25-11"><a href="#cb25-11"></a><span class="st">  </span>assay <span class="op">%&gt;%</span></span>
-<span id="cb25-12"><a href="#cb25-12"></a><span class="st">  </span><span class="kw">as.data.frame</span>() <span class="op">%&gt;%</span></span>
-<span id="cb25-13"><a href="#cb25-13"></a><span class="st">  </span><span class="kw">gather</span>(sample, intensity) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb25-14"><a href="#cb25-14"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">condition =</span> <span class="kw">colData</span>(pe)[sample,<span class="st">&quot;condition&quot;</span>]) <span class="op">%&gt;%</span></span>
-<span id="cb25-15"><a href="#cb25-15"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>intensity,<span class="dt">group=</span>sample,<span class="dt">color=</span>condition)) <span class="op">+</span><span class="st"> </span></span>
-<span id="cb25-16"><a href="#cb25-16"></a><span class="st">    </span><span class="kw">geom_density</span>() <span class="op">+</span></span>
-<span id="cb25-17"><a href="#cb25-17"></a><span class="st">    </span><span class="kw">ggtitle</span>(<span class="st">&quot;lab2&quot;</span>)</span></code></pre></div>
-</p>
-</details>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a>densityConditionD</span></code></pre></div>
-<pre><code>## Warning: Removed 39179 rows containing non-finite values (stat_density).</code></pre>
-<p><img src="pda_quantification_preprocessing_noframes_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a>densityLab2</span></code></pre></div>
-<pre><code>## Warning: Removed 44480 rows containing non-finite values (stat_density).</code></pre>
-<p><img src="pda_quantification_preprocessing_noframes_files/figure-html/unnamed-chunk-29-1.png" width="672" /> - Even in very clean synthetic dataset (same background, only 48 UPS proteins can be different) the marginal peptide intensity distribution across samples can be quite distinct</p>
-<ul>
-<li>Considerable effects between and within labs for replicate samples</li>
-<li>Considerable effects between samples with different spike-in concentration</li>
-</ul>
-<p><span class="math inline">\(\rightarrow\)</span> Normalization is needed</p>
-<hr />
-<div id="mean-or-median" class="section level3">
-<h3><span class="header-section-number">3.3.1</span> Mean or median?</h3>
-<ul>
-<li>Miller and Fishkin (1997) reported that over a period of 30 years males would like to have on average 64.3 partners and females 2.8.</li>
-</ul>
-<details>
-<summary> </summary>
-<p>
-<ul>
-<li>Miller and Fishkin (1997) reported that the median number of partners someone would like to have over a period of 30 years males is 1 for both males and females.</li>
-</ul>
-</p>
-</details>
-<details>
-<summary> </summary>
-<p>
-<p>Mean is very sensitive to outliers!</p>
-<img src="figures/partners.png" /><!-- -->
-</p>
-</details>
-<hr />
-</div>
-<div id="normalization-of-the-data-by-median-centering" class="section level3">
-<h3><span class="header-section-number">3.3.2</span> Normalization of the data by median centering</h3>
-<p><span class="math display">\[y_{ip}^\text{norm} = y_{ip} - \hat\mu_i\]</span> with <span class="math inline">\(\hat\mu_i\)</span> the median intensity over all observed peptides in sample <span class="math inline">\(i\)</span>.</p>
+<h2><span class="header-section-number">1.5</span> Normalization</h2>
 <details>
 <summary> Click to see R-code to normalize the data </summary>
 <p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1"></a>pe &lt;-<span class="st"> </span><span class="kw">normalize</span>(pe, </span>
-<span id="cb30-2"><a href="#cb30-2"></a>                <span class="dt">i =</span> <span class="st">&quot;peptideLog&quot;</span>, </span>
-<span id="cb30-3"><a href="#cb30-3"></a>                <span class="dt">name =</span> <span class="st">&quot;peptideNorm&quot;</span>, </span>
-<span id="cb30-4"><a href="#cb30-4"></a>                <span class="dt">method =</span> <span class="st">&quot;center.median&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a>pe &lt;-<span class="st"> </span><span class="kw">normalize</span>(pe, </span>
+<span id="cb21-2"><a href="#cb21-2"></a>                <span class="dt">i =</span> <span class="st">&quot;peptideLog&quot;</span>, </span>
+<span id="cb21-3"><a href="#cb21-3"></a>                <span class="dt">name =</span> <span class="st">&quot;peptideNorm&quot;</span>, </span>
+<span id="cb21-4"><a href="#cb21-4"></a>                <span class="dt">method =</span> <span class="st">&quot;center.median&quot;</span>)</span></code></pre></div>
 </p>
 </details>
-</div>
-<div id="plots-of-normalized-data" class="section level3">
-<h3><span class="header-section-number">3.3.3</span> Plots of normalized data</h3>
-<details>
-<summary> Click to see code to make plot </summary>
-<p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1"></a>densityConditionDNorm &lt;-<span class="st"> </span>pe[[<span class="st">&quot;peptideNorm&quot;</span>]][,<span class="kw">colData</span>(pe)<span class="op">$</span>condition<span class="op">==</span><span class="st">&quot;D&quot;</span>] <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb31-2"><a href="#cb31-2"></a><span class="st">  </span>assay <span class="op">%&gt;%</span></span>
-<span id="cb31-3"><a href="#cb31-3"></a><span class="st">  </span><span class="kw">as.data.frame</span>() <span class="op">%&gt;%</span></span>
-<span id="cb31-4"><a href="#cb31-4"></a><span class="st">  </span><span class="kw">gather</span>(sample, intensity) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb31-5"><a href="#cb31-5"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">lab =</span> <span class="kw">colData</span>(pe)[sample,<span class="st">&quot;lab&quot;</span>]) <span class="op">%&gt;%</span></span>
-<span id="cb31-6"><a href="#cb31-6"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>intensity,<span class="dt">group=</span>sample,<span class="dt">color=</span>lab)) <span class="op">+</span><span class="st"> </span></span>
-<span id="cb31-7"><a href="#cb31-7"></a><span class="st">    </span><span class="kw">geom_density</span>() <span class="op">+</span></span>
-<span id="cb31-8"><a href="#cb31-8"></a><span class="st">    </span><span class="kw">ggtitle</span>(<span class="st">&quot;condition D&quot;</span>)</span>
-<span id="cb31-9"><a href="#cb31-9"></a></span>
-<span id="cb31-10"><a href="#cb31-10"></a>densityLab2Norm &lt;-<span class="st"> </span>pe[[<span class="st">&quot;peptideNorm&quot;</span>]][,<span class="kw">colData</span>(pe)<span class="op">$</span>lab<span class="op">==</span><span class="st">&quot;lab2&quot;</span>] <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb31-11"><a href="#cb31-11"></a><span class="st">  </span>assay <span class="op">%&gt;%</span></span>
-<span id="cb31-12"><a href="#cb31-12"></a><span class="st">  </span><span class="kw">as.data.frame</span>() <span class="op">%&gt;%</span></span>
-<span id="cb31-13"><a href="#cb31-13"></a><span class="st">  </span><span class="kw">gather</span>(sample, intensity) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb31-14"><a href="#cb31-14"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">condition =</span> <span class="kw">colData</span>(pe)[sample,<span class="st">&quot;condition&quot;</span>]) <span class="op">%&gt;%</span></span>
-<span id="cb31-15"><a href="#cb31-15"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>intensity,<span class="dt">group=</span>sample,<span class="dt">color=</span>condition)) <span class="op">+</span><span class="st"> </span></span>
-<span id="cb31-16"><a href="#cb31-16"></a><span class="st">    </span><span class="kw">geom_density</span>() <span class="op">+</span></span>
-<span id="cb31-17"><a href="#cb31-17"></a><span class="st">    </span><span class="kw">ggtitle</span>(<span class="st">&quot;lab2&quot;</span>)</span></code></pre></div>
-</p>
-</details>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1"></a>densityConditionDNorm</span></code></pre></div>
-<pre><code>## Warning: Removed 39179 rows containing non-finite values (stat_density).</code></pre>
-<p><img src="pda_quantification_preprocessing_noframes_files/figure-html/unnamed-chunk-33-1.png" width="672" /></p>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1"></a>densityLab2Norm</span></code></pre></div>
-<pre><code>## Warning: Removed 44480 rows containing non-finite values (stat_density).</code></pre>
-<p><img src="pda_quantification_preprocessing_noframes_files/figure-html/unnamed-chunk-34-1.png" width="672" /></p>
-<ul>
-<li>Upon normalization the marginal distributions of the peptide intensities across samples are much more comparable</li>
-<li>We still see deviations</li>
-<li>This can be due to technical variability</li>
-<li>In micro-array literature, quantile normalisation is used to force the median and all other quantiles to be equal across samples</li>
-<li>In proteomics quantile normalisation often introduces artifacts due to a difference in missing peptides across samples</li>
-<li>More advanced methods should be developed for normalizing proteomics data</li>
-<li>If there are differences in the width of the marginal distributions of the data across samples. They can also be standardized by using a robust estimator for location and scale, i.e.  <span class="math display">\[y_{ip}^\text{norm} = \frac{y_{ip} - \mu_i}{s_i}\]</span></li>
-</ul>
 <hr />
 </div>
 </div>
+<div id="peptide-level-models" class="section level1">
+<h1><span class="header-section-number">2</span> Peptide-level models</h1>
 <div id="summarization" class="section level2">
-<h2><span class="header-section-number">3.4</span> Summarization</h2>
+<h2><span class="header-section-number">2.1</span> Summarization</h2>
+<details>
+<summary> Click to see code to make plot </summary>
+<p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a>prot &lt;-<span class="st"> &quot;P01031ups|CO5_HUMAN_UPS&quot;</span></span>
+<span id="cb22-2"><a href="#cb22-2"></a>data &lt;-<span class="st"> </span>pe[[<span class="st">&quot;peptideNorm&quot;</span>]][</span>
+<span id="cb22-3"><a href="#cb22-3"></a>  <span class="kw">rowData</span>(pe[[<span class="st">&quot;peptideNorm&quot;</span>]])<span class="op">$</span>Proteins <span class="op">==</span><span class="st"> </span>prot,</span>
+<span id="cb22-4"><a href="#cb22-4"></a>  <span class="kw">colData</span>(pe)<span class="op">$</span>lab<span class="op">==</span><span class="st">&quot;lab3&quot;</span>] <span class="op">%&gt;%</span></span>
+<span id="cb22-5"><a href="#cb22-5"></a><span class="st">  </span>assay <span class="op">%&gt;%</span></span>
+<span id="cb22-6"><a href="#cb22-6"></a><span class="st">  </span>as.data.frame <span class="op">%&gt;%</span></span>
+<span id="cb22-7"><a href="#cb22-7"></a><span class="st">  </span><span class="kw">rownames_to_column</span>(<span class="dt">var =</span> <span class="st">&quot;peptide&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb22-8"><a href="#cb22-8"></a><span class="st">  </span><span class="kw">gather</span>(sample, intensity, <span class="op">-</span>peptide) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb22-9"><a href="#cb22-9"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">condition =</span> <span class="kw">colData</span>(pe)[sample,<span class="st">&quot;condition&quot;</span>]) <span class="op">%&gt;%</span></span>
+<span id="cb22-10"><a href="#cb22-10"></a><span class="st">  </span>na.exclude</span>
+<span id="cb22-11"><a href="#cb22-11"></a>sumPlot &lt;-<span class="st"> </span>data <span class="op">%&gt;%</span></span>
+<span id="cb22-12"><a href="#cb22-12"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> peptide, <span class="dt">y =</span> intensity, <span class="dt">color =</span> condition, <span class="dt">group =</span> sample, <span class="dt">label =</span> condition), <span class="dt">show.legend =</span> <span class="ot">FALSE</span>) <span class="op">+</span></span>
+<span id="cb22-13"><a href="#cb22-13"></a><span class="st">  </span><span class="kw">geom_text</span>(<span class="dt">show.legend =</span> <span class="ot">FALSE</span>) <span class="op">+</span></span>
+<span id="cb22-14"><a href="#cb22-14"></a><span class="st">  </span><span class="kw">theme_minimal</span>() <span class="op">+</span></span>
+<span id="cb22-15"><a href="#cb22-15"></a><span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.text.x =</span> <span class="kw">element_text</span>(<span class="dt">angle =</span> <span class="dv">90</span>, <span class="dt">vjust =</span> <span class="fl">0.5</span>, <span class="dt">hjust =</span> <span class="dv">1</span>)) <span class="op">+</span></span>
+<span id="cb22-16"><a href="#cb22-16"></a><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Peptide&quot;</span>) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb22-17"><a href="#cb22-17"></a><span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;Intensity (log2)&quot;</span>) <span class="op">+</span></span>
+<span id="cb22-18"><a href="#cb22-18"></a><span class="st">  </span><span class="kw">ggtitle</span>(<span class="kw">paste0</span>(<span class="st">&quot;protein: &quot;</span>,prot))</span></code></pre></div>
+</p>
+</details>
+<p>Here, we will focus on the summarization of the intensities for protein P01031ups|CO5_HUMAN_UPS.</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a>sumPlot</span></code></pre></div>
+<p><img src="pda_robustSummarisation_peptideModels_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<div id="median-summarization" class="section level3">
+<h3><span class="header-section-number">2.1.1</span> Median summarization</h3>
+<p>We first evaluate median summarization for protein P01031ups|CO5_HUMAN_UPS.</p>
+<details>
+<summary> Click to see code to make plot </summary>
+<p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a>dataHlp &lt;-<span class="st"> </span>pe[[<span class="st">&quot;peptideNorm&quot;</span>]][</span>
+<span id="cb24-2"><a href="#cb24-2"></a>    <span class="kw">rowData</span>(pe[[<span class="st">&quot;peptideNorm&quot;</span>]])<span class="op">$</span>Proteins <span class="op">==</span><span class="st"> </span>prot,</span>
+<span id="cb24-3"><a href="#cb24-3"></a>    <span class="kw">colData</span>(pe)<span class="op">$</span>lab<span class="op">==</span><span class="st">&quot;lab3&quot;</span>] <span class="op">%&gt;%</span><span class="st"> </span>assay </span>
+<span id="cb24-4"><a href="#cb24-4"></a></span>
+<span id="cb24-5"><a href="#cb24-5"></a>sumMedian &lt;-<span class="st"> </span><span class="kw">data.frame</span>(</span>
+<span id="cb24-6"><a href="#cb24-6"></a>  <span class="dt">intensity=</span> dataHlp</span>
+<span id="cb24-7"><a href="#cb24-7"></a>    <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">colMedians</span>(<span class="dt">na.rm=</span><span class="ot">TRUE</span>)</span>
+<span id="cb24-8"><a href="#cb24-8"></a>  ,</span>
+<span id="cb24-9"><a href="#cb24-9"></a>  <span class="dt">condition=</span> <span class="kw">colnames</span>(dataHlp) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">substr</span>(<span class="dv">12</span>,<span class="dv">12</span>) <span class="op">%&gt;%</span><span class="st"> </span>as.factor )</span>
+<span id="cb24-10"><a href="#cb24-10"></a></span>
+<span id="cb24-11"><a href="#cb24-11"></a>sumMedianPlot &lt;-<span class="st"> </span>sumPlot <span class="op">+</span><span class="st"> </span></span>
+<span id="cb24-12"><a href="#cb24-12"></a><span class="st">  </span><span class="kw">geom_hline</span>(</span>
+<span id="cb24-13"><a href="#cb24-13"></a>    <span class="dt">data =</span> sumMedian,</span>
+<span id="cb24-14"><a href="#cb24-14"></a>    <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">yintercept=</span>intensity,<span class="dt">color=</span>condition)) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb24-15"><a href="#cb24-15"></a><span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Median summarization&quot;</span>)</span></code></pre></div>
+</p>
+</details>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a>sumMedianPlot</span></code></pre></div>
+<pre><code>## Warning: Removed 1 rows containing missing values (geom_hline).</code></pre>
+<p><img src="pda_robustSummarisation_peptideModels_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
 <ul>
-<li>We illustrate summarization issues using a subset of the cptac study (Lab 2, condition A and E) for a spiked protein (UPS P12081).</li>
+<li>The sample medians are not a good estimate for the protein expression value.</li>
+<li>Indeed, they do not account for differences in peptide effects</li>
+<li>Peptides that ionize poorly are also picked up in samples with high spike-in concencentration and not in samples with low spike-in concentration</li>
+<li>This introduces a bias.</li>
+</ul>
+</div>
+<div id="model-based-summarization" class="section level3">
+<h3><span class="header-section-number">2.1.2</span> Model based summarization</h3>
+<p>We can use a linear peptide-level model to estimate the protein expression value while correcting for the peptide effect, i.e. </p>
+<p><span class="math display">\[ 
+y_{ip} = \beta_i^\text{sample}+\beta^{peptide}_{p} + \epsilon_{ip}
+\]</span></p>
+<details>
+<summary> Click to see code to make plot </summary>
+<p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a>sumMeanPepMod &lt;-<span class="st"> </span><span class="kw">lm</span>(intensity <span class="op">~</span><span class="st"> </span><span class="dv">-1</span> <span class="op">+</span><span class="st"> </span>sample <span class="op">+</span><span class="st"> </span>peptide,data)</span>
+<span id="cb27-2"><a href="#cb27-2"></a></span>
+<span id="cb27-3"><a href="#cb27-3"></a>sumMeanPep &lt;-<span class="st"> </span><span class="kw">data.frame</span>(</span>
+<span id="cb27-4"><a href="#cb27-4"></a>  <span class="dt">intensity=</span>sumMeanPepMod<span class="op">$</span>coef[<span class="kw">grep</span>(<span class="st">&quot;sample&quot;</span>,<span class="kw">names</span>(sumMeanPepMod<span class="op">$</span>coef))] <span class="op">+</span><span class="st"> </span><span class="kw">mean</span>(data<span class="op">$</span>intensity) <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(sumMeanPepMod<span class="op">$</span>coef[<span class="kw">grep</span>(<span class="st">&quot;sample&quot;</span>,<span class="kw">names</span>(sumMeanPepMod<span class="op">$</span>coef))]),</span>
+<span id="cb27-5"><a href="#cb27-5"></a>  <span class="dt">condition=</span> <span class="kw">names</span>(sumMeanPepMod<span class="op">$</span>coef)[<span class="kw">grep</span>(<span class="st">&quot;sample&quot;</span>,<span class="kw">names</span>(sumMeanPepMod<span class="op">$</span>coef))] <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">substr</span>(<span class="dv">18</span>,<span class="dv">18</span>) <span class="op">%&gt;%</span><span class="st"> </span>as.factor )</span>
+<span id="cb27-6"><a href="#cb27-6"></a></span>
+<span id="cb27-7"><a href="#cb27-7"></a></span>
+<span id="cb27-8"><a href="#cb27-8"></a>fitLmPlot &lt;-<span class="st">  </span>sumPlot <span class="op">+</span><span class="st"> </span><span class="kw">geom_line</span>(</span>
+<span id="cb27-9"><a href="#cb27-9"></a>    <span class="dt">data =</span> data <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">fit=</span>sumMeanPepMod<span class="op">$</span>fitted.values),</span>
+<span id="cb27-10"><a href="#cb27-10"></a>    <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x=</span>peptide, <span class="dt">y=</span>fit,<span class="dt">color=</span>condition, <span class="dt">group=</span>sample)) <span class="op">+</span></span>
+<span id="cb27-11"><a href="#cb27-11"></a><span class="st">    </span><span class="kw">ggtitle</span>(<span class="st">&quot;fit: ~ sample + peptide&quot;</span>)</span>
+<span id="cb27-12"><a href="#cb27-12"></a>sumLmPlot &lt;-<span class="st"> </span>sumPlot <span class="op">+</span><span class="st"> </span><span class="kw">geom_hline</span>(</span>
+<span id="cb27-13"><a href="#cb27-13"></a>    <span class="dt">data =</span> sumMeanPep,</span>
+<span id="cb27-14"><a href="#cb27-14"></a>    <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">yintercept=</span>intensity,<span class="dt">color=</span>condition)) <span class="op">+</span></span>
+<span id="cb27-15"><a href="#cb27-15"></a><span class="st">    </span><span class="kw">ggtitle</span>(<span class="st">&quot;Summarization: sample effect&quot;</span>)</span></code></pre></div>
+</p>
+</details>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a><span class="kw">grid.arrange</span>(sumMedianPlot, sumLmPlot, <span class="dt">ncol=</span><span class="dv">2</span>)</span></code></pre></div>
+<pre><code>## Warning: Removed 1 rows containing missing values (geom_hline).</code></pre>
+<p><img src="pda_robustSummarisation_peptideModels_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+<ul>
+<li><p>By correcting for the peptide species the protein expression values are much better separated an better reflect differences in abundance induced by the spike-in condition.</p></li>
+<li><p>Indeed, it shows that median summarisation that does not account for the peptide effect indeed overestimated the protein expression value in the small spike-in conditions and underestimated that in the large spike-in conditions.</p></li>
+<li><p>Still there seem to be some issues with samples that for which the expression values are not well separated according to the spike-in condition.</p></li>
+</ul>
+<p>A residual analysis clearly indicates potential issues:</p>
+<details>
+<summary> Click to see code to make plot </summary>
+<p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1"></a>resPlot &lt;-<span class="st"> </span>data <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb30-2"><a href="#cb30-2"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">res=</span>sumMeanPepMod<span class="op">$</span>residuals) <span class="op">%&gt;%</span></span>
+<span id="cb30-3"><a href="#cb30-3"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> peptide, <span class="dt">y =</span> res, <span class="dt">color =</span> condition, <span class="dt">label =</span> condition), <span class="dt">show.legend =</span> <span class="ot">FALSE</span>) <span class="op">+</span></span>
+<span id="cb30-4"><a href="#cb30-4"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">shape=</span><span class="dv">21</span>) <span class="op">+</span></span>
+<span id="cb30-5"><a href="#cb30-5"></a><span class="st">  </span><span class="kw">theme_minimal</span>() <span class="op">+</span></span>
+<span id="cb30-6"><a href="#cb30-6"></a><span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.text.x =</span> <span class="kw">element_text</span>(<span class="dt">angle =</span> <span class="dv">90</span>, <span class="dt">vjust =</span> <span class="fl">0.5</span>, <span class="dt">hjust =</span> <span class="dv">1</span>)) <span class="op">+</span></span>
+<span id="cb30-7"><a href="#cb30-7"></a><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Peptide&quot;</span>) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb30-8"><a href="#cb30-8"></a><span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;residual&quot;</span>) <span class="op">+</span></span>
+<span id="cb30-9"><a href="#cb30-9"></a><span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;residuals: ~ sample + peptide&quot;</span>)</span></code></pre></div>
+</p>
+</details>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1"></a><span class="kw">grid.arrange</span>(fitLmPlot, resPlot, <span class="dt">nrow =</span> <span class="dv">1</span>)</span></code></pre></div>
+<p><img src="pda_robustSummarisation_peptideModels_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1"></a><span class="kw">grid.arrange</span>(fitLmPlot, sumLmPlot, <span class="dt">nrow =</span> <span class="dv">1</span>)</span></code></pre></div>
+<p><img src="pda_robustSummarisation_peptideModels_files/figure-html/unnamed-chunk-24-2.png" width="672" /></p>
+<ul>
+<li>The residual plot shows some large outliers for peptide KIEEIAAK.</li>
+<li>Indeed, in the original plot the intensities for this peptide do not seem to line up very well with the concentration.</li>
+<li>This induces a bias in the summarization for some of the samples (e.g. for D and E)</li>
+</ul>
+</div>
+<div id="robust-summarization-using-a-peptide-level-linear-model" class="section level3">
+<h3><span class="header-section-number">2.1.3</span> Robust summarization using a peptide-level linear model</h3>
+<p><span class="math display">\[ 
+y_{ip} = \beta_i^\text{sample}+\beta^{peptide}_{p} + \epsilon_{ip}
+\]</span></p>
+<ul>
+<li>Ordinary least squares: estimate <span class="math inline">\(\beta\)</span> that minimizes <span class="math display">\[
+\text{OLS}: \sum\limits_{i,p} \epsilon_{ip}^2 = \sum\limits_{i,p}(y_{ip}-\beta_i^\text{sample}-\beta_p^\text{peptide})^2
+\]</span></li>
+</ul>
+<p>We replace OLS by M-estimation with loss function <span class="math display">\[
+\text{OLS}: \sum\limits_{i,p} w_{ip}\epsilon_{ip}^2 = \sum\limits_{i,p}w_{ip}(y_{ip}-\beta_i^\text{sample}-\beta_p^\text{peptide})^2
+\]</span></p>
+<ul>
+<li>Iteratively fit model with observation weights <span class="math inline">\(w_{ip}\)</span> until convergence</li>
+<li>The weights are calculated based on standardized residuals</li>
 </ul>
 <details>
 <summary> Click to see code to make plot </summary>
 <p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1"></a>summaryPlot &lt;-<span class="st"> </span>pe[[<span class="st">&quot;peptideNorm&quot;</span>]][</span>
-<span id="cb36-2"><a href="#cb36-2"></a>    <span class="kw">rowData</span>(pe[[<span class="st">&quot;peptideNorm&quot;</span>]])<span class="op">$</span>Proteins <span class="op">==</span><span class="st"> &quot;P12081ups|SYHC_HUMAN_UPS&quot;</span>,</span>
-<span id="cb36-3"><a href="#cb36-3"></a>    <span class="kw">colData</span>(pe)<span class="op">$</span>lab<span class="op">==</span><span class="st">&quot;lab2&quot;</span><span class="op">&amp;</span><span class="kw">colData</span>(pe)<span class="op">$</span>condition <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;A&quot;</span>,<span class="st">&quot;E&quot;</span>)] <span class="op">%&gt;%</span></span>
-<span id="cb36-4"><a href="#cb36-4"></a><span class="st">  </span>assay <span class="op">%&gt;%</span></span>
-<span id="cb36-5"><a href="#cb36-5"></a><span class="st">  </span>as.data.frame <span class="op">%&gt;%</span></span>
-<span id="cb36-6"><a href="#cb36-6"></a><span class="st">  </span><span class="kw">rownames_to_column</span>(<span class="dt">var =</span> <span class="st">&quot;peptide&quot;</span>) <span class="op">%&gt;%</span></span>
-<span id="cb36-7"><a href="#cb36-7"></a><span class="st">  </span><span class="kw">gather</span>(sample, intensity, <span class="op">-</span>peptide) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb36-8"><a href="#cb36-8"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">condition =</span> <span class="kw">colData</span>(pe)[sample,<span class="st">&quot;condition&quot;</span>]) <span class="op">%&gt;%</span></span>
-<span id="cb36-9"><a href="#cb36-9"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> peptide, <span class="dt">y =</span> intensity, <span class="dt">color =</span> sample, <span class="dt">group =</span> sample, <span class="dt">label =</span> condition), <span class="dt">show.legend =</span> <span class="ot">FALSE</span>) <span class="op">+</span></span>
-<span id="cb36-10"><a href="#cb36-10"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">show.legend =</span> <span class="ot">FALSE</span>) <span class="op">+</span></span>
-<span id="cb36-11"><a href="#cb36-11"></a><span class="st">  </span><span class="kw">geom_text</span>(<span class="dt">show.legend =</span> <span class="ot">FALSE</span>) <span class="op">+</span></span>
-<span id="cb36-12"><a href="#cb36-12"></a><span class="st">  </span><span class="kw">theme_minimal</span>() <span class="op">+</span></span>
-<span id="cb36-13"><a href="#cb36-13"></a><span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.text.x =</span> <span class="kw">element_text</span>(<span class="dt">angle =</span> <span class="dv">90</span>, <span class="dt">vjust =</span> <span class="fl">0.5</span>, <span class="dt">hjust =</span> <span class="dv">1</span>)) <span class="op">+</span></span>
-<span id="cb36-14"><a href="#cb36-14"></a><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Peptide&quot;</span>) <span class="op">+</span><span class="st"> </span></span>
-<span id="cb36-15"><a href="#cb36-15"></a><span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;Intensity (log2)&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1"></a>sumMeanPepRobMod &lt;-<span class="st"> </span>MASS<span class="op">::</span><span class="kw">rlm</span>(intensity <span class="op">~</span><span class="st"> </span><span class="dv">-1</span> <span class="op">+</span><span class="st"> </span>sample <span class="op">+</span><span class="st"> </span>peptide,data)</span>
+<span id="cb33-2"><a href="#cb33-2"></a>resRobPlot &lt;-<span class="st"> </span>data <span class="op">%&gt;%</span></span>
+<span id="cb33-3"><a href="#cb33-3"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">res =</span> sumMeanPepRobMod<span class="op">$</span>residuals,</span>
+<span id="cb33-4"><a href="#cb33-4"></a>         <span class="dt">w =</span> sumMeanPepRobMod<span class="op">$</span>w) <span class="op">%&gt;%</span></span>
+<span id="cb33-5"><a href="#cb33-5"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> peptide, <span class="dt">y =</span> res, <span class="dt">color =</span> condition, <span class="dt">label =</span> condition,<span class="dt">size=</span>w), <span class="dt">show.legend =</span> <span class="ot">FALSE</span>) <span class="op">+</span></span>
+<span id="cb33-6"><a href="#cb33-6"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">shape=</span><span class="dv">21</span>,<span class="dt">size=</span>.<span class="dv">2</span>) <span class="op">+</span></span>
+<span id="cb33-7"><a href="#cb33-7"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">shape=</span><span class="dv">21</span>) <span class="op">+</span></span>
+<span id="cb33-8"><a href="#cb33-8"></a><span class="st">  </span><span class="kw">theme_minimal</span>() <span class="op">+</span></span>
+<span id="cb33-9"><a href="#cb33-9"></a><span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.text.x =</span> <span class="kw">element_text</span>(<span class="dt">angle =</span> <span class="dv">90</span>, <span class="dt">vjust =</span> <span class="fl">0.5</span>, <span class="dt">hjust =</span> <span class="dv">1</span>)) <span class="op">+</span></span>
+<span id="cb33-10"><a href="#cb33-10"></a><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Peptide&quot;</span>) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb33-11"><a href="#cb33-11"></a><span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;residual&quot;</span>) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb33-12"><a href="#cb33-12"></a><span class="st">  </span><span class="kw">ylim</span>(<span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)<span class="op">*</span><span class="kw">max</span>(<span class="kw">abs</span>(sumMeanPepRobMod<span class="op">$</span>residuals)))</span>
+<span id="cb33-13"><a href="#cb33-13"></a>weightPlot &lt;-<span class="st"> </span><span class="kw">qplot</span>(</span>
+<span id="cb33-14"><a href="#cb33-14"></a>  <span class="kw">seq</span>(<span class="op">-</span><span class="dv">5</span>,<span class="dv">5</span>,.<span class="dv">01</span>), </span>
+<span id="cb33-15"><a href="#cb33-15"></a>  MASS<span class="op">::</span><span class="kw">psi.huber</span>(<span class="kw">seq</span>(<span class="op">-</span><span class="dv">5</span>,<span class="dv">5</span>,.<span class="dv">01</span>)),</span>
+<span id="cb33-16"><a href="#cb33-16"></a>  <span class="dt">geom=</span><span class="st">&quot;path&quot;</span>) <span class="op">+</span></span>
+<span id="cb33-17"><a href="#cb33-17"></a><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;standardized residual&quot;</span>) <span class="op">+</span></span>
+<span id="cb33-18"><a href="#cb33-18"></a><span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;weight&quot;</span>)</span></code></pre></div>
 </p>
 </details>
-<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1"></a>summaryPlot</span></code></pre></div>
-<pre><code>## Warning: Removed 10 row(s) containing missing values (geom_path).</code></pre>
-<pre><code>## Warning: Removed 90 rows containing missing values (geom_text).</code></pre>
-<p><img src="pda_quantification_preprocessing_noframes_files/figure-html/unnamed-chunk-36-1.png" width="672" /></p>
-<p>We observe:</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1"></a><span class="kw">grid.arrange</span>(weightPlot,resRobPlot,<span class="dt">nrow=</span><span class="dv">1</span>)</span></code></pre></div>
+<p><img src="pda_robustSummarisation_peptideModels_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
 <ul>
-<li>intensities from multiple peptides for each protein in a sample</li>
-<li>Strong peptide effect -Unbalanced peptide identification</li>
-<li>Pseudo-replication: peptide intensities from a particular protein in the same sample are correlated, i.e. they more alike than peptide intensities from a particular protein between samples.</li>
-</ul>
-<p><span class="math inline">\(\rightarrow\)</span> Summarize all peptide intensities from the same protein in a sample into a single protein expression value</p>
-<p>Commonly used methods are</p>
-<ul>
-<li><p>Mean summarization <span class="math display">\[
-y_{ip}=\beta_i^\text{samp} + \epsilon_{ip}
-\]</span></p></li>
-<li><p>Median summarization</p></li>
-<li><p>Maxquant’s maxLFQ summarization (in protein groups file)</p></li>
-<li><p>Model based summarization: <span class="math display">\[
-y_{ip}=\beta_i^\text{samp} + \beta_p^\text{pep} + \epsilon_{ip}
-\]</span></p></li>
+<li>We clearly see that the weights in the M-estimation procedure will down-weight errors associated with outliers for peptide KIEEIAAK.</li>
 </ul>
 <details>
-<summary> Click to see R-code to normalize the data </summary>
+<summary> Click to see code to make plot </summary>
 <p>
-<p>We use the standard sumarization in aggregateFeatures, which is robust model based summarization.</p>
-<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1"></a>pe &lt;-<span class="st"> </span><span class="kw">aggregateFeatures</span>(pe,</span>
-<span id="cb40-2"><a href="#cb40-2"></a>    <span class="dt">i =</span> <span class="st">&quot;peptideNorm&quot;</span>, </span>
-<span id="cb40-3"><a href="#cb40-3"></a>    <span class="dt">fcol =</span> <span class="st">&quot;Proteins&quot;</span>, </span>
-<span id="cb40-4"><a href="#cb40-4"></a>    <span class="dt">na.rm =</span> <span class="ot">TRUE</span>,</span>
-<span id="cb40-5"><a href="#cb40-5"></a>    <span class="dt">name =</span> <span class="st">&quot;protein&quot;</span>)</span></code></pre></div>
-<pre><code>## Your quantitative and row data contain missing values. Please read the
-## relevant section(s) in the aggregateFeatures manual page regarding the
-## effects of missing values on data aggregation.</code></pre>
-<p>Other summarization methods can be implemented by using the <code>fun</code> argument in the <code>aggregateFeatures</code> function.</p>
-<ul>
-<li><p><code>fun = MsCoreUtils::medianPolish()</code> to fits an additive model (two way decomposition) using Tukey’s median polish_ procedure using stats::medpolish()</p></li>
-<li><p><code>fun = MsCoreUtils::robustSummary()</code> to calculate a robust aggregation using MASS::rlm() (default)</p></li>
-<li><p><code>fun = base::colMeans()</code> to use the mean of each column</p></li>
-<li><p><code>fun = matrixStats::colMedians()</code> to use the median of each column</p></li>
-<li><p><code>fun = base::colSums()</code> to use the sum of each column</p></li>
-</ul>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1"></a>sumMeanPepRob &lt;-<span class="st"> </span><span class="kw">data.frame</span>(</span>
+<span id="cb35-2"><a href="#cb35-2"></a>  <span class="dt">intensity=</span>sumMeanPepRobMod<span class="op">$</span>coef[<span class="kw">grep</span>(<span class="st">&quot;sample&quot;</span>,<span class="kw">names</span>(sumMeanPepRobMod<span class="op">$</span>coef))] <span class="op">+</span><span class="st"> </span><span class="kw">mean</span>(data<span class="op">$</span>intensity) <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(sumMeanPepRobMod<span class="op">$</span>coef[<span class="kw">grep</span>(<span class="st">&quot;sample&quot;</span>,<span class="kw">names</span>(sumMeanPepRobMod<span class="op">$</span>coef))]),</span>
+<span id="cb35-3"><a href="#cb35-3"></a>  <span class="dt">condition=</span> <span class="kw">names</span>(sumMeanPepRobMod<span class="op">$</span>coef)[<span class="kw">grep</span>(<span class="st">&quot;sample&quot;</span>,<span class="kw">names</span>(sumMeanPepRobMod<span class="op">$</span>coef))] <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">substr</span>(<span class="dv">18</span>,<span class="dv">18</span>) <span class="op">%&gt;%</span><span class="st"> </span>as.factor )</span>
+<span id="cb35-4"><a href="#cb35-4"></a></span>
+<span id="cb35-5"><a href="#cb35-5"></a>sumRlmPlot &lt;-<span class="st"> </span>sumPlot <span class="op">+</span><span class="st"> </span><span class="kw">geom_hline</span>(</span>
+<span id="cb35-6"><a href="#cb35-6"></a>    <span class="dt">data=</span>sumMeanPepRob,</span>
+<span id="cb35-7"><a href="#cb35-7"></a>    <span class="dt">mapping=</span><span class="kw">aes</span>(<span class="dt">yintercept=</span>intensity,<span class="dt">color=</span>condition)) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb35-8"><a href="#cb35-8"></a><span class="st">    </span><span class="kw">ggtitle</span>(<span class="st">&quot;Robust&quot;</span>)</span></code></pre></div>
 </p>
 </details>
-<hr />
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1"></a> <span class="kw">grid.arrange</span>(sumLmPlot <span class="op">+</span><span class="st"> </span><span class="kw">ggtitle</span>(<span class="st">&quot;OLS&quot;</span>), sumRlmPlot, <span class="dt">nrow =</span> <span class="dv">1</span>)</span></code></pre></div>
+<p><img src="pda_robustSummarisation_peptideModels_files/figure-html/unnamed-chunk-28-1.png" width="672" /> - Robust regresion results in a better separation between the protein expression values for the different samples according to their spike-in concentration.</p>
 </div>
 </div>
-<div id="exercise" class="section level1">
-<h1><span class="header-section-number">4</span> Exercise</h1>
-<ol style="list-style-type: decimal">
-<li>We will evaluate different summarization methods (Maxquant maxLFQ, median and robust model based) in the tutorial session before discussing on their advantages/disadvantages.</li>
-<li>Can you anticipate on potential problems related to the summarization?</li>
-</ol>
-<hr />
-</div>
-<div id="code" class="section level1">
-<h1><span class="header-section-number">5</span> Code</h1>
+<div id="estimation-of-differential-abundance-using-peptide-level-model" class="section level2">
+<h2><span class="header-section-number">2.2</span> Estimation of differential abundance using peptide level model</h2>
 <ul>
-<li><p>Our R/Bioconductor package <code>msqrob2</code> can be used in R markdown scripts or with a GUI/shinyApp in the <code>msqrob2gui</code> package or .</p></li>
-<li><p>Users who want to learn how to code and automate proteomics data analyses in reproducible R markdown scripts can get more information on all code used in this script in the video below.</p></li>
+<li>Instead of summarising the data we can also directly model the data at the peptide-level.</li>
+<li>But, we will have to address the pseudo-replication.</li>
 </ul>
-<ol style="list-style-type: decimal">
-<li><p>Data infrastructure</p></li>
-<li><p>Import proteomics data</p></li>
-<li><p>Preprocessing</p>
+<p><span class="math display">\[
+y_{iclp}= \beta_0 + \beta_c^\text{condition} + \beta_l^\text{lab} + \beta_p^\text{peptide} + u_s^\text{sample} + \epsilon_{iclp}
+\]</span></p>
 <ul>
-<li><p>Log-transformation</p></li>
-<li><p>Filtering</p></li>
-<li><p>Normalisation</p></li>
-<li><p>Summarization</p></li>
+<li><p>protein-level</p>
+<ul>
+<li><span class="math inline">\(\beta^\text{condition}_c\)</span>: spike-in condition</li>
+<li><span class="math inline">\(\beta^\text{condition}_c\)</span>: lab effect</li>
+<li><span class="math inline">\(u_{r}^\text{run}\sim N\left(0,\sigma^2_\text{run}\right) \rightarrow\)</span> random effect addresses pseudo-replication</li>
 </ul></li>
-</ol>
+<li><p>peptide-level</p>
+<ul>
+<li><span class="math inline">\(\beta_{p}^\text{peptide}\)</span>: peptide effect</li>
+<li><span class="math inline">\(\epsilon_{rp} \sim N\left(0,\sigma^2_{\epsilon}\right)\)</span> within sample (run) error</li>
+</ul></li>
+<li><p>DA estimates: <span class="math display">\[
+\log_2FC_{B-A}=\beta^\text{condition}_B  
+\]</span> <span class="math display">\[
+\log_2FC_{C-B}=\beta^\text{condition}_C - \beta^\text{condition}_B 
+\]</span></p></li>
+<li><p>Mixed peptide-level models are implemented in msqrob2</p></li>
+<li><p>It has the advantages that</p>
+<ol style="list-style-type: decimal">
+<li>it correctly addresses the difference levels of variability in the data</li>
+<li>it avoids summarisation and therefore also accounts for the difference in the number of peptides that are observed in each sample</li>
+<li>more powerful analysis</li>
+</ol></li>
+<li><p>It has the disadvantage that</p>
+<ol style="list-style-type: decimal">
+<li>protein summaries are no longer available for plotting</li>
+<li>it is difficult to correctly specify the degrees of freedom for the test-statistic leading to inference that is too liberal in experiments with small sample size</li>
+<li>sometimes sample level random effect variance are estimated to be zero, then the pseudo-replication is not addressed leading to inference that is too liberal for these specific proteins</li>
+<li>they are much more difficult to disseminate to users with limited background in statistics</li>
+</ol></li>
+</ul>
+<p>Hence, for this course we opted to use peptide-level models for summarization, but not for directly inferring on the differential expression at the protein-level.</p>
+</div>
 </div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiU3RhdGlzdGljYWwgTWV0aG9kcyBmb3IgUXVhbnRpdGF0aXZlIE1TLWJhc2VkIFByb3Rlb21pY3M6IFBhcnQgSS4gUHJlcHJvY2Vzc2luZyIKYXV0aG9yOiAiTGlldmVuIENsZW1lbnQiCmRhdGU6ICJbc3RhdE9taWNzXShodHRwczovL3N0YXRvbWljcy5naXRodWIuaW8pLCBHaGVudCBVbml2ZXJzaXR5IgpvdXRwdXQ6CiAgICBodG1sX2RvY3VtZW50OgogICAgICBjb2RlX2Rvd25sb2FkOiB0cnVlCiAgICAgIHRoZW1lOiBjb3NtbwogICAgICB0b2M6IHRydWUKICAgICAgdG9jX2Zsb2F0OiB0cnVlCiAgICAgIGhpZ2hsaWdodDogdGFuZ28KICAgICAgbnVtYmVyX3NlY3Rpb25zOiB0cnVlCmJpYmxpb2dyYXBoeTogbXNxcm9iMi5iaWIKCi0tLQoKPGEgcmVsPSJsaWNlbnNlIiBocmVmPSJodHRwczovL2NyZWF0aXZlY29tbW9ucy5vcmcvbGljZW5zZXMvYnktbmMtc2EvNC4wIj48aW1nIGFsdD0iQ3JlYXRpdmUgQ29tbW9ucyBMaWNlbnNlIiBzdHlsZT0iYm9yZGVyLXdpZHRoOjAiIHNyYz0iaHR0cHM6Ly9pLmNyZWF0aXZlY29tbW9ucy5vcmcvbC9ieS1uYy1zYS80LjAvODh4MzEucG5nIiAvPjwvYT4KCi0gW1BsYXlsaXN0IFBEQSBQcmVwcm9jZXNzaW5nXShodHRwczovL3d3dy55b3V0dWJlLmNvbS9wbGF5bGlzdD9saXN0PVBMWkgxaFA4X0xiSkpYUWVRX0tZRE5vcS1BWHlGQkc2blgpCgojIE91dGxpbmUgey19CgoxLiBJbnRyb2R1Y3Rpb24KCjIuIFByZXByb2Nlc3NpbmcKCiAgICAtIExvZy10cmFuc2Zvcm1hdGlvbgogICAgLSBGaWx0ZXJpbmcKICAgIC0gTm9ybWFsaXphdGlvbgogICAgLSBTdW1tYXJpemF0aW9uCgpOb3RlLCB0aGF0IHRoZSBSLWNvZGUgaXMgaW5jbHVkZWQgZm9yIGxlYXJuZXJzIHdobyBhcmUgYWltaW5nIHRvIGRldmVsb3AgUi9tYXJrZG93biBzY3JpcHRzIHRvIGF1dG9tYXRlIHRoZWlyIHF1YW50aXRhdGl2ZSBwcm90ZW9taWNzIGRhdGEgYW5hbHlzZXMuCkFjY29yZGluZyB0byB0aGUgdGFyZ2V0IGF1ZGllbmNlIG9mIHRoZSBjb3Vyc2Ugd2UgZWl0aGVyIHdvcmsgd2l0aCBhIGdyYXBoaWNhbCB1c2VyIGludGVyZmFjZSAoR1VJKSBpbiBhIFIvc2hpbnkgQXBwIG1zcXJvYjJndWkgKGUuZy4gUHJvdGVvbWljcyBCaW9pbmZvcm1hdGljcyBjb3Vyc2Ugb2YgdGhlIEVCSSBhbmQgdGhlIFByb3Rlb21pY3MgRGF0YSBBbmFseXNpcyBjb3Vyc2UgYXQgdGhlIEd1bGJlbmtpYW4gaW5zdGl0dXRlKSBvciB3aXRoIFIvbWFya2Rvd25zIHNjcmlwdHMgKGUuZy4gQmlvaW5mb3JtYXRpY3MgU3VtbWVyIFNjaG9vbCBhdCBVQ0xvdXZhaW4gb3IgdGhlIFN0YXRpc3RpY2FsIEdlbm9taWNzIENvdXJzZSBhdCBHaGVudCBVbml2ZXJzaXR5KS4gCgotLS0KCiMgSW50cm86IENoYWxsZW5nZXMgaW4gTGFiZWwtRnJlZSBRdWFudGl0YXRpdmUgUHJvdGVvbWljcwoKCgojIyBNUy1iYXNlZCB3b3JrZmxvdwoKYGBge3IgZWNobz1GQUxTRX0Ka25pdHI6OmluY2x1ZGVfZ3JhcGhpY3MoIi4vZmlndXJlcy9Qcm90ZW9taWNzV29ya2Zsb3cucG5nIikKYGBgCiAgCi0gUGVwdGlkZSBDaGFyYWN0ZXJpc3RpY3MKICAKICAtIE1vZGlmaWNhdGlvbnMKICAtIElvbmlzYXRpb24gRWZmaWNpZW5jeTogaHVnZSB2YXJpYWJpbGl0eQogIC0gSWRlbnRpZmljYXRpb24KICAgIC0gTWlzaWRlbnRpZmljYXRpb24gJFxyaWdodGFycm93JCBvdXRsaWVycwogICAgLSBNUyReMiQgc2VsZWN0aW9uIG9uIHBlcHRpZGUgYWJ1bmRhbmNlCiAgICAtIENvbnRleHQgZGVwZW5kaW5nIG1pc3NpbmduZXNzCiAgICAtIE5vbi1yYW5kb20gbWlzc2luZ25lc3MKCiRccmlnaHRhcnJvdyQgVW5iYWxhbmNlZCBwZXBpZGUgaWRlbnRpZmljYXRpb25zIGFjcm9zcyBzYW1wbGVzIGFuZCBtZXNzeSBkYXRhCgotLS0KCiMjIExldmVsIG9mIHF1YW50aWZpY2F0aW9uCgotIE1TLWJhc2VkIHByb3Rlb21pY3MgcmV0dXJucyBwZXB0aWRlczogcGllY2VzIG9mIHByb3RlaW5zCgpgYGB7ciBlY2hvPUZBTFNFfQprbml0cjo6aW5jbHVkZV9ncmFwaGljcygiLi9maWd1cmVzL2NoYWxsZW5nZXNfcGVwdGlkZXMucG5nIikKYGBgCgotIFF1YW50aWZpY2F0aW9uIGNvbW1vbmx5IHJlcXVpcmVkIG9uIHRoZSBwcm90ZWluIGxldmVsCgpgYGB7ciBlY2hvPUZBTFNFfQprbml0cjo6aW5jbHVkZV9ncmFwaGljcygiLi9maWd1cmVzL2NoYWxsZW5nZXNfcHJvdGVpbnMucG5nIikKYGBgCgotLS0KCiMjIExhYmVsLWZyZWUgUXVhbnRpdGF0aXZlIFByb3Rlb21pY3MgRGF0YSBBbmFseXNpcyBXb3JrZmxvd3MKCmBgYHtyIGVjaG89RkFMU0V9CmtuaXRyOjppbmNsdWRlX2dyYXBoaWNzKCIuL2ZpZ3VyZXMvcHJvdGVvbWljc0RhdGFBbmFseXNpcy5wbmciKQpgYGAKCi0tLQoKIyMgQ1BUQUMgU3Bpa2UtaW4gU3R1ZHkKCmBgYHtyIGVjaG89RkFMU0UsIG91dC53aWR0aD0iNTAlIn0Ka25pdHI6OmluY2x1ZGVfZ3JhcGhpY3MoIi4vZmlndXJlcy9jcHRhY0xheW91dEx1ZGdlci5wbmciKQpgYGAKCi0gU2FtZSB0cnlwc2luLWRpZ2VzdGVkIHllYXN0IHByb3Rlb21lIGJhY2tncm91bmQgaW4gZWFjaCBzYW1wbGUKLSBUcnlwc2luLWRpZ2VzdGVkIFNpZ21hIFVQUzEgc3RhbmRhcmQ6IDQ4IGRpZmZlcmVudCBodW1hbiBwcm90ZWlucyBzcGlrZWQgaW4gYXQgNSBkaWZmZXJlbnQgY29uY2VudHJhdGlvbnMgKHRyZWF0bWVudCBBLUUpIAotIFNhbXBsZXMgcmVwZWF0ZWRseSBydW4gb24gZGlmZmVyZW50IGluc3RydW1lbnRzIGluIGRpZmZlcmVudCBsYWJzCi0gQWZ0ZXIgTWF4UXVhbnQgc2VhcmNoIHdpdGggbWF0Y2ggYmV0d2VlbiBydW5zIG9wdGlvbgoKICAtIDQxXCUgb2YgYWxsIHByb3RlaW5zIGFyZSBxdWFudGlmaWVkIGluIGFsbCBzYW1wbGVzCiAgLSA2LjZcJSBvZiBhbGwgcGVwdGlkZXMgYXJlIHF1YW50aWZpZWQgaW4gYWxsIHNhbXBsZXMKCiRccmlnaHRhcnJvdyQgdmFzdCBhbW91bnQgb2YgbWlzc2luZ25lc3MKCgojIyBNYXhxdWFudCBvdXRwdXQKCmBgYHtyIGVjaG89RkFMU0V9CmtuaXRyOjppbmNsdWRlX2dyYXBoaWNzKCIuL2ZpZ3VyZXMvbWF4cXVhbnRPdXRwdXREaXIucG5nIikKYGBgCgotLS0KCgojIEltcG9ydCB0aGUgZGF0YSBpbiBSIAoKIyMgRGF0YSBpbmZyYXN0cnVjdHVyZQoKPGRldGFpbHM+PHN1bW1hcnk+IENsaWNrIHRvIHNlZSBiYWNrZ3JvdW5kIG9uIGRhdGEgaW5mcmFzdHJ1Y3R1cmUgdXNlZCBpbiBSIHRvIHN0b3JlIHByb3Rlb21pY3MgZGF0YSA8L3N1bW1hcnk+PHA+Ci0gV2UgdXNlIHRoZSBgUUZlYXR1cmVzYCBwYWNrYWdlIHRoYXQgcHJvdmlkZXMgdGhlIGluZnJhc3RydWN0dXJlIHRvCiAgLSBzdG9yZSwgIAogIC0gcHJvY2VzcywgCiAgLSBtYW5pcHVsYXRlIGFuZCAKICAtIGFuYWx5c2UgcXVhbnRpdGF0aXZlIGRhdGEvZmVhdHVyZXMgZnJvbSBtYXNzIHNwZWN0cm9tZXRyeQpleHBlcmltZW50cy4gCgotIEl0IGlzIGJhc2VkIG9uIHRoZSBgU3VtbWFyaXplZEV4cGVyaW1lbnRgIGFuZApgTXVsdGlBc3NheUV4cGVyaW1lbnRgIGNsYXNzZXMuIAoKCgpgYGB7ciBmaWcuY2FwID0gIkNvbmNlcHR1YWwgcmVwcmVzZW50YXRpb24gb2YgYSBgU3VtbWFyaXplZEV4cGVyaW1lbnRgIG9iamVjdC4gIEFzc2F5cyBjb250YWluIGluZm9ybWF0aW9uIG9uIHRoZSBtZWFzdXJlZCBvbWljcyBmZWF0dXJlcyAocm93cykgZm9yIGRpZmZlcmVudCBzYW1wbGVzIChjb2x1bW5zKS4gVGhlIGByb3dEYXRhYCBjb250YWlucyBpbmZvcm1hdGlvbiBvbiB0aGUgb21pY3MgZmVhdHVyZXMsIHRoZSBgY29sRGF0YWAgY29udGFpbnMgaW5mb3JtYXRpb24gb24gdGhlIHNhbXBsZXMsIGkuZS4gZXhwZXJpbWVudGFsIGRlc2lnbiBldGMuIiwgZWNobz1GQUxTRSwgb3V0LndpZHRoPSI4MCUifQprbml0cjo6aW5jbHVkZV9ncmFwaGljcygiLi9maWd1cmVzL1NFLnBuZyIpCmBgYAoKLSBBc3NheXMgaW4gYSBRRmVhdHVyZXMgb2JqZWN0IGhhdmUgYQpoaWVyYXJjaGljYWwgcmVsYXRpb246IAogIAogIC0gcHJvdGVpbnMgYXJlIGNvbXBvc2VkIG9mIHBlcHRpZGVzLCAKICAtIHRoZW1zZWx2ZXMgcHJvZHVjZWQgYnkgc3BlY3RyYQogIC0gcmVsYXRpb25zIGJldHdlZW4gYXNzYXlzIGFyZSB0cmFja2VkIGFuZCByZWNvcmRlZCB0aHJvdWdob3V0IGRhdGEgcHJvY2Vzc2luZwoKYGBge3IgZmVhdHVyZXNwbG90LCBmaWcuY2FwID0gIkNvbmNlcHR1YWwgcmVwcmVzZW50YXRpb24gb2YgYSBgUUZlYXR1cmVzYCBvYmplY3QgYW5kIHRoZSBhZ2dyZWdhdGl2ZSByZWxhdGlvbiBiZXR3ZWVuIGRpZmZlcmVudCBhc3NheXMuIiwgZWNobyA9IEZBTFNFfQpwYXIobWFyID0gYygwLCAwLCAwLCAwKSkKcGxvdChOQSwgeGxpbSA9IGMoMCwgMTIpLCB5bGltID0gYygwLCAyMCksCiAgICAgeGF4dCA9ICJuIiwgeWF4dCA9ICJuIiwKICAgICB4bGFiID0gIiIsIHlsYWIgPSAiIiwgYnR5ID0gIm4iKQpmb3IgKGkgaW4gMDo3KQogICAgcmVjdCgwLCBpLCAzLCBpKzEsIGNvbCA9ICJsaWdodGdyZXkiLCBib3JkZXIgPSAid2hpdGUiKQpmb3IgKGkgaW4gODoxMikKICAgIHJlY3QoMCwgaSwgMywgaSsxLCBjb2wgPSAic3RlZWxibHVlIiwgYm9yZGVyID0gIndoaXRlIikKZm9yIChpIGluIDEzOjE4KQogICAgcmVjdCgwLCBpLCAzLCBpKzEsIGNvbCA9ICJvcmFuZ2UiLCBib3JkZXIgPSAid2hpdGUiKQpmb3IgKGkgaW4gMTkpCiAgICByZWN0KDAsIGksIDMsIGkrMSwgY29sID0gImRhcmtncmV5IiwgYm9yZGVyID0gIndoaXRlIikKZm9yIChpIGluIDU6NykKICAgIHJlY3QoNSwgaSwgOCwgaSsxLCBjb2wgPSAibGlnaHRncmV5IiwgYm9yZGVyID0gIndoaXRlIikKZm9yIChpIGluIDg6MTApCiAgICByZWN0KDUsIGksIDgsIGkrMSwgY29sID0gInN0ZWVsYmx1ZSIsIGJvcmRlciA9ICJ3aGl0ZSIpCmZvciAoaSBpbiAxMToxMykKICAgIHJlY3QoNSwgaSwgOCwgaSsxLCBjb2wgPSAib3JhbmdlIiwgYm9yZGVyID0gIndoaXRlIikKZm9yIChpIGluIDE0KQogICAgcmVjdCg1LCBpLCA4LCBpKzEsIGNvbCA9ICJkYXJrZ3JleSIsIGJvcmRlciA9ICJ3aGl0ZSIpCnJlY3QoOSwgOCwgMTIsIDgrMSwgY29sID0gImxpZ2h0Z3JleSIsIGJvcmRlciA9ICJ3aGl0ZSIpCnJlY3QoOSwgOSwgMTIsIDkrMSwgY29sID0gInN0ZWVsYmx1ZSIsIGJvcmRlciA9ICJ3aGl0ZSIpCnJlY3QoOSwgMTAsIDEyLCAxMCsxLCBjb2wgPSAib3JhbmdlIiwgYm9yZGVyID0gIndoaXRlIikKcmVjdCg5LCAxMSwgMTIsIDExKzEsIGNvbCA9ICJkYXJrZ3JleSIsIGJvcmRlciA9ICJ3aGl0ZSIpCnNlZ21lbnRzKDMsIDgsIDUsIDgsIGx0eSA9ICJkYXNoZWQiKQpzZWdtZW50cygzLCA2LCA1LCA3LCBsdHkgPSAiZGFzaGVkIikKc2VnbWVudHMoMywgNCwgNSwgNiwgbHR5ID0gImRhc2hlZCIpCnNlZ21lbnRzKDMsIDAsIDUsIDUsIGx0eSA9ICJkYXNoZWQiKQpzZWdtZW50cygzLCAxMCwgNSwgOSwgbHR5ID0gImRhc2hlZCIpCnNlZ21lbnRzKDMsIDExLCA1LCAxMCwgbHR5ID0gImRhc2hlZCIpCnNlZ21lbnRzKDMsIDEzLCA1LCAxMSwgbHR5ID0gImRhc2hlZCIpCnNlZ21lbnRzKDMsIDE0LCA1LCAxMiwgbHR5ID0gImRhc2hlZCIpCnNlZ21lbnRzKDMsIDE2LCA1LCAxMywgbHR5ID0gImRhc2hlZCIpCnNlZ21lbnRzKDMsIDE5LCA1LCAxNCwgbHR5ID0gImRhc2hlZCIpCnNlZ21lbnRzKDMsIDIwLCA1LCAxNSwgbHR5ID0gImRhc2hlZCIpCnNlZ21lbnRzKDgsIDUsIDksIDgsIGx0eSA9ICJkYXNoZWQiKQpzZWdtZW50cyg4LCA4LCA5LCA5LCBsdHkgPSAiZGFzaGVkIikKc2VnbWVudHMoOCwgMTEsIDksIDEwLCBsdHkgPSAiZGFzaGVkIikKc2VnbWVudHMoOCwgMTQsIDksIDExLCBsdHkgPSAiZGFzaGVkIikKc2VnbWVudHMoOCwgMTUsIDksIDEyLCBsdHkgPSAiZGFzaGVkIikKYGBgCgo8L3A+PC9kZXRhaWxzPgoKIyMgSW1wb3J0IGRhdGEgaW4gUgoKCiMjIyBMb2FkIGxpYnJhcmllcyAKCjxkZXRhaWxzPjxzdW1tYXJ5PiBDbGljayB0byBzZWUgY29kZSA8L3N1bW1hcnk+PHA+CmBgYHtyLCB3YXJuaW5nPUZBTFNFLCBtZXNzYWdlPUZBTFNFfQpsaWJyYXJ5KHRpZHl2ZXJzZSkKbGlicmFyeShsaW1tYSkKbGlicmFyeShRRmVhdHVyZXMpCmxpYnJhcnkobXNxcm9iMikKbGlicmFyeShwbG90bHkpCmxpYnJhcnkoZ2dwbG90MikKYGBgCjwvcD48L2RldGFpbHM+CgojIyMgUmVhZCBkYXRhIAoKPGRldGFpbHM+PHN1bW1hcnk+IENsaWNrIHRvIHNlZSBiYWNrZ3JvdW5kIGFuZCBjb2RlIDwvc3VtbWFyeT48cD4KMS4gV2UgdXNlIGEgcGVwdGlkZXMudHh0IGZpbGUgZnJvbSBNUy1kYXRhIHF1YW50aWZpZWQgd2l0aCBtYXhxdWFudCB0aGF0IApjb250YWlucyBNUzEgaW50ZW5zaXRpZXMgc3VtbWFyaXplZCBhdCB0aGUgcGVwdGlkZSBsZXZlbC4gCmBgYHtyfQpwZXB0aWRlc0ZpbGUgPC0gImh0dHBzOi8vcmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbS9zdGF0T21pY3MvUERBMjEvZGF0YS9xdWFudGlmaWNhdGlvbi9mdWxsQ3B0YWNEYXRhc1NldE5vdEZvclR1dG9yaWFsL3BlcHRpZGVzLnR4dCIKYGBgCgoyLiBNYXhxdWFudCBzdG9yZXMgdGhlIGludGVuc2l0eSBkYXRhIGZvciB0aGUgZGlmZmVyZW50IHNhbXBsZXMgaW4gY29sdW1ubnMgdGhhdCBzdGFydCB3aXRoIEludGVuc2l0eS4gV2UgY2FuIHJldHJlaXZlIHRoZSBjb2x1bW4gbmFtZXMgd2l0aCB0aGUgaW50ZW5zaXR5IGRhdGEgd2l0aCB0aGUgY29kZSBiZWxvdzogCgpgYGB7cn0KZWNvbHMgPC0gZ3JlcCgiSW50ZW5zaXR5XFwuIiwgbmFtZXMocmVhZC5kZWxpbShwZXB0aWRlc0ZpbGUpKSkKYGBgCgozLiBSZWFkIHRoZSBkYXRhIGFuZCBzdG9yZSBpdCBpbiAgUUZlYXR1cmVzIG9iamVjdCAKCmBgYHtyfQpwZSA8LSByZWFkUUZlYXR1cmVzKAogIHRhYmxlID0gcGVwdGlkZXNGaWxlLAogIGZuYW1lcyA9IDEsCiAgZWNvbCA9IGVjb2xzLAogIG5hbWUgPSAicGVwdGlkZVJhdyIsIHNlcD0iXHQiKQpgYGAKPC9wPjwvZGV0YWlscz4KCiMjIyBFeHBsb3JlIG9iamVjdAoKPGRldGFpbHM+PHN1bW1hcnk+IENsaWNrIHRvIHNlZSBiYWNrZ3JvdW5kIGFuZCBjb2RlIDwvc3VtbWFyeT48cD4KLSBUaGUgcm93RGF0YSBjb250YWlucyBpbmZvcm1hdGlvbiBvbiB0aGUgZmVhdHVyZXMgKHBlcHRpZGVzKSBpbiB0aGUgYXNzYXkuIEUuZy4gU2VxdWVuY2UsIHByb3RlaW4sIC4uLgoKYGBge3J9CnJvd0RhdGEocGVbWyJwZXB0aWRlUmF3Il1dKQpgYGAKCi0gVGhlIGNvbERhdGEgY29udGFpbnMgaW5mb3JtYXRpb24gb24gdGhlIHNhbXBsZXMKCmBgYHtyfSAKY29sRGF0YShwZSkKYGBgCgotIE5vIGluZm9ybWF0aW9uIGlzIHN0b3JlZCB5ZXQgb24gdGhlIGRlc2lnbi4gCgoKYGBge3J9IApwZSAlPiUgY29sbmFtZXMKYGBgCgotIE5vdGUsIHRoYXQgdGhlIHNhbXBsZSBuYW1lcyBpbmNsdWRlIHRoZSBzcGlrZS1pbiBjb25kaXRpb24uIAotIFRoZXkgYWxzbyBlbmQgb24gYSBudW1iZXIuIAogIAogIC0gMS0zIGlzIGZyb20gbGFiIDEsIAogIC0gNC02IGZyb20gbGFiIDIgYW5kIAogIC0gNy05IGZyb20gbGFiIDMuIAoKLSBXZSB1cGRhdGUgdGhlIGNvbERhdGEgd2l0aCBpbmZvcm1hdGlvbiBvbiB0aGUgZGVzaWduCgpgYGB7cn0KY29sRGF0YShwZSkkbGFiIDwtIHJlcChyZXAocGFzdGUwKCJsYWIiLDE6MyksZWFjaD0zKSw1KSAlPiUgYXMuZmFjdG9yCmNvbERhdGEocGUpJGNvbmRpdGlvbiA8LSBwZVtbInBlcHRpZGVSYXciXV0gJT4lIGNvbG5hbWVzICU+JSBzdWJzdHIoMTIsMTIpICU+JSBhcy5mYWN0b3IKY29sRGF0YShwZSkkc3Bpa2VDb25jZW50cmF0aW9uIDwtIHJlcChjKEEgPSAwLjI1LCBCID0gMC43NCwgQyA9IDIuMjIsIEQgPSA2LjY3LCBFID0gMjApLGVhY2ggPSA5KQpgYGAKCi0gV2UgZXhwbG9yZSB0aGUgY29sRGF0YSBhZ2FpbgoKYGBge3J9CmNvbERhdGEocGUpCmBgYAoKPC9wPjwvZGV0YWlscz4KCi0tLQoKIyBQcmVwcm9jZXNzaW5nCgojIyBMb2ctdHJhbnNmb3JtYXRpb24KCiMjIyBFeHBsb3JlIHRoZSBkYXRhIHdpdGggcGxvdHMKClBlcHRpZGUgQUFMRUVMVksgZnJvbSBzcGlrZWQtaW4gVVBTIHByb3RlaW4gUDEyMDgxLiAKV2Ugb25seSBzaG93IGRhdGEgZnJvbSBsYWIxLgoKPGRldGFpbHM+PHN1bW1hcnk+IENsaWNrIHRvIHNlZSBjb2RlIHRvIG1ha2UgcGxvdCA8L3N1bW1hcnk+PHA+CmBgYHtyfQpzdWJzZXQgPC0gcGVbIkFBTEVFTFZLIixjb2xEYXRhKHBlKSRsYWI9PSJsYWIxIl0KcGxvdFdoeUxvZyA8LSBkYXRhLmZyYW1lKGNvbmNlbnRyYXRpb24gPSBjb2xEYXRhKHN1YnNldCkkc3Bpa2VDb25jZW50cmF0aW9uLAogICAgICAgICAgIHkgPSBhc3NheShzdWJzZXRbWyJwZXB0aWRlUmF3Il1dKSAlPiUgYwogICAgICAgICAgICkgJT4lIAogIGdncGxvdChhZXMoY29uY2VudHJhdGlvbiwgeSkpICsKICBnZW9tX3BvaW50KCkgKwogIHhsYWIoImNvbmNlbnRyYXRpb24gKGZtb2wvbCkiKSArCiAgZ2d0aXRsZSgicGVwdGlkZSBBQUxFRUxWSyBpbiBsYWIxIikKYGBgCjwvcD48L2RldGFpbHM+CgpgYGB7cn0KcGxvdFdoeUxvZwpgYGAKCi0gVmFyaWFuY2UgaW5jcmVhc2VzIHdpdGggdGhlIG1lYW4KJFxyaWdodGFycm93JCBNdWx0aXBsaWNhdGl2ZSBlcnJvciBzdHJ1Y3R1cmUgCgo8ZGV0YWlscz48c3VtbWFyeT4gQ2xpY2sgdG8gc2VlIGNvZGUgdG8gbWFrZSBwbG90IDwvc3VtbWFyeT48cD4KYGBge3J9CnBsb3RMb2cgPC0gZGF0YS5mcmFtZShjb25jZW50cmF0aW9uID0gY29sRGF0YShzdWJzZXQpJHNwaWtlQ29uY2VudHJhdGlvbiwKICAgICAgICAgICB5ID0gYXNzYXkoc3Vic2V0W1sicGVwdGlkZVJhdyJdXSkgJT4lIGMKICAgICAgICAgICApICU+JSAKICBnZ3Bsb3QoYWVzKGNvbmNlbnRyYXRpb24sIHkpKSArCiAgZ2VvbV9wb2ludCgpICsgCiAgc2NhbGVfeF9jb250aW51b3VzKHRyYW5zPSdsb2cyJykgKyAKICBzY2FsZV95X2NvbnRpbnVvdXModHJhbnM9J2xvZzInKSArCiAgeGxhYigiY29uY2VudHJhdGlvbiAoZm1vbC9sKSIpICsKICBnZ3RpdGxlKCJwZXB0aWRlIEFBTEVFTFZLIGluIGxhYjEgd2l0aCBheGVzIG9uIGxvZyBzY2FsZSIpCmBgYAo8L3A+PC9kZXRhaWxzPgoKYGBge3J9CnBsb3RMb2cKYGBgCgotIERhdGEgc2VlbXMgdG8gYmUgaG9tb3NjZWRhc3RpYyBvbiBsb2ctc2NhbGUgJFxyaWdodGFycm93JCBsb2cgdHJhbnNmb3JtYXRpb24gb2YgdGhlIGludGVuc2l0eSBkYXRhCi0gSW4gcXVhbnRpdGF0aXZlIHByb3Rlb21pY3MgYW5hbHlzaXMgb24gJFxsb2dfMiQgCgokXHJpZ2h0YXJyb3ckIERpZmZlcmVuY2VzIG9uIGEgJFxsb2dfMiQgc2NhbGU6ICRcbG9nXzIkIGZvbGQgY2hhbmdlcwoKJCQKXGxvZ18yIEIgLSBcbG9nXzIgQSA9IFxsb2dfMiBcZnJhY3tCfXtBfSA9IFxsb2cgRkNfXHRleHR7QiAtIEF9CiQkCiQkIApcYmVnaW57YXJyYXl9IHtsfQpsb2dfMiBGQyA9IDEgXHJpZ2h0YXJyb3cgRkMgPSAyXjEgPTJcXApsb2dfMiBGQyA9IDIgXHJpZ2h0YXJyb3cgRkMgPSAyXjIgPSA0XFwKXGVuZHthcnJheX0KJCQKCgojIyMgbG9nLXRyYW5zZm9ybWF0aW9uIG9mIHRoZSBkYXRhIAoKPGRldGFpbHM+PHN1bW1hcnk+IENsaWNrIHRvIHNlZSBjb2RlIHRvIGxvZy10cmFuc2Zyb20gdGhlIGRhdGEgPC9zdW1tYXJ5PjxwPgotIFdlIGNhbGN1bGF0ZSBob3cgbWFueSBub24gemVybyBpbnRlbnNpdGllcyB3ZSBoYXZlIGZvciBlYWNoIHBlcHRpZGUgYW5kIHRoaXMgY2FuIGJlIHVzZWZ1bCBmb3IgZmlsdGVyaW5nLgoKYGBge3J9CnJvd0RhdGEocGVbWyJwZXB0aWRlUmF3Il1dKSRuTm9uWmVybyA8LSByb3dTdW1zKGFzc2F5KHBlW1sicGVwdGlkZVJhdyJdXSkgPiAwKQpgYGAKCgotIFBlcHRpZGVzIHdpdGggemVybyBpbnRlbnNpdGllcyBhcmUgbWlzc2luZyBwZXB0aWRlcyBhbmQgc2hvdWxkIGJlIHJlcHJlc2VudAp3aXRoIGEgYE5BYCB2YWx1ZSByYXRoZXIgdGhhbiBgMGAuCgpgYGB7cn0KcGUgPC0gemVyb0lzTkEocGUsICJwZXB0aWRlUmF3IikgIyBjb252ZXJ0IDAgdG8gTkEKYGBgCgotIExvZ3RyYW5zZm9ybSBkYXRhIHdpdGggYmFzZSAyCgpgYGB7cn0KcGUgPC0gbG9nVHJhbnNmb3JtKHBlLCBiYXNlID0gMiwgaSA9ICJwZXB0aWRlUmF3IiwgbmFtZSA9ICJwZXB0aWRlTG9nIikKYGBgCjwvcD48L2RldGFpbHM+CgotLS0KCiMjIEZpbHRlcmluZwoKLSBSZXZlcnNlIHNlcXVlbmNlcwotIE9ubHkgaWRlbnRpZmllZCBieSBtb2RpZmljYXRpb24gc2l0ZSAob25seSBtb2RpZmllZCBwZXB0aWRlcyBkZXRlY3RlZCkKLSBSYXpvciBwZXB0aWRlczogbm9uLXVuaXF1ZSBwZXB0aWRlcyBhc3NpZ25lZCB0byB0aGUgcHJvdGVpbiBncm91cCB3aXRoIHRoZSBtb3N0IG90aGVyIHBlcHRpZGVzIAotIENvbnRhbWluYW50cwotIFBlcHRpZGVzIGZldyBpZGVudGlmaWNhdGlvbnMKLSBQcm90ZWlucyB0aGF0IGFyZSBvbmx5IGlkZW50aWZpZWQgd2l0aCBvbmUgb3IgYSBmZXcgcGVwdGlkZXMKCkZpbHRlcmluZyBkb2VzIG5vdCBpbmR1Y2UgYmlhcyBpZiB0aGUgY3JpdGVyaW9uIGlzIGluZGVwZW5kZW50IGZyb20gdGhlIGRvd25zdHJlYW0gZGF0YSBhbmFseXNpcyEKCjxkZXRhaWxzPjxzdW1tYXJ5PiBDbGljayB0byBzZWUgY29kZSB0byBmaWx0ZXIgdGhlIGRhdGEgPC9zdW1tYXJ5PjxwPgoKMS4gSGFuZGxpbmcgb3ZlcmxhcHBpbmcgcHJvdGVpbiBncm91cHMKCkluIG91ciBhcHByb2FjaCBhIHBlcHRpZGUgY2FuIG1hcCB0byBtdWx0aXBsZSBwcm90ZWlucywgYXMgbG9uZyBhcyB0aGVyZSBpcwpub25lIG9mIHRoZXNlIHByb3RlaW5zIHByZXNlbnQgaW4gYSBzbWFsbGVyIHN1Ymdyb3VwLgoKYGBge3J9CnBlW1sicGVwdGlkZUxvZyJdXSA8LQogcGVbWyJwZXB0aWRlTG9nIl1dW3Jvd0RhdGEocGVbWyJwZXB0aWRlTG9nIl1dKSRQcm90ZWlucwogJWluJSBzbWFsbGVzdFVuaXF1ZUdyb3Vwcyhyb3dEYXRhKHBlW1sicGVwdGlkZUxvZyJdXSkkUHJvdGVpbnMpLF0KYGBgCgoyLiBSZW1vdmUgcmV2ZXJzZSBzZXF1ZW5jZXMgKGRlY295cykgYW5kIGNvbnRhbWluYW50cwoKV2Ugbm93IHJlbW92ZSB0aGUgY29udGFtaW5hbnRzLCBwZXB0aWRlcyB0aGF0IG1hcCB0byBkZWNveSBzZXF1ZW5jZXMsIGFuZCBwcm90ZWlucwp3aGljaCB3ZXJlIG9ubHkgaWRlbnRpZmllZCBieSBwZXB0aWRlcyB3aXRoIG1vZGlmaWNhdGlvbnMuCgpgYGB7cn0KcGVbWyJwZXB0aWRlTG9nIl1dIDwtIHBlW1sicGVwdGlkZUxvZyJdXVtyb3dEYXRhKHBlW1sicGVwdGlkZUxvZyJdXSkkUmV2ZXJzZSAhPSAiKyIsIF0KcGVbWyJwZXB0aWRlTG9nIl1dIDwtIHBlW1sicGVwdGlkZUxvZyJdXVtyb3dEYXRhKHBlW1sicGVwdGlkZUxvZyJdXSkkCiAgICBQb3RlbnRpYWwuY29udGFtaW5hbnQgIT0gIisiLCBdCmBgYAoKMy4gRHJvcCBwZXB0aWRlcyB0aGF0IHdlcmUgb25seSBpZGVudGlmaWVkIGluIG9uZSBzYW1wbGUKCldlIGtlZXAgcGVwdGlkZXMgdGhhdCB3ZXJlIG9ic2VydmVkIGF0IGxhc3QgdHdpY2UuCgpgYGB7cn0KcGVbWyJwZXB0aWRlTG9nIl1dIDwtIHBlW1sicGVwdGlkZUxvZyJdXVtyb3dEYXRhKHBlW1sicGVwdGlkZUxvZyJdXSkkbk5vblplcm8gPj0gMiwgXQpucm93KHBlW1sicGVwdGlkZUxvZyJdXSkKYGBgCgpXZSBrZWVwIGByIG5yb3cocGVbWyJwZXB0aWRlTG9nIl1dKWAgcGVwdGlkZXMgdXBvbiBmaWx0ZXJpbmcuCjwvcD48L2RldGFpbHM+CgotLS0KCiMjIE5vcm1hbGl6YXRpb24gCgo8ZGV0YWlscz48c3VtbWFyeT4gQ2xpY2sgdG8gc2VlIGNvZGUgdG8gbWFrZSBwbG90IDwvc3VtbWFyeT48cD4KCmBgYHtyfQpkZW5zaXR5Q29uZGl0aW9uRCA8LSBwZVtbInBlcHRpZGVMb2ciXV1bLGNvbERhdGEocGUpJGNvbmRpdGlvbj09IkQiXSAlPiUgCiAgYXNzYXkgJT4lCiAgYXMuZGF0YS5mcmFtZSgpICU+JQogIGdhdGhlcihzYW1wbGUsIGludGVuc2l0eSkgJT4lIAogIG11dGF0ZShsYWIgPSBjb2xEYXRhKHBlKVtzYW1wbGUsImxhYiJdKSAlPiUKICBnZ3Bsb3QoYWVzKHg9aW50ZW5zaXR5LGdyb3VwPXNhbXBsZSxjb2xvcj1sYWIpKSArIAogICAgZ2VvbV9kZW5zaXR5KCkgKwogICAgZ2d0aXRsZSgiY29uZGl0aW9uIEQiKQoKZGVuc2l0eUxhYjIgPC0gcGVbWyJwZXB0aWRlTG9nIl1dWyxjb2xEYXRhKHBlKSRsYWI9PSJsYWIyIl0gJT4lIAogIGFzc2F5ICU+JQogIGFzLmRhdGEuZnJhbWUoKSAlPiUKICBnYXRoZXIoc2FtcGxlLCBpbnRlbnNpdHkpICU+JSAKICBtdXRhdGUoY29uZGl0aW9uID0gY29sRGF0YShwZSlbc2FtcGxlLCJjb25kaXRpb24iXSkgJT4lCiAgZ2dwbG90KGFlcyh4PWludGVuc2l0eSxncm91cD1zYW1wbGUsY29sb3I9Y29uZGl0aW9uKSkgKyAKICAgIGdlb21fZGVuc2l0eSgpICsKICAgIGdndGl0bGUoImxhYjIiKQpgYGAKPC9wPjwvZGV0YWlscz4KCmBgYHtyfQpkZW5zaXR5Q29uZGl0aW9uRApgYGAKCmBgYHtyfQpkZW5zaXR5TGFiMgpgYGAKLSBFdmVuIGluIHZlcnkgY2xlYW4gc3ludGhldGljIGRhdGFzZXQgKHNhbWUgYmFja2dyb3VuZCwgb25seSA0OCBVUFMKcHJvdGVpbnMgY2FuIGJlIGRpZmZlcmVudCkgdGhlIG1hcmdpbmFsIHBlcHRpZGUgaW50ZW5zaXR5IGRpc3RyaWJ1dGlvbgphY3Jvc3Mgc2FtcGxlcyBjYW4gYmUgcXVpdGUgZGlzdGluY3QKCi0gQ29uc2lkZXJhYmxlIGVmZmVjdHMgYmV0d2VlbiBhbmQgd2l0aGluIGxhYnMgZm9yIHJlcGxpY2F0ZSBzYW1wbGVzCi0gQ29uc2lkZXJhYmxlIGVmZmVjdHMgYmV0d2VlbiBzYW1wbGVzIHdpdGggZGlmZmVyZW50IHNwaWtlLWluCmNvbmNlbnRyYXRpb24KCiRccmlnaHRhcnJvdyQgTm9ybWFsaXphdGlvbiBpcyBuZWVkZWQKCi0tLQoKCiMjIyBNZWFuIG9yIG1lZGlhbj8KCi0gTWlsbGVyIGFuZCBGaXNoa2luICgxOTk3KSByZXBvcnRlZCB0aGF0IG92ZXIgYSBwZXJpb2Qgb2YgMzAgeWVhcnMgbWFsZXMgd291bGQgbGlrZSB0byBoYXZlIG9uIGF2ZXJhZ2UgNjQuMyBwYXJ0bmVycyBhbmQgZmVtYWxlcyAyLjguIAoKCjxkZXRhaWxzPjxzdW1tYXJ5PiA8L3N1bW1hcnk+PHA+Ci0gTWlsbGVyIGFuZCBGaXNoa2luICgxOTk3KSByZXBvcnRlZCB0aGF0IHRoZSBtZWRpYW4gbnVtYmVyIG9mIHBhcnRuZXJzIHNvbWVvbmUgd291bGQgbGlrZSB0byBoYXZlIG92ZXIgYSBwZXJpb2Qgb2YgMzAgeWVhcnMgbWFsZXMgaXMgMSBmb3IgYm90aCBtYWxlcyBhbmQgZmVtYWxlcy4gCjwvcD48L2RldGFpbHM+Cgo8ZGV0YWlscz48c3VtbWFyeT4gPC9zdW1tYXJ5PjxwPgpNZWFuIGlzIHZlcnkgc2Vuc2l0aXZlIHRvIG91dGxpZXJzIQoKYGBge3IgZWNobz1GQUxTRX0Ka25pdHI6OmluY2x1ZGVfZ3JhcGhpY3MoIi4vZmlndXJlcy9wYXJ0bmVycy5wbmciKQpgYGAKPC9wPjwvZGV0YWlscz4KCgotLS0KCiMjIyBOb3JtYWxpemF0aW9uIG9mIHRoZSBkYXRhIGJ5IG1lZGlhbiBjZW50ZXJpbmcKCiQkeV97aXB9Xlx0ZXh0e25vcm19ID0geV97aXB9IC0gXGhhdFxtdV9pJCQgCndpdGggJFxoYXRcbXVfaSQgdGhlIG1lZGlhbiBpbnRlbnNpdHkgb3ZlciBhbGwgb2JzZXJ2ZWQgcGVwdGlkZXMgaW4gc2FtcGxlICRpJC4KCjxkZXRhaWxzPjxzdW1tYXJ5PiBDbGljayB0byBzZWUgUi1jb2RlIHRvIG5vcm1hbGl6ZSB0aGUgZGF0YSA8L3N1bW1hcnk+PHA+CmBgYHtyfQpwZSA8LSBub3JtYWxpemUocGUsIAogICAgICAgICAgICAgICAgaSA9ICJwZXB0aWRlTG9nIiwgCiAgICAgICAgICAgICAgICBuYW1lID0gInBlcHRpZGVOb3JtIiwgCiAgICAgICAgICAgICAgICBtZXRob2QgPSAiY2VudGVyLm1lZGlhbiIpCmBgYAo8L3A+PC9kZXRhaWxzPgoKIyMjIFBsb3RzIG9mIG5vcm1hbGl6ZWQgZGF0YQoKCjxkZXRhaWxzPjxzdW1tYXJ5PiBDbGljayB0byBzZWUgY29kZSB0byBtYWtlIHBsb3QgPC9zdW1tYXJ5PjxwPgpgYGB7cn0KZGVuc2l0eUNvbmRpdGlvbkROb3JtIDwtIHBlW1sicGVwdGlkZU5vcm0iXV1bLGNvbERhdGEocGUpJGNvbmRpdGlvbj09IkQiXSAlPiUgCiAgYXNzYXkgJT4lCiAgYXMuZGF0YS5mcmFtZSgpICU+JQogIGdhdGhlcihzYW1wbGUsIGludGVuc2l0eSkgJT4lIAogIG11dGF0ZShsYWIgPSBjb2xEYXRhKHBlKVtzYW1wbGUsImxhYiJdKSAlPiUKICBnZ3Bsb3QoYWVzKHg9aW50ZW5zaXR5LGdyb3VwPXNhbXBsZSxjb2xvcj1sYWIpKSArIAogICAgZ2VvbV9kZW5zaXR5KCkgKwogICAgZ2d0aXRsZSgiY29uZGl0aW9uIEQiKQoKZGVuc2l0eUxhYjJOb3JtIDwtIHBlW1sicGVwdGlkZU5vcm0iXV1bLGNvbERhdGEocGUpJGxhYj09ImxhYjIiXSAlPiUgCiAgYXNzYXkgJT4lCiAgYXMuZGF0YS5mcmFtZSgpICU+JQogIGdhdGhlcihzYW1wbGUsIGludGVuc2l0eSkgJT4lIAogIG11dGF0ZShjb25kaXRpb24gPSBjb2xEYXRhKHBlKVtzYW1wbGUsImNvbmRpdGlvbiJdKSAlPiUKICBnZ3Bsb3QoYWVzKHg9aW50ZW5zaXR5LGdyb3VwPXNhbXBsZSxjb2xvcj1jb25kaXRpb24pKSArIAogICAgZ2VvbV9kZW5zaXR5KCkgKwogICAgZ2d0aXRsZSgibGFiMiIpCmBgYAo8L3A+PC9kZXRhaWxzPgoKYGBge3J9CmRlbnNpdHlDb25kaXRpb25ETm9ybQpgYGAKCmBgYHtyfQpkZW5zaXR5TGFiMk5vcm0KYGBgCgotIFVwb24gbm9ybWFsaXphdGlvbiB0aGUgbWFyZ2luYWwgZGlzdHJpYnV0aW9ucyBvZiB0aGUgcGVwdGlkZSBpbnRlbnNpdGllcyBhY3Jvc3Mgc2FtcGxlcyBhcmUgbXVjaCBtb3JlIGNvbXBhcmFibGUKLSBXZSBzdGlsbCBzZWUgZGV2aWF0aW9ucwotIFRoaXMgY2FuIGJlIGR1ZSB0byB0ZWNobmljYWwgdmFyaWFiaWxpdHkKLSBJbiBtaWNyby1hcnJheSBsaXRlcmF0dXJlLCBxdWFudGlsZSBub3JtYWxpc2F0aW9uIGlzIHVzZWQgdG8gZm9yY2UgdGhlIG1lZGlhbiBhbmQgYWxsIG90aGVyIHF1YW50aWxlcyB0byBiZSBlcXVhbCBhY3Jvc3Mgc2FtcGxlcwotIEluIHByb3Rlb21pY3MgcXVhbnRpbGUgbm9ybWFsaXNhdGlvbiBvZnRlbiBpbnRyb2R1Y2VzIGFydGlmYWN0cyBkdWUgdG8gYSBkaWZmZXJlbmNlIGluIG1pc3NpbmcgcGVwdGlkZXMgYWNyb3NzIHNhbXBsZXMgCi0gTW9yZSBhZHZhbmNlZCBtZXRob2RzIHNob3VsZCBiZSBkZXZlbG9wZWQgZm9yIG5vcm1hbGl6aW5nIHByb3Rlb21pY3MgZGF0YQotIElmIHRoZXJlIGFyZSBkaWZmZXJlbmNlcyBpbiB0aGUgd2lkdGggb2YgdGhlIG1hcmdpbmFsIGRpc3RyaWJ1dGlvbnMgb2YgdGhlIGRhdGEgYWNyb3NzIHNhbXBsZXMuIFRoZXkgY2FuIGFsc28gYmUgc3RhbmRhcmRpemVkIGJ5IHVzaW5nIGEgcm9idXN0IGVzdGltYXRvciBmb3IgbG9jYXRpb24gYW5kIHNjYWxlLCBpLmUuIAokJHlfe2lwfV5cdGV4dHtub3JtfSA9IFxmcmFje3lfe2lwfSAtIFxtdV9pfXtzX2l9JCQgCgotLS0KCiMjIFN1bW1hcml6YXRpb24gCgotIFdlIGlsbHVzdHJhdGUgc3VtbWFyaXphdGlvbiBpc3N1ZXMgdXNpbmcgYSBzdWJzZXQgb2YgdGhlIGNwdGFjIHN0dWR5IChMYWIgMiwgY29uZGl0aW9uIEEgYW5kIEUpIGZvciBhIHNwaWtlZCBwcm90ZWluIChVUFMgUDEyMDgxKS4KCjxkZXRhaWxzPjxzdW1tYXJ5PiBDbGljayB0byBzZWUgY29kZSB0byBtYWtlIHBsb3QgPC9zdW1tYXJ5PjxwPgpgYGB7ciBwbG90ID0gRkFMU0V9CnN1bW1hcnlQbG90IDwtIHBlW1sicGVwdGlkZU5vcm0iXV1bCiAgICByb3dEYXRhKHBlW1sicGVwdGlkZU5vcm0iXV0pJFByb3RlaW5zID09ICJQMTIwODF1cHN8U1lIQ19IVU1BTl9VUFMiLAogICAgY29sRGF0YShwZSkkbGFiPT0ibGFiMiImY29sRGF0YShwZSkkY29uZGl0aW9uICVpbiUgYygiQSIsIkUiKV0gJT4lCiAgYXNzYXkgJT4lCiAgYXMuZGF0YS5mcmFtZSAlPiUKICByb3duYW1lc190b19jb2x1bW4odmFyID0gInBlcHRpZGUiKSAlPiUKICBnYXRoZXIoc2FtcGxlLCBpbnRlbnNpdHksIC1wZXB0aWRlKSAlPiUgCiAgbXV0YXRlKGNvbmRpdGlvbiA9IGNvbERhdGEocGUpW3NhbXBsZSwiY29uZGl0aW9uIl0pICU+JQogIGdncGxvdChhZXMoeCA9IHBlcHRpZGUsIHkgPSBpbnRlbnNpdHksIGNvbG9yID0gc2FtcGxlLCBncm91cCA9IHNhbXBsZSwgbGFiZWwgPSBjb25kaXRpb24pLCBzaG93LmxlZ2VuZCA9IEZBTFNFKSArCiAgZ2VvbV9saW5lKHNob3cubGVnZW5kID0gRkFMU0UpICsKICBnZW9tX3RleHQoc2hvdy5sZWdlbmQgPSBGQUxTRSkgKwogIHRoZW1lX21pbmltYWwoKSArCiAgdGhlbWUoYXhpcy50ZXh0LnggPSBlbGVtZW50X3RleHQoYW5nbGUgPSA5MCwgdmp1c3QgPSAwLjUsIGhqdXN0ID0gMSkpICsKICB4bGFiKCJQZXB0aWRlIikgKyAKICB5bGFiKCJJbnRlbnNpdHkgKGxvZzIpIikKYGBgCjwvcD48L2RldGFpbHM+CgpgYGB7cn0Kc3VtbWFyeVBsb3QKYGBgCgpXZSBvYnNlcnZlOiAgCgotIGludGVuc2l0aWVzIGZyb20gbXVsdGlwbGUgcGVwdGlkZXMgZm9yIGVhY2ggcHJvdGVpbiBpbiBhIHNhbXBsZQotIFN0cm9uZyBwZXB0aWRlIGVmZmVjdCAKLVVuYmFsYW5jZWQgcGVwdGlkZSBpZGVudGlmaWNhdGlvbgotIFBzZXVkby1yZXBsaWNhdGlvbjogcGVwdGlkZSBpbnRlbnNpdGllcyBmcm9tIGEgcGFydGljdWxhciBwcm90ZWluIGluIHRoZSBzYW1lIHNhbXBsZSBhcmUgY29ycmVsYXRlZCwgaS5lLiB0aGV5IG1vcmUgYWxpa2UgdGhhbiBwZXB0aWRlIGludGVuc2l0aWVzIGZyb20gYSBwYXJ0aWN1bGFyIHByb3RlaW4gYmV0d2VlbiBzYW1wbGVzLiAKCgokXHJpZ2h0YXJyb3ckIFN1bW1hcml6ZSBhbGwgcGVwdGlkZSBpbnRlbnNpdGllcyBmcm9tIHRoZSBzYW1lIHByb3RlaW4gaW4gYSBzYW1wbGUgaW50byBhIHNpbmdsZSBwcm90ZWluIGV4cHJlc3Npb24gdmFsdWUKCkNvbW1vbmx5IHVzZWQgbWV0aG9kcyBhcmUgCgotIE1lYW4gc3VtbWFyaXphdGlvbgokJAp5X3tpcH09XGJldGFfaV5cdGV4dHtzYW1wfSArIFxlcHNpbG9uX3tpcH0KJCQKCi0gTWVkaWFuIHN1bW1hcml6YXRpb24KLSBNYXhxdWFudCdzIG1heExGUSBzdW1tYXJpemF0aW9uIChpbiBwcm90ZWluIGdyb3VwcyBmaWxlKQotIE1vZGVsIGJhc2VkIHN1bW1hcml6YXRpb246IAokJAp5X3tpcH09XGJldGFfaV5cdGV4dHtzYW1wfSArIFxiZXRhX3BeXHRleHR7cGVwfSArIFxlcHNpbG9uX3tpcH0KJCQKCgo8ZGV0YWlscz48c3VtbWFyeT4gQ2xpY2sgdG8gc2VlIFItY29kZSB0byBub3JtYWxpemUgdGhlIGRhdGEgPC9zdW1tYXJ5PjxwPgpXZSB1c2UgdGhlIHN0YW5kYXJkIHN1bWFyaXphdGlvbiBpbiBhZ2dyZWdhdGVGZWF0dXJlcywgd2hpY2ggaXMKcm9idXN0IG1vZGVsIGJhc2VkIHN1bW1hcml6YXRpb24uIAoKYGBge3Isd2FybmluZz1GQUxTRX0KcGUgPC0gYWdncmVnYXRlRmVhdHVyZXMocGUsCiAgICBpID0gInBlcHRpZGVOb3JtIiwgCiAgICBmY29sID0gIlByb3RlaW5zIiwgCiAgICBuYS5ybSA9IFRSVUUsCiAgICBuYW1lID0gInByb3RlaW4iKQpgYGAKCk90aGVyIHN1bW1hcml6YXRpb24gbWV0aG9kcyBjYW4gYmUgaW1wbGVtZW50ZWQgYnkgdXNpbmcgdGhlIGBmdW5gIGFyZ3VtZW50IGluIHRoZSBgYWdncmVnYXRlRmVhdHVyZXNgIGZ1bmN0aW9uLiAKCi0gYGZ1biA9IE1zQ29yZVV0aWxzOjptZWRpYW5Qb2xpc2goKWAgdG8gZml0cyBhbiBhZGRpdGl2ZSBtb2RlbCAodHdvIHdheSBkZWNvbXBvc2l0aW9uKSB1c2luZyBUdWtleSdzIG1lZGlhbiBwb2xpc2hfIHByb2NlZHVyZSB1c2luZyBzdGF0czo6bWVkcG9saXNoKCkKCi0gYGZ1biA9IE1zQ29yZVV0aWxzOjpyb2J1c3RTdW1tYXJ5KClgIHRvIGNhbGN1bGF0ZSBhIHJvYnVzdCBhZ2dyZWdhdGlvbiB1c2luZyBNQVNTOjpybG0oKSAoZGVmYXVsdCkKCi0gYGZ1biA9IGJhc2U6OmNvbE1lYW5zKClgIHRvIHVzZSB0aGUgbWVhbiBvZiBlYWNoIGNvbHVtbgoKLSBgZnVuID0gbWF0cml4U3RhdHM6OmNvbE1lZGlhbnMoKWAgdG8gdXNlIHRoZSBtZWRpYW4gb2YgZWFjaCBjb2x1bW4KCi0gYGZ1biA9IGJhc2U6OmNvbFN1bXMoKWAgdG8gdXNlIHRoZSBzdW0gb2YgZWFjaCBjb2x1bW4KCjwvcD48L2RldGFpbHM+CgotLS0KCiMgRXhlcmNpc2UKCjEuIFdlIHdpbGwgZXZhbHVhdGUgZGlmZmVyZW50IHN1bW1hcml6YXRpb24gbWV0aG9kcyAoTWF4cXVhbnQgbWF4TEZRLCBtZWRpYW4gYW5kIHJvYnVzdCBtb2RlbCBiYXNlZCkgaW4gdGhlIHR1dG9yaWFsIHNlc3Npb24gYmVmb3JlIGRpc2N1c3Npbmcgb24gdGhlaXIgYWR2YW50YWdlcy9kaXNhZHZhbnRhZ2VzLgoyLiBDYW4geW91IGFudGljaXBhdGUgb24gcG90ZW50aWFsIHByb2JsZW1zIHJlbGF0ZWQgdG8gdGhlIHN1bW1hcml6YXRpb24/CgotLS0KCiMgQ29kZQoKLSBPdXIgUi9CaW9jb25kdWN0b3IgcGFja2FnZSBgbXNxcm9iMmAgY2FuIGJlIHVzZWQgaW4gUiBtYXJrZG93biBzY3JpcHRzIG9yIHdpdGggYSBHVUkvc2hpbnlBcHAgaW4gdGhlIGBtc3Fyb2IyZ3VpYCBwYWNrYWdlIG9yIC4gCgotIFVzZXJzIHdobyB3YW50IHRvIGxlYXJuIGhvdyB0byBjb2RlIGFuZCBhdXRvbWF0ZSBwcm90ZW9taWNzIGRhdGEgYW5hbHlzZXMgaW4gcmVwcm9kdWNpYmxlIFIgbWFya2Rvd24gc2NyaXB0cyBjYW4gZ2V0IG1vcmUgaW5mb3JtYXRpb24gb24gYWxsIGNvZGUgdXNlZCBpbiB0aGlzIHNjcmlwdCBpbiB0aGUgdmlkZW8gYmVsb3cuIAoKMS4gRGF0YSBpbmZyYXN0cnVjdHVyZQoKMi4gSW1wb3J0IHByb3Rlb21pY3MgZGF0YQoKMy4gUHJlcHJvY2Vzc2luZwoKICAgIC0gICBMb2ctdHJhbnNmb3JtYXRpb24KCiAgICAtIEZpbHRlcmluZwoKICAgIC0gTm9ybWFsaXNhdGlvbgoKICAgIC0gU3VtbWFyaXphdGlvbgoK</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiU3RhdGlzdGljYWwgTWV0aG9kcyBmb3IgUXVhbnRpdGF0aXZlIE1TLWJhc2VkIFByb3Rlb21pY3M6IFBlcHRpZGUtbGV2ZWwgTW9kZWxzIGZvciBTdW1tYXJpemF0aW9uIGFuZCBJbmZlcmVuY2UiCmF1dGhvcjogIkxpZXZlbiBDbGVtZW50IgpkYXRlOiAiW3N0YXRPbWljc10oaHR0cHM6Ly9zdGF0b21pY3MuZ2l0aHViLmlvKSwgR2hlbnQgVW5pdmVyc2l0eSIKb3V0cHV0OgogICAgaHRtbF9kb2N1bWVudDoKICAgICAgY29kZV9kb3dubG9hZDogdHJ1ZQogICAgICB0aGVtZTogY29zbW8KICAgICAgdG9jOiB0cnVlCiAgICAgIHRvY19mbG9hdDogdHJ1ZQogICAgICBoaWdobGlnaHQ6IHRhbmdvCiAgICAgIG51bWJlcl9zZWN0aW9uczogdHJ1ZQogICAgcGRmX2RvY3VtZW50OgogICAgICB0b2M6IHRydWUKICAgICAgbnVtYmVyX3NlY3Rpb25zOiB0cnVlCmxpbmtjb2xvcjogYmx1ZQp1cmxjb2xvcjogYmx1ZQpjaXRlY29sb3I6IGJsdWUKCmJpYmxpb2dyYXBoeTogbXNxcm9iMi5iaWIKICAgICAgCi0tLQoKPGEgcmVsPSJsaWNlbnNlIiBocmVmPSJodHRwczovL2NyZWF0aXZlY29tbW9ucy5vcmcvbGljZW5zZXMvYnktbmMtc2EvNC4wIj48aW1nIGFsdD0iQ3JlYXRpdmUgQ29tbW9ucyBMaWNlbnNlIiBzdHlsZT0iYm9yZGVyLXdpZHRoOjAiIHNyYz0iaHR0cHM6Ly9pLmNyZWF0aXZlY29tbW9ucy5vcmcvbC9ieS1uYy1zYS80LjAvODh4MzEucG5nIiAvPjwvYT4KClRoaXMgaXMgcGFydCBvZiB0aGUgb25saW5lIGNvdXJzZSBbUHJvdGVvbWljcyBEYXRhIEFuYWx5c2lzIDIwMjEgKFBEQTIxKV0oaHR0cHM6Ly9zdGF0b21pY3MuZ2l0aHViLmlvL1BEQTIxLykKCiMgSW1wb3J0IHRoZSBkYXRhIGluIFIgCgojIyBMb2FkIGxpYnJhcmllcyAKCjxkZXRhaWxzPjxzdW1tYXJ5PiBDbGljayB0byBzZWUgY29kZSA8L3N1bW1hcnk+PHA+CmBgYHtyLCB3YXJuaW5nPUZBTFNFLCBtZXNzYWdlPUZBTFNFfQpsaWJyYXJ5KHRpZHl2ZXJzZSkKbGlicmFyeShsaW1tYSkKbGlicmFyeShRRmVhdHVyZXMpCmxpYnJhcnkobXNxcm9iMikKbGlicmFyeShwbG90bHkpCmxpYnJhcnkoZ2dwbG90MikKbGlicmFyeShncmlkRXh0cmEpCmBgYAo8L3A+PC9kZXRhaWxzPgoKIyMgUmVhZCBkYXRhIAoKPGRldGFpbHM+PHN1bW1hcnk+IENsaWNrIHRvIHNlZSBiYWNrZ3JvdW5kIGFuZCBjb2RlIDwvc3VtbWFyeT48cD4KMS4gV2UgdXNlIGEgcGVwdGlkZXMudHh0IGZpbGUgZnJvbSBNUy1kYXRhIHF1YW50aWZpZWQgd2l0aCBtYXhxdWFudCB0aGF0IApjb250YWlucyBNUzEgaW50ZW5zaXRpZXMgc3VtbWFyaXplZCBhdCB0aGUgcGVwdGlkZSBsZXZlbC4gCmBgYHtyfQpwZXB0aWRlc0ZpbGUgPC0gImh0dHBzOi8vcmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbS9zdGF0T21pY3MvUERBMjEvZGF0YS9xdWFudGlmaWNhdGlvbi9mdWxsQ3B0YWNEYXRhc1NldE5vdEZvclR1dG9yaWFsL3BlcHRpZGVzLnR4dCIKYGBgCgoyLiBNYXhxdWFudCBzdG9yZXMgdGhlIGludGVuc2l0eSBkYXRhIGZvciB0aGUgZGlmZmVyZW50IHNhbXBsZXMgaW4gY29sdW1ubnMgdGhhdCBzdGFydCB3aXRoIEludGVuc2l0eS4gV2UgY2FuIHJldHJlaXZlIHRoZSBjb2x1bW4gbmFtZXMgd2l0aCB0aGUgaW50ZW5zaXR5IGRhdGEgd2l0aCB0aGUgY29kZSBiZWxvdzogCgpgYGB7cn0KZWNvbHMgPC0gZ3JlcCgiSW50ZW5zaXR5XFwuIiwgbmFtZXMocmVhZC5kZWxpbShwZXB0aWRlc0ZpbGUpKSkKYGBgCgozLiBSZWFkIHRoZSBkYXRhIGFuZCBzdG9yZSBpdCBpbiAgUUZlYXR1cmVzIG9iamVjdCAKCmBgYHtyfQpwZSA8LSByZWFkUUZlYXR1cmVzKAogIHRhYmxlID0gcGVwdGlkZXNGaWxlLAogIGZuYW1lcyA9IDEsCiAgZWNvbCA9IGVjb2xzLAogIG5hbWUgPSAicGVwdGlkZVJhdyIsIHNlcD0iXHQiKQpgYGAKPC9wPjwvZGV0YWlscz4KCiMjIEV4cGxvcmUgb2JqZWN0Cgo8ZGV0YWlscz48c3VtbWFyeT4gQ2xpY2sgdG8gc2VlIGJhY2tncm91bmQgYW5kIGNvZGUgPC9zdW1tYXJ5PjxwPgotIFRoZSByb3dEYXRhIGNvbnRhaW5zIGluZm9ybWF0aW9uIG9uIHRoZSBmZWF0dXJlcyAocGVwdGlkZXMpIGluIHRoZSBhc3NheS4gRS5nLiBTZXF1ZW5jZSwgcHJvdGVpbiwgLi4uCgpgYGB7cn0Kcm93RGF0YShwZVtbInBlcHRpZGVSYXciXV0pCmBgYAoKLSBUaGUgY29sRGF0YSBjb250YWlucyBpbmZvcm1hdGlvbiBvbiB0aGUgc2FtcGxlcwoKYGBge3J9IApjb2xEYXRhKHBlKQpgYGAKCi0gTm8gaW5mb3JtYXRpb24gaXMgc3RvcmVkIHlldCBvbiB0aGUgZGVzaWduLiAKCgpgYGB7cn0gCnBlICU+JSBjb2xuYW1lcwpgYGAKCi0gTm90ZSwgdGhhdCB0aGUgc2FtcGxlIG5hbWVzIGluY2x1ZGUgdGhlIHNwaWtlLWluIGNvbmRpdGlvbi4gCi0gVGhleSBhbHNvIGVuZCBvbiBhIG51bWJlci4gCiAgCiAgLSAxLTMgaXMgZnJvbSBsYWIgMSwgCiAgLSA0LTYgZnJvbSBsYWIgMiBhbmQgCiAgLSA3LTkgZnJvbSBsYWIgMy4gCgotIFdlIHVwZGF0ZSB0aGUgY29sRGF0YSB3aXRoIGluZm9ybWF0aW9uIG9uIHRoZSBkZXNpZ24KCmBgYHtyfQpjb2xEYXRhKHBlKSRsYWIgPC0gcmVwKHJlcChwYXN0ZTAoImxhYiIsMTozKSxlYWNoPTMpLDUpICU+JSBhcy5mYWN0b3IKY29sRGF0YShwZSkkY29uZGl0aW9uIDwtIHBlW1sicGVwdGlkZVJhdyJdXSAlPiUgY29sbmFtZXMgJT4lIHN1YnN0cigxMiwxMikgJT4lIGFzLmZhY3Rvcgpjb2xEYXRhKHBlKSRzcGlrZUNvbmNlbnRyYXRpb24gPC0gcmVwKGMoQSA9IDAuMjUsIEIgPSAwLjc0LCBDID0gMi4yMiwgRCA9IDYuNjcsIEUgPSAyMCksZWFjaCA9IDkpCmBgYAoKLSBXZSBleHBsb3JlIHRoZSBjb2xEYXRhIGFnYWluCgpgYGB7cn0KY29sRGF0YShwZSkKYGBgCgo8L3A+PC9kZXRhaWxzPgoKIyMgUHJlcHJvY2Vzc2luZwoKIyMjIExvZy10cmFuc2Zvcm0KCjxkZXRhaWxzPjxzdW1tYXJ5PiBDbGljayB0byBzZWUgY29kZSB0byBsb2ctdHJhbnNmcm9tIHRoZSBkYXRhIDwvc3VtbWFyeT48cD4KLSBXZSBjYWxjdWxhdGUgaG93IG1hbnkgbm9uIHplcm8gaW50ZW5zaXRpZXMgd2UgaGF2ZSBmb3IgZWFjaCBwZXB0aWRlIGFuZCB0aGlzIGNhbiBiZSB1c2VmdWwgZm9yIGZpbHRlcmluZy4KCmBgYHtyfQpyb3dEYXRhKHBlW1sicGVwdGlkZVJhdyJdXSkkbk5vblplcm8gPC0gcm93U3Vtcyhhc3NheShwZVtbInBlcHRpZGVSYXciXV0pID4gMCkKYGBgCgoKLSBQZXB0aWRlcyB3aXRoIHplcm8gaW50ZW5zaXRpZXMgYXJlIG1pc3NpbmcgcGVwdGlkZXMgYW5kIHNob3VsZCBiZSByZXByZXNlbnQKd2l0aCBhIGBOQWAgdmFsdWUgcmF0aGVyIHRoYW4gYDBgLgoKYGBge3J9CnBlIDwtIHplcm9Jc05BKHBlLCAicGVwdGlkZVJhdyIpICMgY29udmVydCAwIHRvIE5BCmBgYAoKLSBMb2d0cmFuc2Zvcm0gZGF0YSB3aXRoIGJhc2UgMgoKYGBge3J9CnBlIDwtIGxvZ1RyYW5zZm9ybShwZSwgYmFzZSA9IDIsIGkgPSAicGVwdGlkZVJhdyIsIG5hbWUgPSAicGVwdGlkZUxvZyIpCmBgYAo8L3A+PC9kZXRhaWxzPgoKCiMjIyBGaWx0ZXJpbmcKCjxkZXRhaWxzPjxzdW1tYXJ5PiBDbGljayB0byBzZWUgY29kZSB0byBmaWx0ZXIgdGhlIGRhdGEgPC9zdW1tYXJ5PjxwPgoKMS4gSGFuZGxpbmcgb3ZlcmxhcHBpbmcgcHJvdGVpbiBncm91cHMKCkluIG91ciBhcHByb2FjaCBhIHBlcHRpZGUgY2FuIG1hcCB0byBtdWx0aXBsZSBwcm90ZWlucywgYXMgbG9uZyBhcyB0aGVyZSBpcwpub25lIG9mIHRoZXNlIHByb3RlaW5zIHByZXNlbnQgaW4gYSBzbWFsbGVyIHN1Ymdyb3VwLgoKYGBge3J9CnBlW1sicGVwdGlkZUxvZyJdXSA8LQogcGVbWyJwZXB0aWRlTG9nIl1dW3Jvd0RhdGEocGVbWyJwZXB0aWRlTG9nIl1dKSRQcm90ZWlucwogJWluJSBzbWFsbGVzdFVuaXF1ZUdyb3Vwcyhyb3dEYXRhKHBlW1sicGVwdGlkZUxvZyJdXSkkUHJvdGVpbnMpLF0KYGBgCgoyLiBSZW1vdmUgcmV2ZXJzZSBzZXF1ZW5jZXMgKGRlY295cykgYW5kIGNvbnRhbWluYW50cwoKV2Ugbm93IHJlbW92ZSB0aGUgY29udGFtaW5hbnRzLCBwZXB0aWRlcyB0aGF0IG1hcCB0byBkZWNveSBzZXF1ZW5jZXMsIGFuZCBwcm90ZWlucwp3aGljaCB3ZXJlIG9ubHkgaWRlbnRpZmllZCBieSBwZXB0aWRlcyB3aXRoIG1vZGlmaWNhdGlvbnMuCgpgYGB7cn0KcGVbWyJwZXB0aWRlTG9nIl1dIDwtIHBlW1sicGVwdGlkZUxvZyJdXVtyb3dEYXRhKHBlW1sicGVwdGlkZUxvZyJdXSkkUmV2ZXJzZSAhPSAiKyIsIF0KcGVbWyJwZXB0aWRlTG9nIl1dIDwtIHBlW1sicGVwdGlkZUxvZyJdXVtyb3dEYXRhKHBlW1sicGVwdGlkZUxvZyJdXSkkCiAgICBQb3RlbnRpYWwuY29udGFtaW5hbnQgIT0gIisiLCBdCmBgYAoKMy4gRHJvcCBwZXB0aWRlcyB0aGF0IHdlcmUgb25seSBpZGVudGlmaWVkIGluIG9uZSBzYW1wbGUKCldlIGtlZXAgcGVwdGlkZXMgdGhhdCB3ZXJlIG9ic2VydmVkIGF0IGxhc3QgdHdpY2UuCgpgYGB7cn0KcGVbWyJwZXB0aWRlTG9nIl1dIDwtIHBlW1sicGVwdGlkZUxvZyJdXVtyb3dEYXRhKHBlW1sicGVwdGlkZUxvZyJdXSkkbk5vblplcm8gPj0gMiwgXQpucm93KHBlW1sicGVwdGlkZUxvZyJdXSkKYGBgCgpXZSBrZWVwIGByIG5yb3cocGVbWyJwZXB0aWRlTG9nIl1dKWAgcGVwdGlkZXMgdXBvbiBmaWx0ZXJpbmcuCjwvcD48L2RldGFpbHM+CgojIyBOb3JtYWxpemF0aW9uIAoKPGRldGFpbHM+PHN1bW1hcnk+IENsaWNrIHRvIHNlZSBSLWNvZGUgdG8gbm9ybWFsaXplIHRoZSBkYXRhIDwvc3VtbWFyeT48cD4KYGBge3J9CnBlIDwtIG5vcm1hbGl6ZShwZSwgCiAgICAgICAgICAgICAgICBpID0gInBlcHRpZGVMb2ciLCAKICAgICAgICAgICAgICAgIG5hbWUgPSAicGVwdGlkZU5vcm0iLCAKICAgICAgICAgICAgICAgIG1ldGhvZCA9ICJjZW50ZXIubWVkaWFuIikKYGBgCjwvcD48L2RldGFpbHM+CgotLS0KCiMgUGVwdGlkZS1sZXZlbCBtb2RlbHMgCgojIyBTdW1tYXJpemF0aW9uIAoKCjxkZXRhaWxzPjxzdW1tYXJ5PiBDbGljayB0byBzZWUgY29kZSB0byBtYWtlIHBsb3QgPC9zdW1tYXJ5PjxwPgpgYGB7ciBwbG90ID0gRkFMU0V9Cgpwcm90IDwtICJQMDEwMzF1cHN8Q081X0hVTUFOX1VQUyIKZGF0YSA8LSBwZVtbInBlcHRpZGVOb3JtIl1dWwogIHJvd0RhdGEocGVbWyJwZXB0aWRlTm9ybSJdXSkkUHJvdGVpbnMgPT0gcHJvdCwKICBjb2xEYXRhKHBlKSRsYWI9PSJsYWIzIl0gJT4lCiAgYXNzYXkgJT4lCiAgYXMuZGF0YS5mcmFtZSAlPiUKICByb3duYW1lc190b19jb2x1bW4odmFyID0gInBlcHRpZGUiKSAlPiUKICBnYXRoZXIoc2FtcGxlLCBpbnRlbnNpdHksIC1wZXB0aWRlKSAlPiUgCiAgbXV0YXRlKGNvbmRpdGlvbiA9IGNvbERhdGEocGUpW3NhbXBsZSwiY29uZGl0aW9uIl0pICU+JQogIG5hLmV4Y2x1ZGUKc3VtUGxvdCA8LSBkYXRhICU+JQogIGdncGxvdChhZXMoeCA9IHBlcHRpZGUsIHkgPSBpbnRlbnNpdHksIGNvbG9yID0gY29uZGl0aW9uLCBncm91cCA9IHNhbXBsZSwgbGFiZWwgPSBjb25kaXRpb24pLCBzaG93LmxlZ2VuZCA9IEZBTFNFKSArCiAgZ2VvbV90ZXh0KHNob3cubGVnZW5kID0gRkFMU0UpICsKICB0aGVtZV9taW5pbWFsKCkgKwogIHRoZW1lKGF4aXMudGV4dC54ID0gZWxlbWVudF90ZXh0KGFuZ2xlID0gOTAsIHZqdXN0ID0gMC41LCBoanVzdCA9IDEpKSArCiAgeGxhYigiUGVwdGlkZSIpICsgCiAgeWxhYigiSW50ZW5zaXR5IChsb2cyKSIpICsKICBnZ3RpdGxlKHBhc3RlMCgicHJvdGVpbjogIixwcm90KSkKYGBgCjwvcD48L2RldGFpbHM+CgoKSGVyZSwgd2Ugd2lsbCBmb2N1cyBvbiB0aGUgc3VtbWFyaXphdGlvbiBvZiB0aGUgaW50ZW5zaXRpZXMgZm9yIHByb3RlaW4gYHIgcHJvdGAuCgpgYGB7cn0Kc3VtUGxvdApgYGAKCiMjIyBNZWRpYW4gc3VtbWFyaXphdGlvbgoKV2UgZmlyc3QgZXZhbHVhdGUgbWVkaWFuIHN1bW1hcml6YXRpb24gZm9yIHByb3RlaW4gYHIgcHJvdGAuCgo8ZGV0YWlscz48c3VtbWFyeT4gQ2xpY2sgdG8gc2VlIGNvZGUgdG8gbWFrZSBwbG90IDwvc3VtbWFyeT48cD4KYGBge3J9CmRhdGFIbHAgPC0gcGVbWyJwZXB0aWRlTm9ybSJdXVsKICAgIHJvd0RhdGEocGVbWyJwZXB0aWRlTm9ybSJdXSkkUHJvdGVpbnMgPT0gcHJvdCwKICAgIGNvbERhdGEocGUpJGxhYj09ImxhYjMiXSAlPiUgYXNzYXkgCgpzdW1NZWRpYW4gPC0gZGF0YS5mcmFtZSgKICBpbnRlbnNpdHk9IGRhdGFIbHAKICAgICU+JSBjb2xNZWRpYW5zKG5hLnJtPVRSVUUpCiAgLAogIGNvbmRpdGlvbj0gY29sbmFtZXMoZGF0YUhscCkgJT4lIHN1YnN0cigxMiwxMikgJT4lIGFzLmZhY3RvciApCgpzdW1NZWRpYW5QbG90IDwtIHN1bVBsb3QgKyAKICBnZW9tX2hsaW5lKAogICAgZGF0YSA9IHN1bU1lZGlhbiwKICAgIG1hcHBpbmcgPSBhZXMoeWludGVyY2VwdD1pbnRlbnNpdHksY29sb3I9Y29uZGl0aW9uKSkgKyAKICBnZ3RpdGxlKCJNZWRpYW4gc3VtbWFyaXphdGlvbiIpCmBgYAo8L3A+PC9kZXRhaWxzPgoKYGBge3J9CnN1bU1lZGlhblBsb3QKYGBgCgoKLSBUaGUgc2FtcGxlIG1lZGlhbnMgYXJlIG5vdCBhIGdvb2QgZXN0aW1hdGUgZm9yIHRoZSBwcm90ZWluIGV4cHJlc3Npb24gdmFsdWUuIAotIEluZGVlZCwgdGhleSBkbyBub3QgYWNjb3VudCBmb3IgZGlmZmVyZW5jZXMgaW4gcGVwdGlkZSBlZmZlY3RzCi0gUGVwdGlkZXMgdGhhdCBpb25pemUgcG9vcmx5IGFyZSBhbHNvIHBpY2tlZCB1cCBpbiBzYW1wbGVzIHdpdGggaGlnaCBzcGlrZS1pbiBjb25jZW5jZW50cmF0aW9uIGFuZCBub3QgaW4gc2FtcGxlcyB3aXRoIGxvdyBzcGlrZS1pbiBjb25jZW50cmF0aW9uCi0gVGhpcyBpbnRyb2R1Y2VzIGEgYmlhcy4gCgojIyMgTW9kZWwgYmFzZWQgc3VtbWFyaXphdGlvbgoKV2UgY2FuIHVzZSBhIGxpbmVhciBwZXB0aWRlLWxldmVsIG1vZGVsIHRvIGVzdGltYXRlIHRoZSBwcm90ZWluIGV4cHJlc3Npb24gdmFsdWUgd2hpbGUgY29ycmVjdGluZyBmb3IgdGhlIHBlcHRpZGUgZWZmZWN0LCBpLmUuIAoKJCQgCnlfe2lwfSA9IFxiZXRhX2leXHRleHR7c2FtcGxlfStcYmV0YV57cGVwdGlkZX1fe3B9ICsgXGVwc2lsb25fe2lwfQokJAoKCjxkZXRhaWxzPjxzdW1tYXJ5PiBDbGljayB0byBzZWUgY29kZSB0byBtYWtlIHBsb3QgPC9zdW1tYXJ5PjxwPgpgYGB7cn0Kc3VtTWVhblBlcE1vZCA8LSBsbShpbnRlbnNpdHkgfiAtMSArIHNhbXBsZSArIHBlcHRpZGUsZGF0YSkKCnN1bU1lYW5QZXAgPC0gZGF0YS5mcmFtZSgKICBpbnRlbnNpdHk9c3VtTWVhblBlcE1vZCRjb2VmW2dyZXAoInNhbXBsZSIsbmFtZXMoc3VtTWVhblBlcE1vZCRjb2VmKSldICsgbWVhbihkYXRhJGludGVuc2l0eSkgLSBtZWFuKHN1bU1lYW5QZXBNb2QkY29lZltncmVwKCJzYW1wbGUiLG5hbWVzKHN1bU1lYW5QZXBNb2QkY29lZikpXSksCiAgY29uZGl0aW9uPSBuYW1lcyhzdW1NZWFuUGVwTW9kJGNvZWYpW2dyZXAoInNhbXBsZSIsbmFtZXMoc3VtTWVhblBlcE1vZCRjb2VmKSldICU+JSBzdWJzdHIoMTgsMTgpICU+JSBhcy5mYWN0b3IgKQoKCmZpdExtUGxvdCA8LSAgc3VtUGxvdCArIGdlb21fbGluZSgKICAgIGRhdGEgPSBkYXRhICU+JSBtdXRhdGUoZml0PXN1bU1lYW5QZXBNb2QkZml0dGVkLnZhbHVlcyksCiAgICBtYXBwaW5nID0gYWVzKHg9cGVwdGlkZSwgeT1maXQsY29sb3I9Y29uZGl0aW9uLCBncm91cD1zYW1wbGUpKSArCiAgICBnZ3RpdGxlKCJmaXQ6IH4gc2FtcGxlICsgcGVwdGlkZSIpCnN1bUxtUGxvdCA8LSBzdW1QbG90ICsgZ2VvbV9obGluZSgKICAgIGRhdGEgPSBzdW1NZWFuUGVwLAogICAgbWFwcGluZyA9IGFlcyh5aW50ZXJjZXB0PWludGVuc2l0eSxjb2xvcj1jb25kaXRpb24pKSArCiAgICBnZ3RpdGxlKCJTdW1tYXJpemF0aW9uOiBzYW1wbGUgZWZmZWN0IikKYGBgCjwvcD48L2RldGFpbHM+CgpgYGB7cn0KZ3JpZC5hcnJhbmdlKHN1bU1lZGlhblBsb3QsIHN1bUxtUGxvdCwgbmNvbD0yKQpgYGAKCi0gQnkgY29ycmVjdGluZyBmb3IgdGhlIHBlcHRpZGUgc3BlY2llcyB0aGUgcHJvdGVpbiBleHByZXNzaW9uIHZhbHVlcyBhcmUgbXVjaCBiZXR0ZXIgc2VwYXJhdGVkIGFuIGJldHRlciByZWZsZWN0IGRpZmZlcmVuY2VzIGluIGFidW5kYW5jZSBpbmR1Y2VkIGJ5IHRoZSBzcGlrZS1pbiBjb25kaXRpb24uIAoKLSBJbmRlZWQsIGl0IHNob3dzIHRoYXQgbWVkaWFuIHN1bW1hcmlzYXRpb24gdGhhdCBkb2VzIG5vdCBhY2NvdW50IGZvciB0aGUgcGVwdGlkZSBlZmZlY3QgaW5kZWVkIG92ZXJlc3RpbWF0ZWQgdGhlIHByb3RlaW4gZXhwcmVzc2lvbiB2YWx1ZSBpbiB0aGUgc21hbGwgc3Bpa2UtaW4gY29uZGl0aW9ucyBhbmQgdW5kZXJlc3RpbWF0ZWQgdGhhdCBpbiB0aGUgbGFyZ2Ugc3Bpa2UtaW4gY29uZGl0aW9ucy4KCi0gU3RpbGwgdGhlcmUgc2VlbSB0byBiZSBzb21lIGlzc3VlcyB3aXRoIHNhbXBsZXMgdGhhdCBmb3Igd2hpY2ggdGhlIGV4cHJlc3Npb24gdmFsdWVzIGFyZSBub3Qgd2VsbCBzZXBhcmF0ZWQgYWNjb3JkaW5nIHRvIHRoZSBzcGlrZS1pbiBjb25kaXRpb24uIAoKQSByZXNpZHVhbCBhbmFseXNpcyBjbGVhcmx5IGluZGljYXRlcyBwb3RlbnRpYWwgaXNzdWVzOgoKPGRldGFpbHM+PHN1bW1hcnk+IENsaWNrIHRvIHNlZSBjb2RlIHRvIG1ha2UgcGxvdCA8L3N1bW1hcnk+PHA+CmBgYHtyfQpyZXNQbG90IDwtIGRhdGEgJT4lIAogIG11dGF0ZShyZXM9c3VtTWVhblBlcE1vZCRyZXNpZHVhbHMpICU+JQogIGdncGxvdChhZXMoeCA9IHBlcHRpZGUsIHkgPSByZXMsIGNvbG9yID0gY29uZGl0aW9uLCBsYWJlbCA9IGNvbmRpdGlvbiksIHNob3cubGVnZW5kID0gRkFMU0UpICsKICBnZW9tX3BvaW50KHNoYXBlPTIxKSArCiAgdGhlbWVfbWluaW1hbCgpICsKICB0aGVtZShheGlzLnRleHQueCA9IGVsZW1lbnRfdGV4dChhbmdsZSA9IDkwLCB2anVzdCA9IDAuNSwgaGp1c3QgPSAxKSkgKwogIHhsYWIoIlBlcHRpZGUiKSArIAogIHlsYWIoInJlc2lkdWFsIikgKwogIGdndGl0bGUoInJlc2lkdWFsczogfiBzYW1wbGUgKyBwZXB0aWRlIikKYGBgCjwvcD48L2RldGFpbHM+CgpgYGB7cn0KZ3JpZC5hcnJhbmdlKGZpdExtUGxvdCwgcmVzUGxvdCwgbnJvdyA9IDEpCmdyaWQuYXJyYW5nZShmaXRMbVBsb3QsIHN1bUxtUGxvdCwgbnJvdyA9IDEpCmBgYAoKLSBUaGUgcmVzaWR1YWwgcGxvdCBzaG93cyBzb21lIGxhcmdlIG91dGxpZXJzIGZvciBwZXB0aWRlIEtJRUVJQUFLLiAKLSBJbmRlZWQsIGluIHRoZSBvcmlnaW5hbCBwbG90IHRoZSBpbnRlbnNpdGllcyBmb3IgdGhpcyBwZXB0aWRlIGRvIG5vdCBzZWVtIHRvIGxpbmUgdXAgdmVyeSB3ZWxsIHdpdGggdGhlIGNvbmNlbnRyYXRpb24uIAotIFRoaXMgaW5kdWNlcyBhIGJpYXMgaW4gdGhlIHN1bW1hcml6YXRpb24gZm9yIHNvbWUgb2YgdGhlIHNhbXBsZXMgKGUuZy4gZm9yIEQgYW5kIEUpCgojIyMgUm9idXN0IHN1bW1hcml6YXRpb24gdXNpbmcgYSBwZXB0aWRlLWxldmVsIGxpbmVhciBtb2RlbCAKCiQkIAp5X3tpcH0gPSBcYmV0YV9pXlx0ZXh0e3NhbXBsZX0rXGJldGFee3BlcHRpZGV9X3twfSArIFxlcHNpbG9uX3tpcH0KJCQKCgotIE9yZGluYXJ5IGxlYXN0IHNxdWFyZXM6IGVzdGltYXRlICRcYmV0YSQgdGhhdCBtaW5pbWl6ZXMKJCQKXHRleHR7T0xTfTogXHN1bVxsaW1pdHNfe2kscH0gXGVwc2lsb25fe2lwfV4yID0gXHN1bVxsaW1pdHNfe2kscH0oeV97aXB9LVxiZXRhX2leXHRleHR7c2FtcGxlfS1cYmV0YV9wXlx0ZXh0e3BlcHRpZGV9KV4yCiQkCgpXZSByZXBsYWNlIE9MUyBieSBNLWVzdGltYXRpb24gd2l0aCBsb3NzIGZ1bmN0aW9uCiQkClx0ZXh0e09MU306IFxzdW1cbGltaXRzX3tpLHB9IHdfe2lwfVxlcHNpbG9uX3tpcH1eMiA9IFxzdW1cbGltaXRzX3tpLHB9d197aXB9KHlfe2lwfS1cYmV0YV9pXlx0ZXh0e3NhbXBsZX0tXGJldGFfcF5cdGV4dHtwZXB0aWRlfSleMgokJAoKLSBJdGVyYXRpdmVseSBmaXQgbW9kZWwgd2l0aCBvYnNlcnZhdGlvbiB3ZWlnaHRzICR3X3tpcH0kIHVudGlsIGNvbnZlcmdlbmNlCi0gVGhlIHdlaWdodHMgYXJlIGNhbGN1bGF0ZWQgYmFzZWQgb24gc3RhbmRhcmRpemVkIHJlc2lkdWFscwoKPGRldGFpbHM+PHN1bW1hcnk+IENsaWNrIHRvIHNlZSBjb2RlIHRvIG1ha2UgcGxvdCA8L3N1bW1hcnk+PHA+CmBgYHtyfQpzdW1NZWFuUGVwUm9iTW9kIDwtIE1BU1M6OnJsbShpbnRlbnNpdHkgfiAtMSArIHNhbXBsZSArIHBlcHRpZGUsZGF0YSkKcmVzUm9iUGxvdCA8LSBkYXRhICU+JQogIG11dGF0ZShyZXMgPSBzdW1NZWFuUGVwUm9iTW9kJHJlc2lkdWFscywKICAgICAgICAgdyA9IHN1bU1lYW5QZXBSb2JNb2QkdykgJT4lCiAgZ2dwbG90KGFlcyh4ID0gcGVwdGlkZSwgeSA9IHJlcywgY29sb3IgPSBjb25kaXRpb24sIGxhYmVsID0gY29uZGl0aW9uLHNpemU9dyksIHNob3cubGVnZW5kID0gRkFMU0UpICsKICBnZW9tX3BvaW50KHNoYXBlPTIxLHNpemU9LjIpICsKICBnZW9tX3BvaW50KHNoYXBlPTIxKSArCiAgdGhlbWVfbWluaW1hbCgpICsKICB0aGVtZShheGlzLnRleHQueCA9IGVsZW1lbnRfdGV4dChhbmdsZSA9IDkwLCB2anVzdCA9IDAuNSwgaGp1c3QgPSAxKSkgKwogIHhsYWIoIlBlcHRpZGUiKSArIAogIHlsYWIoInJlc2lkdWFsIikgKyAKICB5bGltKGMoLTEsMSkqbWF4KGFicyhzdW1NZWFuUGVwUm9iTW9kJHJlc2lkdWFscykpKQp3ZWlnaHRQbG90IDwtIHFwbG90KAogIHNlcSgtNSw1LC4wMSksIAogIE1BU1M6OnBzaS5odWJlcihzZXEoLTUsNSwuMDEpKSwKICBnZW9tPSJwYXRoIikgKwogIHhsYWIoInN0YW5kYXJkaXplZCByZXNpZHVhbCIpICsKICB5bGFiKCJ3ZWlnaHQiKQpgYGAKPC9wPjwvZGV0YWlscz4KCmBgYHtyfQpncmlkLmFycmFuZ2Uod2VpZ2h0UGxvdCxyZXNSb2JQbG90LG5yb3c9MSkKYGBgCgotIFdlIGNsZWFybHkgc2VlIHRoYXQgdGhlIHdlaWdodHMgaW4gdGhlIE0tZXN0aW1hdGlvbiBwcm9jZWR1cmUgd2lsbCBkb3duLXdlaWdodCBlcnJvcnMgYXNzb2NpYXRlZCB3aXRoIG91dGxpZXJzIGZvciBwZXB0aWRlIEtJRUVJQUFLLgoKPGRldGFpbHM+PHN1bW1hcnk+IENsaWNrIHRvIHNlZSBjb2RlIHRvIG1ha2UgcGxvdCA8L3N1bW1hcnk+PHA+CmBgYHtyfQpzdW1NZWFuUGVwUm9iIDwtIGRhdGEuZnJhbWUoCiAgaW50ZW5zaXR5PXN1bU1lYW5QZXBSb2JNb2QkY29lZltncmVwKCJzYW1wbGUiLG5hbWVzKHN1bU1lYW5QZXBSb2JNb2QkY29lZikpXSArIG1lYW4oZGF0YSRpbnRlbnNpdHkpIC0gbWVhbihzdW1NZWFuUGVwUm9iTW9kJGNvZWZbZ3JlcCgic2FtcGxlIixuYW1lcyhzdW1NZWFuUGVwUm9iTW9kJGNvZWYpKV0pLAogIGNvbmRpdGlvbj0gbmFtZXMoc3VtTWVhblBlcFJvYk1vZCRjb2VmKVtncmVwKCJzYW1wbGUiLG5hbWVzKHN1bU1lYW5QZXBSb2JNb2QkY29lZikpXSAlPiUgc3Vic3RyKDE4LDE4KSAlPiUgYXMuZmFjdG9yICkKCnN1bVJsbVBsb3QgPC0gc3VtUGxvdCArIGdlb21faGxpbmUoCiAgICBkYXRhPXN1bU1lYW5QZXBSb2IsCiAgICBtYXBwaW5nPWFlcyh5aW50ZXJjZXB0PWludGVuc2l0eSxjb2xvcj1jb25kaXRpb24pKSArIAogICAgZ2d0aXRsZSgiUm9idXN0IikKYGBgCjwvcD48L2RldGFpbHM+CgpgYGB7cn0KIGdyaWQuYXJyYW5nZShzdW1MbVBsb3QgKyBnZ3RpdGxlKCJPTFMiKSwgc3VtUmxtUGxvdCwgbnJvdyA9IDEpCmBgYAotIFJvYnVzdCByZWdyZXNpb24gcmVzdWx0cyBpbiBhIGJldHRlciBzZXBhcmF0aW9uIGJldHdlZW4gdGhlIHByb3RlaW4gZXhwcmVzc2lvbiB2YWx1ZXMgZm9yIHRoZSBkaWZmZXJlbnQgc2FtcGxlcyBhY2NvcmRpbmcgdG8gdGhlaXIgc3Bpa2UtaW4gY29uY2VudHJhdGlvbi4gCgojIyBFc3RpbWF0aW9uIG9mIGRpZmZlcmVudGlhbCBhYnVuZGFuY2UgdXNpbmcgcGVwdGlkZSBsZXZlbCBtb2RlbAoKLSBJbnN0ZWFkIG9mIHN1bW1hcmlzaW5nIHRoZSBkYXRhIHdlIGNhbiBhbHNvIGRpcmVjdGx5IG1vZGVsIHRoZSBkYXRhIGF0IHRoZSBwZXB0aWRlLWxldmVsLiAKLSBCdXQsIHdlIHdpbGwgaGF2ZSB0byBhZGRyZXNzIHRoZSBwc2V1ZG8tcmVwbGljYXRpb24uCgokJAp5X3tpY2xwfT0gXGJldGFfMCArIFxiZXRhX2NeXHRleHR7Y29uZGl0aW9ufSArIFxiZXRhX2xeXHRleHR7bGFifSArIFxiZXRhX3BeXHRleHR7cGVwdGlkZX0gKyB1X3NeXHRleHR7c2FtcGxlfSArIFxlcHNpbG9uX3tpY2xwfQokJAoKLSBwcm90ZWluLWxldmVsCgogIC0gJFxiZXRhXlx0ZXh0e2NvbmRpdGlvbn1fYyQ6IHNwaWtlLWluIGNvbmRpdGlvbgogIC0gJFxiZXRhXlx0ZXh0e2NvbmRpdGlvbn1fYyQ6IGxhYiBlZmZlY3QKICAtICR1X3tyfV5cdGV4dHtydW59XHNpbSBOXGxlZnQoMCxcc2lnbWFeMl9cdGV4dHtydW59XHJpZ2h0KSBccmlnaHRhcnJvdyQgcmFuZG9tIGVmZmVjdCBhZGRyZXNzZXMgcHNldWRvLXJlcGxpY2F0aW9uCgotIHBlcHRpZGUtbGV2ZWwgCiAgLSAkXGJldGFfe3B9Xlx0ZXh0e3BlcHRpZGV9JDogcGVwdGlkZSBlZmZlY3QKICAtICRcZXBzaWxvbl97cnB9IFxzaW0gTlxsZWZ0KDAsXHNpZ21hXjJfe1xlcHNpbG9ufVxyaWdodCkkIHdpdGhpbiBzYW1wbGUgKHJ1bikgZXJyb3IgCgoKLSBEQSBlc3RpbWF0ZXM6IAokJApcbG9nXzJGQ197Qi1BfT1cYmV0YV5cdGV4dHtjb25kaXRpb259X0IgIAokJAokJApcbG9nXzJGQ197Qy1CfT1cYmV0YV5cdGV4dHtjb25kaXRpb259X0MgLSBcYmV0YV5cdGV4dHtjb25kaXRpb259X0IgCiQkCi0gTWl4ZWQgcGVwdGlkZS1sZXZlbCBtb2RlbHMgYXJlIGltcGxlbWVudGVkIGluIG1zcXJvYjIKCi0gSXQgaGFzIHRoZSBhZHZhbnRhZ2VzIHRoYXQKCiAgMS4gaXQgY29ycmVjdGx5IGFkZHJlc3NlcyB0aGUgZGlmZmVyZW5jZSBsZXZlbHMgb2YgdmFyaWFiaWxpdHkgaW4gdGhlIGRhdGEKICAyLiBpdCBhdm9pZHMgc3VtbWFyaXNhdGlvbiBhbmQgdGhlcmVmb3JlIGFsc28gYWNjb3VudHMgZm9yIHRoZSBkaWZmZXJlbmNlIGluIHRoZSBudW1iZXIgb2YgcGVwdGlkZXMgdGhhdCBhcmUgb2JzZXJ2ZWQgaW4gZWFjaCBzYW1wbGUKICAzLiBtb3JlIHBvd2VyZnVsIGFuYWx5c2lzCgotIEl0IGhhcyB0aGUgZGlzYWR2YW50YWdlIHRoYXQKCiAgCiAgMS4gcHJvdGVpbiBzdW1tYXJpZXMgYXJlIG5vIGxvbmdlciBhdmFpbGFibGUgZm9yIHBsb3R0aW5nCiAgMi4gaXQgaXMgZGlmZmljdWx0IHRvIGNvcnJlY3RseSBzcGVjaWZ5IHRoZSBkZWdyZWVzIG9mIGZyZWVkb20gZm9yIHRoZSB0ZXN0LXN0YXRpc3RpYyBsZWFkaW5nIHRvIGluZmVyZW5jZSB0aGF0IGlzIHRvbyBsaWJlcmFsIGluIGV4cGVyaW1lbnRzIHdpdGggc21hbGwgc2FtcGxlIHNpemUKICAzLiBzb21ldGltZXMgc2FtcGxlIGxldmVsIHJhbmRvbSBlZmZlY3QgdmFyaWFuY2UgYXJlIGVzdGltYXRlZCB0byBiZSB6ZXJvLCB0aGVuIHRoZSBwc2V1ZG8tcmVwbGljYXRpb24gaXMgbm90IGFkZHJlc3NlZCBsZWFkaW5nIHRvIGluZmVyZW5jZSB0aGF0IGlzIHRvbyBsaWJlcmFsIGZvciB0aGVzZSBzcGVjaWZpYyBwcm90ZWlucwogIDQuIHRoZXkgYXJlIG11Y2ggbW9yZSBkaWZmaWN1bHQgdG8gZGlzc2VtaW5hdGUgdG8gdXNlcnMgd2l0aCBsaW1pdGVkIGJhY2tncm91bmQgaW4gc3RhdGlzdGljcwoKSGVuY2UsIGZvciB0aGlzIGNvdXJzZSB3ZSBvcHRlZCB0byB1c2UgcGVwdGlkZS1sZXZlbCBtb2RlbHMgZm9yIHN1bW1hcml6YXRpb24sIGJ1dCBub3QgZm9yIGRpcmVjdGx5IGluZmVycmluZyBvbiB0aGUgZGlmZmVyZW50aWFsIGV4cHJlc3Npb24gYXQgdGhlIHByb3RlaW4tbGV2ZWwuIAoK</div>
 
 
 </div>
@@ -1729,7 +1576,7 @@ $(document).ready(function () {
 <!-- code folding -->
 <script>
 $(document).ready(function () {
-  window.initializeSourceEmbed("pda_quantification_preprocessing_noframes.Rmd");
+  window.initializeSourceEmbed("pda_robustSummarisation_peptideModels.Rmd");
 });
 </script>
 
