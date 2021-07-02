@@ -274,7 +274,7 @@ mdsOrig <- colData(pe3) %>%
       ")"
       )
     ) +
-  xlab(
+  ylab(
     paste0(
       mdsObj3$axislabel,
       " ",
@@ -313,7 +313,7 @@ mdsRCB <- colData(pe) %>%
       ")"
       )
     ) +
-  xlab(
+  ylab(
     paste0(
       mdsObj$axislabel,
       " ",
@@ -352,7 +352,7 @@ mdsCRD <- colData(pe2) %>%
       ")"
       )
     ) +
-  xlab(
+  ylab(
     paste0(
       mdsObj$axislabel,
       " ",
@@ -472,6 +472,12 @@ grid.arrange(volcanoRCB,volcanoCRD, volcanoRCBwrong,ncol=2)
 
 ## Anova table: Q7TPR4, Alpha-actinin-1
 
+Disclaimer: the Anova analysis is only for didactical purposes. In practice we assess the hypotheses using msqrob2. 
+
+- We illustrate the power gain of blocking using an Anova analysis on 1 protein. 
+
+- Note, that msqrob2 will perform a similar analysis, but, it uses robust regression and it uses an empirical Bayes estimator for the variance.
+
 ```{r}
 prot <- "Q7TPR4"
 dataHlp <- colData(pe) %>% 
@@ -484,7 +490,7 @@ dataHlp <- colData(pe) %>%
   anova(lm(intensityCRD~ celltype,dataHlp))
 ```
 
-## Comparison standard deviation
+## Comparison Empirical Bayes standard deviation in msqrob2 
 
 ```{r}
 accessions <- rownames(pe[["protein"]])[rownames(pe[["protein"]])%in%rownames(pe2[["protein"]])]

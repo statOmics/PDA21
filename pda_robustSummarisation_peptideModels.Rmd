@@ -67,23 +67,9 @@ pe <- readQFeatures(
 ```
 </p></details>
 
-## Explore object
+## Design
 
 <details><summary> Click to see background and code </summary><p>
-- The rowData contains information on the features (peptides) in the assay. E.g. Sequence, protein, ...
-
-```{r}
-rowData(pe[["peptideRaw"]])
-```
-
-- The colData contains information on the samples
-
-```{r} 
-colData(pe)
-```
-
-- No information is stored yet on the design. 
-
 
 ```{r} 
 pe %>% colnames
@@ -104,7 +90,7 @@ colData(pe)$condition <- pe[["peptideRaw"]] %>% colnames %>% substr(12,12) %>% a
 colData(pe)$spikeConcentration <- rep(c(A = 0.25, B = 0.74, C = 2.22, D = 6.67, E = 20),each = 9)
 ```
 
-- We explore the colData again
+- We explore the colData
 
 ```{r}
 colData(pe)
