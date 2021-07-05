@@ -32,7 +32,7 @@ We limited ourselves to the data of LTQ-Orbitrap W at site 56. The data were sea
 
 - The raw data files can be downloaded from https://cptac-data-portal.georgetown.edu/cptac/public?scope=Phase+I (Study 6) 
 
--  The MaxQuant data can be downloaded [zip file with data](https://github.com/statOmics/pda/archive/refs/heads/data.zip). The peptides.txt file can be found in data/quantification/cptacAvsB_lab3. 
+-  The MaxQuant data can be downloaded [zip file with data](https://github.com/statOmics/PDA21/archive/refs/heads/data.zip). The peptides.txt file can be found in data/quantification/cptacAvsB_lab3. 
 
 - Note, that participants who use R/Rmarkdown scripts do not have to download the data as they can directly import the data from the web in R within their script. 
 

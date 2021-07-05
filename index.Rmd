@@ -47,7 +47,7 @@ or with R/markdowns scripts e.g.
 ### Software & Data 
 
 - [Install msqrob2 software](./software.html)
-- [Download data](https://github.com/statOmics/pda/archive/refs/heads/data.zip)
+- [Download data](https://github.com/statOmics/PDA21/archive/refs/heads/data.zip)
 
 Note, that users who develop R/markdown scripts can access data both from the web or from disk within their scripts. So they do not need to download the data first. The msqrob2gui Shiny App only works with data that is available on disk.  
 
