@@ -733,8 +733,8 @@ for (protName in sigNames)
         ) +
             geom_line() +
             geom_point() +
-            theme_minimal() +
             facet_grid(~assay) +
+            theme(axis.text.x = element_text(angle = 70, hjust = 1, vjust = 0.5)) +
             ggtitle(protName)
         print(p1)
 
@@ -747,11 +747,12 @@ for (protName in sigNames)
             ) +
             scale_shape_manual(values = 1:nrow(pePlotDf)) +
             labs(title = protName, x = "sample", y = "peptide intensity (log2)") +
-            theme_minimal()
-        facet_grid(~assay)
+            theme(axis.text.x = element_text(angle = 70, hjust = 1, vjust = 0.5)) +
+            facet_grid(~assay)
         print(p2)
 }
 ```
+
 
 # Experimental Design
 

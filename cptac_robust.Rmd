@@ -152,8 +152,6 @@ This include
 - filtering and 
 - summarisation of the data.
 
-Note, that the summarisation is done using median summarisation instead of the default that is robust summarisation. This is mainly for didactical purposes to see what the impact is of suboptimal preprocessing. 
-
 ## Log transform the data
 
 ```{r}
@@ -394,16 +392,22 @@ pePlotDf$condition <- as.factor(colData(pePlot)[pePlotDf$colname, "condition"])
 # plotting
 p1 <- ggplot(data = pePlotDf,
        aes(x = colname, y = value, group = rowname)) +
-    geom_line() + geom_point() +  theme_minimal() +
-    facet_grid(~assay) + ggtitle(protName)
+    geom_line() + 
+    geom_point() +  
+    theme(axis.text.x = element_text(angle = 70, hjust = 1, vjust = 0.5)) +
+    facet_grid(~assay) + 
+    ggtitle(protName)
 print(p1)
 
 # plotting 2
 p2 <- ggplot(pePlotDf, aes(x = colname, y = value, fill = condition)) +
-  geom_boxplot(outlier.shape = NA) + geom_point(position = position_jitter(width = .1),
-                                                aes(shape = rowname)) +
+  geom_boxplot(outlier.shape = NA) + 
+  geom_point(
+    position = position_jitter(width = .1),
+    aes(shape = rowname)) +
   scale_shape_manual(values = 1:nrow(pePlotDf)) +
-  labs(title = protName, x = "sample", y = "peptide intensity (log2)") + theme_minimal()
+  labs(title = protName, x = "sample", y = "peptide intensity (log2)") + 
+  theme(axis.text.x = element_text(angle = 70, hjust = 1, vjust = 0.5)) +
   facet_grid(~assay)
 print(p2)
 }
