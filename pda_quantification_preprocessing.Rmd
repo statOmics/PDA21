@@ -732,7 +732,7 @@ allow="autoplay; encrypted-media" allowfullscreen></iframe>
 ## Data analysis with the GUI/shinyApp msqrob2gui
 
 <iframe width="560" height="315"
-src="https://www.youtube.com/embed/ISF4g-Xbwec"
+src="https://www.youtube.com/embed/F5d0E-U4rOM"
 frameborder="0"
 style="display: block; margin: auto;"
 allow="autoplay; encrypted-media" allowfullscreen></iframe>   
