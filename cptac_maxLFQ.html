@@ -582,12 +582,12 @@ div.tocify {
 <span id="cb8-6"><a href="#cb8-6"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> intensity,<span class="dt">group =</span> sample,<span class="dt">color =</span> condition)) <span class="op">+</span><span class="st"> </span></span>
 <span id="cb8-7"><a href="#cb8-7"></a><span class="st">    </span><span class="kw">geom_density</span>()</span></code></pre></div>
 <pre><code>## Warning: Removed 4052 rows containing non-finite values (stat_density).</code></pre>
-<p><img src="cptac_lfq_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p><img src="cptac_maxLFQ_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 <p>We can visualize our data using a Multi Dimensional Scaling plot, eg. as provided by the <code>limma</code> package.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>pe[[<span class="st">&quot;protein&quot;</span>]] <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb10-2"><a href="#cb10-2"></a><span class="st">  </span>assay <span class="op">%&gt;%</span></span>
 <span id="cb10-3"><a href="#cb10-3"></a><span class="st">  </span>limma<span class="op">::</span><span class="kw">plotMDS</span>(<span class="dt">col =</span> <span class="kw">as.numeric</span>(<span class="kw">colData</span>(pe)<span class="op">$</span>condition))</span></code></pre></div>
-<p><img src="cptac_lfq_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p><img src="cptac_maxLFQ_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
 <p>Note that the samples show a clear separation according to the spike-in condition in the second dimension of the MDS plot.</p>
 </div>
 </div>
@@ -608,7 +608,7 @@ div.tocify {
 <p>We can also explore the design of the model that we specified using the the package <code>ExploreModelMatrix</code></p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="kw">library</span>(ExploreModelMatrix)</span>
 <span id="cb14-2"><a href="#cb14-2"></a><span class="kw">VisualizeDesign</span>(<span class="kw">colData</span>(pe),<span class="op">~</span>condition)<span class="op">$</span>plotlist[[<span class="dv">1</span>]]</span></code></pre></div>
-<p><img src="cptac_lfq_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p><img src="cptac_maxLFQ_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 <p>Spike-in condition <code>A</code> is the reference class. So the mean log2 expression for samples from condition A is ‘(Intercept). The mean log2 expression for samples from condition B is’(Intercept)+conditionB’. Hence, the average log2 fold change between condition b and condition a is modelled using the parameter ‘conditionB’. Thus, we assess the contrast ‘conditionB = 0’ with our statistical test.</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>L &lt;-<span class="st"> </span><span class="kw">makeContrast</span>(<span class="st">&quot;conditionB=0&quot;</span>, <span class="dt">parameterNames =</span> <span class="kw">c</span>(<span class="st">&quot;conditionB&quot;</span>))</span>
 <span id="cb15-2"><a href="#cb15-2"></a>pe &lt;-<span class="st"> </span><span class="kw">hypothesisTest</span>(<span class="dt">object =</span> pe, <span class="dt">i =</span> <span class="st">&quot;protein&quot;</span>, <span class="dt">contrast =</span> L)</span></code></pre></div>
@@ -622,7 +622,7 @@ div.tocify {
 <span id="cb16-3"><a href="#cb16-3"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">cex =</span> <span class="fl">2.5</span>) <span class="op">+</span></span>
 <span id="cb16-4"><a href="#cb16-4"></a><span class="st">  </span><span class="kw">scale_color_manual</span>(<span class="dt">values =</span> <span class="kw">alpha</span>(<span class="kw">c</span>(<span class="st">&quot;black&quot;</span>, <span class="st">&quot;red&quot;</span>), <span class="fl">0.5</span>)) <span class="op">+</span><span class="st"> </span><span class="kw">theme_minimal</span>()</span>
 <span id="cb16-5"><a href="#cb16-5"></a>volcano</span></code></pre></div>
-<p><img src="cptac_lfq_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<p><img src="cptac_maxLFQ_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
 <p>Note, that only 7 proteins are found to be differentially abundant.</p>
 </div>
 <div id="heatmap" class="section level3">
@@ -633,7 +633,7 @@ div.tocify {
 <span id="cb17-3"><a href="#cb17-3"></a><span class="st">  </span><span class="kw">filter</span>(adjPval<span class="op">&lt;</span><span class="fl">0.05</span>) <span class="op">%&gt;%</span></span>
 <span id="cb17-4"><a href="#cb17-4"></a><span class="st">  </span><span class="kw">pull</span>(protein)</span>
 <span id="cb17-5"><a href="#cb17-5"></a><span class="kw">heatmap</span>(<span class="kw">assay</span>(pe[[<span class="st">&quot;protein&quot;</span>]])[sigNames, ])</span></code></pre></div>
-<p><img src="cptac_lfq_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<p><img src="cptac_maxLFQ_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
 <p>The majority of the proteins are indeed UPS proteins. 1 yeast protein is returned. Note, that the yeast protein indeed shows evidence for differential abundance.</p>
 </div>
 <div id="boxplots" class="section level3">
@@ -666,7 +666,7 @@ div.tocify {
 <span id="cb18-25"><a href="#cb18-25"></a>      ),</span>
 <span id="cb18-26"><a href="#cb18-26"></a>    <span class="dt">colour =</span> <span class="st">&quot;red&quot;</span>)</span></code></pre></div>
 <pre><code>## Warning: Removed 746 rows containing non-finite values (stat_boxplot).</code></pre>
-<p><img src="cptac_lfq_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<p><img src="cptac_maxLFQ_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
 <p>What do you observe?</p>
 </div>
 </div>
@@ -778,7 +778,7 @@ $(document).ready(function () {
 <!-- code folding -->
 <script>
 $(document).ready(function () {
-  window.initializeSourceEmbed("cptac_lfq.Rmd");
+  window.initializeSourceEmbed("cptac_maxLFQ.Rmd");
 });
 </script>
 

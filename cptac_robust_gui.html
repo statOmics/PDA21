@@ -497,8 +497,27 @@ launchMsqrob2App()</code></pre>
 <li>You can further modify the plot by coloring the data according to a design variable or by splitting the data horizontally or vertically according to design variables.</li>
 </ol>
 </div>
+<div id="the-report-tab" class="section level3">
+<h3>2.3.5. The Report Tab</h3>
+<p>A reproducible Rmarkdown script and html report with the analysis you performed with the GUI can be downloaded in the novel report tab.</p>
+<div class="figure">
+<img src="figures/guiReport.png" alt="" />
+<p class="caption">Figure 14. msqrob2 DetailPlot tab</p>
+</div>
+<ol style="list-style-type: decimal">
+<li><p>You can select the number of detail plots you want to generate in the report. The default is 10, which indicates that detail plots will be constructed for the 10 most significant protein in your top list. Note, that the number of detail plots can be smaller if there are less than 10 proteins significant at the specified FDR-level.</p></li>
+<li><p>Hit the <code>Generate report</code> button and a report will be compiled. Note, that this will take a while because all analysis steps from each of the tabs have to be conducted again. You will see a progress bar and when it is finished a zip file will be downloaded that contains:</p></li>
+</ol>
+<ul>
+<li>features.txt: A tab delimited file with the raw intensity data</li>
+<li>annotation.xlsx: An excel file with the annotation of the design</li>
+<li>report.Rmd: R/markdown file with the code for the report. If you open the file in Rstudio and if you hit the knit button the report will be compiled to html.</li>
+<li>report.html: The compiled report.</li>
+</ul>
+<p>So, your analysis is stored in a fully reproducible way.</p>
+</div>
 <div id="evaluate-summarization" class="section level3">
-<h3>2.3.5. Evaluate Summarization</h3>
+<h3>2.3.6. Evaluate Summarization</h3>
 <p>We further explore the difference between summarization methods. We first assess the quality of the fold change estimates for the robust summarization. We will make use of the boxplot at the bottom of the quantification tab.</p>
 <ol style="list-style-type: decimal">
 <li><p>If you untick the option <code>only significant features in table</code> all proteins are shown in the table. The boxplot below the table visualizes the log2 fold change (FC) estimates for all proteins in the table.</p></li>
@@ -508,18 +527,16 @@ launchMsqrob2App()</code></pre>
 <img src="figures/guiRobustUps.png" alt="" />
 <p class="caption">Figure 15. msqrob2 Inference tab with Fold Change Boxplot for all UPS proteins</p>
 </div>
-<p>[2.3.5.a] We know the real FC for the spike in proteins (see description of the data 2.3). Note, that the boxplot is showing the log2 FC. What do you observe?</p>
-<p>[2.3.5.b] Now select all yeast proteins. What is the real fold change and what do you observe?</p>
-<p>[2.3.5.c] Repeat this for the median summarization method. What do you observe, how does that compare to the robust summarisation and try to explain this?</p>
+<p>[2.3.6.a] We know the real FC for the spike in proteins (see description of the data 2.2). Note, that the boxplot is showing the log2 FC. What do you observe?</p>
+<p>[2.3.6.b] Now select all yeast proteins. What is the real fold change and what do you observe?</p>
+<p>[2.3.6.c] Repeat this for the median summarization method. What do you observe, how does that compare to the robust summarisation and try to explain this?</p>
 </div>
 <div id="final-remark" class="section level3">
 <h3>Final remark</h3>
 <ul>
 <li><p>Note, that the shiny app is an interface to the statistical programming software R.</p></li>
 <li><p>The analysis can also be conducted using scripts, which gives you much more functionality and the ability to streamline, automate and document your analyses in a reproducible way.</p></li>
-<li><p>An R/markdown file for the analysis we performed above can be found below. if you click on the code button at the top right of the compiled html file of the analysis, a script with the code for the html file will be downloaded.</p></li>
 </ul>
-<p><a href="cptac_robust.html">RMarkdown script</a></p>
 </div>
 
 
