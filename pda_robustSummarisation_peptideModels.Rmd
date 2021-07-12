@@ -377,6 +377,26 @@ sumRlmPlot <- sumPlot + geom_hline(
 ```
 - Robust regresion results in a better separation between the protein expression values for the different samples according to their spike-in concentration. 
 
+### maxLFQ summarization 
+
+```{r echo=FALSE}
+knitr::include_graphics("./figures/maxLFQ_principle.png")
+```
+
+### MS-stats summarization
+
+- MS-stats also uses a robust peptide level model to perform the summarization, however, they typically first impute missing values
+
+### Comparison summarization methods 
+
+```{r echo=FALSE}
+knitr::include_graphics("./figures/maxLFQ_principle.png")
+```
+
+- [@sticker2020]
+- doi: https://doi.org/10.1074/mcp.RA119.001624  
+- [pdf](https://www.mcponline.org/action/showPdf?pii=S1535-9476%2820%2934982-3)
+
 ## Estimation of differential abundance using peptide level model
 
 - Instead of summarising the data we can also directly model the data at the peptide-level. 

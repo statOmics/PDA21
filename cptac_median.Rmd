@@ -10,11 +10,20 @@ output:
       toc_float: true
       highlight: tango
       number_sections: true
+    pdf_document:
+      toc: true
+      number_sections: true
+linkcolor: blue
+urlcolor: blue
+citecolor: blue
+
 bibliography: msqrob2.bib
 
 ---
 
 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a>
+
+This is part of the online course [Proteomics Data Analysis 2021 (PDA21)](https://statomics.github.io/PDA21/)
 
 # Background
 This case-study is a subset of the data of the 6th study of the Clinical
@@ -29,11 +38,9 @@ The data were searched with MaxQuant version 1.5.2.8, and
 detailed search settings were described in Goeminne et al. (2016) [1].
 Three replicates are available for each concentration.
 
-**DISCLAIMER** 
 
 - NOTE THAT MEDIAN SUMMARISATION IS SUBOPTIMAL! 
 - THIS IS FOR DIDACTICAL PURPOSES ONLY.
-- 
 
 # Data
 
@@ -50,37 +57,6 @@ We generate the object peptideRawFile with the path to the peptideRaws.txt file.
 Using the `grepEcols` function, we find the columns that contain the expression
 data of the peptideRaws in the peptideRaws.txt file.
 
-
-We first import the data from peptideRaws.txt file. This is the file containing
-your peptideRaw-level intensities. For a MaxQuant search [6],
-this peptideRaws.txt file can be found by default in the
-"path_to_raw_files/combined/txt/" folder from the MaxQuant output,
-with "path_to_raw_files" the folder where the raw files were saved.
-In this vignette, we use a MaxQuant peptideRaws file which is a subset
-of the cptac study. This data is available in the `msdata` package.
-To import the data we use the `QFeatures` package.
-
-We generate the object peptideRawFile with the path to the peptideRaws.txt file.
-Using the `grepEcols` function, we find the columns that contain the expression
-data of the peptideRaws in the peptideRaws.txt file.
-
-```{r, warning=FALSE, message=FALSE}
-library(tidyverse)
-library(limma)
-library(QFeatures)
-library(msqrob2)
-library(plotly)
-library(gridExtra)
-
-peptidesFile <- "https://raw.githubusercontent.com/statOmics/SGA2020/data/quantification/cptacAvsB_lab3/peptides.txt"
-
-ecols <- grep("Intensity\\.", names(read.delim(peptidesFile)))
-
-pe <- readQFeatures(
-    table = peptidesFile, fnames = 1, ecol = ecols,
-    name = "peptideRaw", sep = "\t"
-)
-```
 
 ```{r, warning=FALSE, message=FALSE}
 library(tidyverse)
@@ -148,8 +124,6 @@ This include
 - filtering and 
 - summarisation of the data.
 
-Note, that the summarisation is done using median summarisation instead of the default that is robust summarisation. This is mainly for didactical purposes to see what the impact is of suboptimal preprocessing. 
-
 ## Log transform the data
 
 ```{r}
@@ -171,8 +145,7 @@ pe[["peptideLog"]] <-
 
 2. Remove reverse sequences (decoys) and contaminants
 
-We now remove the contaminants, peptides that map to decoy sequences, and proteins
-which were only identified by peptides with modifications.
+We now remove the contaminants and peptides that map to decoy sequences.
 
 ```{r}
 pe[["peptideLog"]] <- pe[["peptideLog"]][rowData(pe[["peptideLog"]])$Reverse != "+", ]
@@ -242,6 +215,7 @@ to the spike-in condition.
 
 ## Summarization to protein level
 
+
 - We use median summarization in aggregateFeatures.
 - Note, that this is a suboptimal normalisation procedure! 
 - By default robust summarization is used:  `fun = MsCoreUtils::robustSummary()`
@@ -251,15 +225,17 @@ pe <- aggregateFeatures(pe,
   i = "peptideNorm",
   fcol = "Proteins",
   na.rm = TRUE,
-  name = "proteinMedian",
+  name = "protein",
   fun = matrixStats::colMedians)
 ```
 
 
 
 ```{r}
-plotMDS(assay(pe[["proteinMedian"]]), col = as.numeric(colData(pe)$condition))
+plotMDS(assay(pe[["protein"]]), col = as.numeric(colData(pe)$condition))
 ```
+
+Note that the samples upon robust summarisation show a separation according to the spike-in condition in the second dimension of the MDS plot.
 
 # Data Analysis
 
@@ -276,7 +252,7 @@ We can specify this model by using a formula with the factor condition as its pr
 Note, that a formula always starts with a symbol '~'.
 
 ```{r, warning=FALSE}
-pe <- msqrob(object = pe, i = "proteinMedian", formula = ~condition)
+pe <- msqrob(object = pe, i = "protein", formula = ~condition)
 ```
 
 ## Inference
@@ -285,7 +261,14 @@ First, we extract the parameter names of the model by looking at the first model
 The models are stored in the row data of the assay under the default name msqrobModels. 
 
 ```{r}
-getCoef(rowData(pe[["proteinMedian"]])$msqrobModels[[1]])
+getCoef(rowData(pe[["protein"]])$msqrobModels[[1]])
+```
+
+We can also explore the design of the model that we specified using the the package `ExploreModelMatrix` 
+
+```{r}
+library(ExploreModelMatrix)
+VisualizeDesign(colData(pe),~condition)$plotlist[[1]]
 ```
 
 Spike-in condition `A` is the reference class. So the mean log2 expression
@@ -297,7 +280,7 @@ Thus, we assess the contrast 'conditionB = 0' with our statistical test.
 
 ```{r}
 L <- makeContrast("conditionB=0", parameterNames = c("conditionB"))
-pe <- hypothesisTest(object = pe, i = "proteinMedian", contrast = L)
+pe <- hypothesisTest(object = pe, i = "protein", contrast = L)
 ```
 
 
@@ -307,31 +290,37 @@ pe <- hypothesisTest(object = pe, i = "proteinMedian", contrast = L)
 
 
 ```{r,warning=FALSE}
-volcano <- ggplot(rowData(pe[["proteinMedian"]])$conditionB,
+volcano <- ggplot(rowData(pe[["protein"]])$conditionB,
                   aes(x = logFC, y = -log10(pval), color = adjPval < 0.05)) +
   geom_point(cex = 2.5) +
   scale_color_manual(values = alpha(c("black", "red"), 0.5)) + theme_minimal()
 volcano
 ```
 
+Note, that only `r sum(rowData(pe[["protein"]])$conditionB$adjPval < 0.05, na.rm = TRUE)` proteins are found to be differentially abundant.
+
 ### Heatmap
 
 We first select the names of the proteins that were declared signficant.
 
 ```{r}
-sigNames <- rowData(pe[["proteinMedian"]])$conditionB %>%
-  rownames_to_column("proteinMedian") %>%
+sigNames <- rowData(pe[["protein"]])$conditionB %>%
+  rownames_to_column("protein") %>%
   filter(adjPval<0.05) %>%
-  pull(proteinMedian)
-heatmap(assay(pe[["proteinMedian"]])[sigNames, ])
+  pull(protein)
+heatmap(assay(pe[["protein"]])[sigNames, ])
 ```
+
+The majority of the proteins are indeed UPS proteins. 
+1 yeast protein is returned. 
+Note, that the yeast protein indeed shows evidence for differential abundance. 
 
 ### Boxplots
 
 We make boxplot of the log2 FC and stratify according to the whether a protein is spiked or not.
 
 ```{r}
-rowData(pe[["proteinMedian"]])$conditionB %>%
+rowData(pe[["protein"]])$conditionB %>%
   rownames_to_column(var = "protein") %>%
   ggplot(aes(x=grepl("UPS",protein),y=logFC)) +
   geom_boxplot() +
@@ -369,10 +358,10 @@ We first extract the normalized peptideRaw expression values for a particular pr
 ```{r, warning=FALSE, message=FALSE}
 for (protName in sigNames)
 {
-pePlot <- pe[protName, , c("peptideNorm","proteinMedian")]
+pePlot <- pe[protName, , c("peptideNorm","protein")]
 pePlotDf <- data.frame(longFormat(pePlot))
 pePlotDf$assay <- factor(pePlotDf$assay,
-                        levels = c("peptideNorm", "proteinMedian"))
+                        levels = c("peptideNorm", "protein"))
 pePlotDf$condition <- as.factor(colData(pePlot)[pePlotDf$colname, "condition"])
 
 # plotting
@@ -398,6 +387,11 @@ p2 <- ggplot(pePlotDf, aes(x = colname, y = value, fill = condition)) +
 print(p2)
 }
 ```
+
+Note, that the yeast protein is only covered by 3 peptides. 
+Only one peptide is picked up in condition A. 
+This peptide is also only once observed in spike-in condition B. 
+This puts a considerable burden upon the inference and could be avoided by more stringent filtering. 
 
 # Session Info
 

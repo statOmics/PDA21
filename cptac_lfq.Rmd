@@ -1,5 +1,5 @@
 ---
-title: "Introduction to proteomics data analysis: robust summarization"
+title: "Introduction to proteomics data analysis: maxLFQ summarization"
 author: "Lieven Clement"
 date: "statOmics, Ghent University (https://statomics.github.io)"
 output:
@@ -39,20 +39,24 @@ detailed search settings were described in Goeminne et al. (2016) [1].
 Three replicates are available for each concentration.
 
 
+- NOTE THAT maxLFQ SUMMARISATION IS SUBOPTIMAL! 
+- THIS IS FOR DIDACTICAL PURPOSES ONLY.
+
 # Data
 
-We first import the data from peptideRaws.txt file. This is the file containing
-your peptideRaw-level intensities. For a MaxQuant search [6],
-this peptideRaws.txt file can be found by default in the
+We first import the data from proteinGroups.txt file. This is the file containing
+maxLFQ summarized protein-level intensities. For a MaxQuant search [6],
+this proteinGroups.txt file can be found by default in the
 "path_to_raw_files/combined/txt/" folder from the MaxQuant output,
 with "path_to_raw_files" the folder where the raw files were saved.
-In this vignette, we use a MaxQuant peptideRaws file which is a subset
-of the cptac study. This data is available in the `msdata` package.
+In this vignette, we use a MaxQuant proteinRaws file which is a subset
+of the cptac study. 
 To import the data we use the `QFeatures` package.
 
-We generate the object peptideRawFile with the path to the peptideRaws.txt file.
-Using the `grepEcols` function, we find the columns that contain the expression
-data of the peptideRaws in the peptideRaws.txt file.
+We generate the object proteinRawFile with the path to the proteinGroups.txt file.
+Using the `grepEcols` function, we find the columns that contain the LFQ expression
+data of the proteinRaws in the proteinGroups.txt file.
+
 
 
 ```{r, warning=FALSE, message=FALSE}
@@ -61,21 +65,16 @@ library(limma)
 library(QFeatures)
 library(msqrob2)
 library(plotly)
+library(gridExtra)
 
-peptidesFile <- "https://raw.githubusercontent.com/statOmics/SGA2020/data/quantification/cptacAvsB_lab3/peptides.txt"
+proteinsFile <- "https://raw.githubusercontent.com/statOmics/PDA21/data/quantification/cptacAvsB_lab3/proteinGroups.txt"
 
-ecols <- grep(
-  "Intensity\\.", 
-  names(read.delim(peptidesFile))
-  )
+ecols <- grep("LFQ\\.intensity\\.", names(read.delim(proteinsFile)))
 
 pe <- readQFeatures(
-  table = peptidesFile,
-  fnames = 1,
-  ecol = ecols,
-  name = "peptideRaw", sep="\t")
-
-colnames(pe)
+    table = proteinsFile, fnames = 1, ecol = ecols,
+    name = "proteinRaw", sep = "\t"
+)
 ```
 
 In the following code chunk, we can extract the spikein condition from the raw file name.
@@ -90,25 +89,25 @@ colData(pe)$condition <- substr(colnames(pe), cond, cond) %>%
 ```
 
 
-We calculate how many non zero intensities we have per peptide and this
+We calculate how many non zero intensities we have per protein and this
 will be useful for filtering.
 
 ```{r}
-rowData(pe[["peptideRaw"]])$nNonZero <- rowSums(assay(pe[["peptideRaw"]]) > 0)
+rowData(pe[["proteinRaw"]])$nNonZero <- rowSums(assay(pe[["proteinRaw"]]) > 0)
 ```
 
 
-Peptides with zero intensities are missing peptides and should be represent
+Proteins with zero intensities are missing and should be represent
 with a `NA` value rather than `0`.
 ```{r}
-pe <- zeroIsNA(pe, "peptideRaw") # convert 0 to NA
+pe <- zeroIsNA(pe, "proteinRaw") # convert 0 to NA
 ```
 
 
 ## Data exploration
 
-`r format(mean(is.na(assay(pe[["peptideRaw"]])))*100,digits=2)`% of all peptide
-intensities are missing and for some peptides we do not even measure a signal
+`r format(mean(is.na(assay(pe[["proteinRaw"]])))*100,digits=2)`% of all peptide
+intensities are missing and for some proteins we do not even measure a signal
 in any sample.
 
 
@@ -118,48 +117,26 @@ This section preforms preprocessing for the peptide data.
 This include 
 
 - log transformation, 
-- filtering and 
-- summarisation of the data.
+- filtering 
 
 ## Log transform the data
 
 ```{r}
-pe <- logTransform(pe, base = 2, i = "peptideRaw", name = "peptideLog")
+pe <- logTransform(pe, base = 2, i = "proteinRaw", name = "proteinLog")
 ```
 
 ## Filtering
 
-1. Handling overlapping protein groups
+1. Remove reverse sequences (decoys) and contaminants
 
-In our approach a peptide can map to multiple proteins, as long as there is
-none of these proteins present in a smaller subgroup.
-
-```{r}
-pe[["peptideLog"]] <-
- pe[["peptideLog"]][rowData(pe[["peptideLog"]])$Proteins
- %in% smallestUniqueGroups(rowData(pe[["peptideLog"]])$Proteins),]
-```
-
-2. Remove reverse sequences (decoys) and contaminants
-
-We now remove the contaminants and peptides that map to decoy sequences.
+We now remove the contaminants and proteins that map to decoys.
 
 ```{r}
-pe[["peptideLog"]] <- pe[["peptideLog"]][rowData(pe[["peptideLog"]])$Reverse != "+", ]
-pe[["peptideLog"]] <- pe[["peptideLog"]][rowData(pe[["peptideLog"]])$
+pe[["proteinLog"]] <- pe[["proteinLog"]][rowData(pe[["proteinLog"]])$Reverse != "+", ]
+pe[["proteinLog"]] <- pe[["proteinLog"]][rowData(pe[["proteinLog"]])$
     Potential.contaminant != "+", ]
 ```
-
-3. Drop peptides that were only identified in one sample
-
-We keep peptides that were observed at last twice.
-
-```{r}
-pe[["peptideLog"]] <- pe[["peptideLog"]][rowData(pe[["peptideLog"]])$nNonZero >= 2, ]
-nrow(pe[["peptideLog"]])
-```
-
-We keep `r nrow(pe[["peptideLog"]])` peptides upon filtering.
+We keep `r nrow(pe[["proteinLog"]])` peptides upon filtering.
 
 
 ## Normalize the data using median centering 
@@ -172,8 +149,8 @@ with $\hat\mu_i$ the median intensity over all observed peptides in sample $i$.
 
 ```{r}
 pe <- normalize(pe, 
-                i = "peptideLog", 
-                name = "peptideNorm", 
+                i = "proteinLog", 
+                name = "protein", 
                 method = "center.median")
 ```
 
@@ -183,7 +160,7 @@ pe <- normalize(pe,
 Upon the normalisation the density curves are nicely registered
 
 ```{r}
-pe[["peptideNorm"]] %>% 
+pe[["protein"]] %>% 
   assay %>%
   as.data.frame() %>%
   gather(sample, intensity) %>% 
@@ -196,39 +173,12 @@ We can visualize our data using a Multi Dimensional Scaling plot,
 eg. as provided by the `limma` package.
 
 ```{r}
-pe[["peptideNorm"]] %>% 
+pe[["protein"]] %>% 
   assay %>%
   limma::plotMDS(col = as.numeric(colData(pe)$condition))
 ```
 
-The first axis in the plot is showing the leading log fold changes
-(differences on the log scale) between the samples.
-
-We notice that the leading differences (log FC)
-in the peptide data seems to be driven by technical variability.
-Indeed, the samples do not seem to be clearly separated according
-to the spike-in condition.
-
-
-## Summarization to protein level
-
-- By default robust summarization is used:  `fun = MsCoreUtils::robustSummary()`
-
-```{r,warning=FALSE}
-pe <- aggregateFeatures(pe,
-  i = "peptideNorm",
-  fcol = "Proteins",
-  na.rm = TRUE,
-  name = "protein")
-```
-
-
-
-```{r}
-plotMDS(assay(pe[["protein"]]), col = as.numeric(colData(pe)$condition))
-```
-
-Note that the samples upon robust summarisation show a clear separation according to the spike-in condition in the second dimension of the MDS plot.
+Note that the samples show a clear separation according to the spike-in condition in the second dimension of the MDS plot.
 
 # Data Analysis
 
@@ -290,7 +240,7 @@ volcano <- ggplot(rowData(pe[["protein"]])$conditionB,
 volcano
 ```
 
-Note, that `r sum(rowData(pe[["protein"]])$conditionB$adjPval < 0.05, na.rm = TRUE)` proteins are found to be differentially abundant.
+Note, that only `r sum(rowData(pe[["protein"]])$conditionB$adjPval < 0.05, na.rm = TRUE)` proteins are found to be differentially abundant.
 
 ### Heatmap
 
@@ -345,16 +295,16 @@ What do you observe?
 
 ### Detail plots
 
-We first extract the normalized peptideRaw expression values for a particular protein.  
+We first extract the normalized proteinRaw expression values for a particular protein.  
 
 
 ```{r, warning=FALSE, message=FALSE}
 for (protName in sigNames)
 {
-pePlot <- pe[protName, , c("peptideNorm","protein")]
+pePlot <- pe[protName, , c("protein","protein")]
 pePlotDf <- data.frame(longFormat(pePlot))
 pePlotDf$assay <- factor(pePlotDf$assay,
-                        levels = c("peptideNorm", "protein"))
+                        levels = c("protein", "protein"))
 pePlotDf$condition <- as.factor(colData(pePlot)[pePlotDf$colname, "condition"])
 
 # plotting
@@ -380,11 +330,6 @@ p2 <- ggplot(pePlotDf, aes(x = colname, y = value, fill = condition)) +
 print(p2)
 }
 ```
-
-Note, that the yeast protein is only covered by 3 peptides. 
-Only one peptide is picked up in condition A. 
-This peptide is also only once observed in spike-in condition B. 
-This puts a considerable burden upon the inference and could be avoided by more stringent filtering. 
 
 # Session Info
 
