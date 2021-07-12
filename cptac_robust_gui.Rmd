@@ -232,7 +232,25 @@ Note that 20 proteins are displayed. The majority of them are UPS proteins that 
 
 3. You can further modify the plot by coloring the data according to a design variable or by splitting the data horizontally or vertically according to design variables. 
 
-### 2.3.5. Evaluate Summarization
+### 2.3.5. The Report Tab
+
+A reproducible Rmarkdown script and html report with the analysis you performed with the GUI can be downloaded in the novel report tab. 
+
+![Figure 14. msqrob2 DetailPlot tab](./figures/guiReport.png)
+
+1. You can select the number of detail plots you want to generate in the report. The default is 10, which indicates that detail plots will be constructed for the 10 most significant protein in your top list. 
+Note, that the number of detail plots can be smaller if there are less than 10 proteins significant at the specified FDR-level.
+
+2. Hit the `Generate report` button and a report will be compiled. Note, that this will take a while because all analysis steps from each of the tabs have to be conducted again. You will see a progress bar and when it is finished a zip file will be downloaded that contains: 
+
+  - features.txt: A tab delimited file with the raw intensity data
+  - annotation.xlsx: An excel file with the annotation of the design
+  - report.Rmd: R/markdown file with the code for the report. If you open the file in Rstudio and if you hit the knit button the report will be compiled to html. 
+  - report.html: The compiled report. 
+
+So, your analysis is stored in a fully reproducible way. 
+
+### 2.3.6. Evaluate Summarization
 
 We further explore the difference between summarization methods.
 We first assess the quality of the fold change estimates for the robust summarization.
@@ -244,11 +262,11 @@ We will make use of the boxplot at the bottom of the quantification tab.
 
 ![Figure 15. msqrob2 Inference tab with Fold Change Boxplot for all UPS proteins](./figures/guiRobustUps.png)
 
-[2.3.5.a] We know the real FC for the spike in proteins (see description of the data 2.3). Note, that the boxplot is showing the log2 FC. What do you observe?
+[2.3.6.a] We know the real FC for the spike in proteins (see description of the data 2.2). Note, that the boxplot is showing the log2 FC. What do you observe?
 
-[2.3.5.b] Now select all yeast proteins. What is the real fold change and what do you observe?  
+[2.3.6.b] Now select all yeast proteins. What is the real fold change and what do you observe?  
 
-[2.3.5.c] Repeat this for the median summarization method. What do you observe, how does that compare to the robust summarisation and try to explain this?
+[2.3.6.c] Repeat this for the median summarization method. What do you observe, how does that compare to the robust summarisation and try to explain this?
 
 ### Final remark
 
@@ -256,9 +274,6 @@ We will make use of the boxplot at the bottom of the quantification tab.
 
 - The analysis can also be conducted using scripts, which gives you much more functionality and the ability to streamline, automate and document your analyses in a reproducible way. 
 
-- An R/markdown file for the analysis we performed above can be found below. if you click on the code button at the top right of the compiled html file of the analysis, a script with the code for the html file will be downloaded.
-
-[RMarkdown script](cptac_robust.html)
 
 
 
