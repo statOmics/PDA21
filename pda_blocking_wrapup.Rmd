@@ -386,11 +386,6 @@ pe <- msqrob(
   object = pe,
   i = "protein",
   formula = ~ celltype + mouse)
-
-pe3 <- msqrob(
-  object = pe3,
-  i = "protein",
-  formula = ~ celltype + mouse)
 ```
 
 ### RCB wrong analysis
@@ -492,6 +487,7 @@ dataHlp <- colData(pe) %>%
 
 ## Comparison Empirical Bayes standard deviation in msqrob2 
 
+<details><summary> Click to see code </summary><p>
 ```{r}
 accessions <- rownames(pe[["protein"]])[rownames(pe[["protein"]])%in%rownames(pe2[["protein"]])]
 dat <- data.frame(
@@ -500,22 +496,29 @@ sigmaRBCwrong = sapply(rowData(pe[["protein"]])$wrongModel[accessions], getSigma
 sigmaCRD <- sapply(rowData(pe2[["protein"]])$msqrobModels[accessions], getSigmaPosterior)
 )
 
+ plotRBCvsWrong <- ggplot(data = dat, aes(sigmaRBC, sigmaRBCwrong)) +
+    geom_point(alpha = 0.1, shape = 20) +
+    scale_x_log10() +
+    scale_y_log10() +
+    geom_abline(intercept=0,slope=1)
+plotCRDvsWrong <- ggplot(data = dat, aes(sigmaCRD, sigmaRBCwrong)) +
+    geom_point(alpha = 0.1, shape = 20) +
+    scale_x_log10() +
+    scale_y_log10() +
+    geom_abline(intercept=0,slope=1)
+plotRBCvsCRD <- ggplot(data = dat, aes(sigmaRBC, sigmaCRD)) +
+    geom_point(alpha = 0.1, shape = 20) +
+    scale_x_log10() +
+    scale_y_log10() +
+    geom_abline(intercept=0,slope=1)
+```
+</p></details>
+
+```{r}
 grid.arrange(
-  ggplot(data = dat, aes(sigmaRBC, sigmaRBCwrong)) +
-    geom_point(alpha = 0.1, shape = 20) +
-    scale_x_log10() +
-    scale_y_log10() +
-    geom_abline(intercept=0,slope=1),
-  ggplot(data = dat, aes(sigmaCRD, sigmaRBCwrong)) +
-    geom_point(alpha = 0.1, shape = 20) +
-    scale_x_log10() +
-    scale_y_log10() +
-    geom_abline(intercept=0,slope=1),
-  ggplot(data = dat, aes(sigmaRBC, sigmaCRD)) +
-    geom_point(alpha = 0.1, shape = 20) +
-    scale_x_log10() +
-    scale_y_log10() +
-    geom_abline(intercept=0,slope=1),
+  plotRBCvsWrong,
+  plotCRDvsWrong,
+  plotRBCvsCRD,
   nrow=2)
 ```
 
