@@ -216,7 +216,7 @@ compBoxPlot <- rbind(rowData(peLFQ[["protein"]])$conditionB %>% mutate(method="m
 
 </p></details>
 
-## Comparison summarization
+## Comparison summarization methods 
 
 ```{r}
 grid.arrange(volcanoLFQ + xlim(xlims) + ylim(ylims), 
@@ -406,7 +406,8 @@ sumPlot <- data %>%
 Here, we will focus on the summarization of the intensities for protein `r prot`.
 
 ```{r}
-sumPlot
+sumPlot +
+  geom_line(linetype="dashed",alpha=.4)
 ```
 
 ### Median summarization
@@ -501,12 +502,12 @@ sumLmPlot <- sumPlot + geom_hline(
 </p></details>
 
 ```{r}
-grid.arrange(sumMeanPlot, sumLmPlot, ncol=2)
+grid.arrange(sumMedianPlot, sumMeanPlot, sumLmPlot, ncol=2)
 ```
 
 - By correcting for the peptide species the protein expression values are much better separated an better reflect differences in abundance induced by the spike-in condition. 
 
-- Indeed, it shows that median summarisation that does not account for the peptide effect indeed overestimated the protein expression value in the small spike-in conditions and underestimated that in the large spike-in conditions.
+- Indeed, it shows that median and mean summarisation that do not account for the peptide effect indeed overestimate the protein expression value in the small spike-in conditions and underestimate that in the large spike-in conditions.
 
 - Still there seem to be some issues with samples that for which the expression values are not well separated according to the spike-in condition. 
 
@@ -549,7 +550,7 @@ $$
 
 We replace OLS by M-estimation with loss function
 $$
-\text{OLS}: \sum\limits_{i,p} w_{ip}\epsilon_{ip}^2 = \sum\limits_{i,p}w_{ip}(y_{ip}-\beta_i^\text{sample}-\beta_p^\text{peptide})^2
+\sum\limits_{i,p} w_{ip}\epsilon_{ip}^2 = \sum\limits_{i,p}w_{ip}(y_{ip}-\beta_i^\text{sample}-\beta_p^\text{peptide})^2
 $$
 
 - Iteratively fit model with observation weights $w_{ip}$ until convergence
@@ -600,22 +601,29 @@ sumRlmPlot <- sumPlot + geom_hline(
 ```{r}
  grid.arrange(sumLmPlot + ggtitle("OLS"), sumRlmPlot, nrow = 1)
 ```
+
 - Robust regresion results in a better separation between the protein expression values for the different samples according to their spike-in concentration. 
 
-### maxLFQ summarization 
+
+
+### Comparison summarization methods 
+
+- maxLFQ
 
 ```{r echo=FALSE}
 knitr::include_graphics("./figures/maxLFQ_principle.png")
 ```
 
-### MS-stats summarization
-
 - MS-stats also uses a robust peptide level model to perform the summarization, however, they typically first impute missing values
 
-### Comparison summarization methods 
+- Proteus high-flyer method: mean of three peptides with highest intensity
 
 ```{r echo=FALSE}
 knitr::include_graphics("./figures/maxLFQ_principle.png")
+```
+
+```{r echo=FALSE}
+knitr::include_graphics("./figures/msqrobsum_sum_novel.png")
 ```
 
 - [@sticker2020]
