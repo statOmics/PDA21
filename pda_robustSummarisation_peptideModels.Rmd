@@ -455,7 +455,7 @@ $$
 sumMeanMod <- lm(intensity ~ -1 + sample,data)
 
 sumMean <- data.frame(
-  intensity=sumMeanMod$coef[grep("sample",names(sumMeanMod$coef))] + mean(data$intensity) - mean(sumMeanMod$coef[grep("sample",names(sumMeanMod$coef))]),
+  intensity=sumMeanMod$coef[grep("sample",names(sumMeanMod$coef))],
   condition= names(sumMeanMod$coef)[grep("sample",names(sumMeanMod$coef))] %>% substr(18,18) %>% as.factor )
 
 
@@ -502,12 +502,12 @@ sumLmPlot <- sumPlot + geom_hline(
 </p></details>
 
 ```{r}
-grid.arrange(sumMedianPlot, sumMeanPlot, sumLmPlot, ncol=2)
+grid.arrange(sumMedianPlot, sumMeanPlot, sumLmPlot, nrow=1)
 ```
 
 - By correcting for the peptide species the protein expression values are much better separated an better reflect differences in abundance induced by the spike-in condition. 
 
-- Indeed, it shows that median and mean summarisation that do not account for the peptide effect indeed overestimate the protein expression value in the small spike-in conditions and underestimate that in the large spike-in conditions.
+- Indeed, it shows that median and mean summarization that do not account for the peptide effect indeed overestimate the protein expression value in the small spike-in conditions and underestimate that in the large spike-in conditions.
 
 - Still there seem to be some issues with samples that for which the expression values are not well separated according to the spike-in condition. 
 
@@ -618,9 +618,6 @@ knitr::include_graphics("./figures/maxLFQ_principle.png")
 
 - Proteus high-flyer method: mean of three peptides with highest intensity
 
-```{r echo=FALSE}
-knitr::include_graphics("./figures/maxLFQ_principle.png")
-```
 
 ```{r echo=FALSE}
 knitr::include_graphics("./figures/msqrobsum_sum_novel.png")
@@ -641,8 +638,8 @@ $$
 
 - protein-level
 
-  - $\beta^\text{condition}_c$: spike-in condition
-  - $\beta^\text{condition}_c$: lab effect
+  - $\beta^\text{condition}_c$: spike-in condition $c=b, \ldots, e$
+  - $\beta^\text{lab}_l$: lab effect $l=l_2\ldots l_3$
   - $u_{r}^\text{run}\sim N\left(0,\sigma^2_\text{run}\right) \rightarrow$ random effect addresses pseudo-replication
 
 - peptide-level 
@@ -662,7 +659,7 @@ $$
 - It has the advantages that
 
   1. it correctly addresses the difference levels of variability in the data
-  2. it avoids summarisation and therefore also accounts for the difference in the number of peptides that are observed in each sample
+  2. it avoids summarization and therefore also accounts for the difference in the number of peptides that are observed in each sample
   3. more powerful analysis
 
 - It has the disadvantage that
@@ -675,3 +672,4 @@ $$
 
 Hence, for this course we opted to use peptide-level models for summarization, but not for directly inferring on the differential expression at the protein-level. 
 
+# References
