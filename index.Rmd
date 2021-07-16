@@ -35,8 +35,9 @@ Students can sharpen their background knowledge on Mass Spectrometry, Proteomics
 This course is oriented towards biologists and bioinformaticians with a particular interest in differential analysis for quantitative proteomics.
 
 According to the target audience of the course we either work with a graphical user interface (GUI) in a R/shiny App msqrob2gui e.g. 
+
+- Proteomics Data Analysis course at the Gulbenkian institute 
 - Proteomics Bioinformatics course of the EBI
-- Proteomics Data Analysis course at the Gulbenkian institute) 
 - BePA introduction: What can proteomics do for you?
 
 or with R/markdowns scripts e.g. 
@@ -79,6 +80,10 @@ If you encounter problems related to the course material (e.g. package installat
   - Wrap-up: [Blocking](./pda_blocking_wrapup.html)[[PDF](./pda_blocking_wrapup.pdf)]
 
 ---
+
+### Acknowledgements 
+
+A special thanks to Pedro Fernandes, Coordinator of the GTPB Bioinformatics Training Programme, Instituto Gulbenkian de Ciencia, who radically changed our view on teaching and immersed us in the teaching method that we use in this course.
 
 ### License
 
