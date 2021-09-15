@@ -129,24 +129,21 @@ pe <- logTransform(pe, base = 2, i = "peptideRaw", name = "peptideLog")
   - Handling overlapping protein groups
 
 ```{r}
-pe[["peptideLog"]] <-
- pe[["peptideLog"]][rowData(pe[["peptideLog"]])$Proteins
- %in% smallestUniqueGroups(rowData(pe[["peptideLog"]])$Proteins),]
+pe <- filterFeatures(pe, ~ Proteins %in% smallestUniqueGroups(rowData(pe[["peptideLog"]])$Proteins))
 ```
 
   - Remove reverse sequences (decoys) and contaminants. Note that this is indicated by the column names Reverse and depending on the version of maxQuant with Potential.contaminants or Contaminants.
 
 
 ```{r}
-pe[["peptideLog"]] <- pe[["peptideLog"]][rowData(pe[["peptideLog"]])$Reverse != "+", ]
-pe[["peptideLog"]] <- pe[["peptideLog"]][rowData(pe[["peptideLog"]])$
-    Contaminant != "+", ]
+pe <- filterFeatures(pe,~Reverse != "+")
+pe <- filterFeatures(pe,~ Contaminant != "+")
 ```
 
   - Drop peptides that were only identified in one sample
 
 ```{r}
-pe[["peptideLog"]] <- pe[["peptideLog"]][rowData(pe[["peptideLog"]])$nNonZero >= 2, ]
+pe <- filterFeatures(pe,~ nNonZero >=2)
 nrow(pe[["peptideLog"]])
 ```
 

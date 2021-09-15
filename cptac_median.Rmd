@@ -138,9 +138,7 @@ In our approach a peptide can map to multiple proteins, as long as there is
 none of these proteins present in a smaller subgroup.
 
 ```{r}
-pe[["peptideLog"]] <-
- pe[["peptideLog"]][rowData(pe[["peptideLog"]])$Proteins
- %in% smallestUniqueGroups(rowData(pe[["peptideLog"]])$Proteins),]
+pe <- filterFeatures(pe, ~ Proteins %in% smallestUniqueGroups(rowData(pe[["peptideLog"]])$Proteins))
 ```
 
 2. Remove reverse sequences (decoys) and contaminants
@@ -148,9 +146,8 @@ pe[["peptideLog"]] <-
 We now remove the contaminants and peptides that map to decoy sequences.
 
 ```{r}
-pe[["peptideLog"]] <- pe[["peptideLog"]][rowData(pe[["peptideLog"]])$Reverse != "+", ]
-pe[["peptideLog"]] <- pe[["peptideLog"]][rowData(pe[["peptideLog"]])$
-    Potential.contaminant != "+", ]
+pe <- filterFeatures(pe,~ Reverse != "+")
+pe <- filterFeatures(pe,~ Potential.contaminant != "+")
 ```
 
 3. Drop peptides that were only identified in one sample
@@ -158,7 +155,7 @@ pe[["peptideLog"]] <- pe[["peptideLog"]][rowData(pe[["peptideLog"]])$
 We keep peptides that were observed at last twice.
 
 ```{r}
-pe[["peptideLog"]] <- pe[["peptideLog"]][rowData(pe[["peptideLog"]])$nNonZero >= 2, ]
+pe <- filterFeatures(pe,~ nNonZero >=2)
 nrow(pe[["peptideLog"]])
 ```
 
