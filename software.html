@@ -331,6 +331,10 @@ BiocManager::install(&quot;statomics/msqrob2gui&quot;)</code></pre>
 pe &lt;- aggregateFeatures(pe,i=&quot;peptide&quot;,fcol=&quot;Proteins&quot;,name=&quot;protein&quot;)
 pe &lt;- msqrob(pe,i=&quot;protein&quot;,formula=~condition,modelColumnName=&quot;rlm&quot;)
 getCoef(rowData(pe[[&quot;protein&quot;]])$rlm[[1]])</code></pre>
+<ul>
+<li>For testing you can launch an R studio interface in an R docker along with bioconductor packages for proteomics.</li>
+</ul>
+<p><a href="http://mybinder.org/v2/gh/statOmics/PDA21/master?urlpath=rstudio"><img src="http://mybinder.org/badge.svg" alt="Binder" /></a></p>
 
 
 
