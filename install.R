@@ -15,5 +15,6 @@ pkgs <- c("tidyverse",
           "QFeatures",
           "msqrob2",
           "gridExtra",
-          "ExploreModelMatrix")
+          "ExploreModelMatrix",
+          "statomics/msqrob2gui")
 BiocManager::install(pkgs)
