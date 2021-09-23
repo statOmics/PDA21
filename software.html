@@ -323,6 +323,9 @@ BiocManager::install(&quot;msqrob2&quot;)</code></pre>
 <pre><code>if(!requireNamespace(&quot;BiocManager&quot;, quietly = TRUE)) {
  install.packages(&quot;BiocManager&quot;)
 }
+if(!requireNamespace(&quot;remotes&quot;, quietly = TRUE)) {
+ BiocManager::install(&quot;remotes&quot;)
+}
 BiocManager::install(&quot;statomics/msqrob2gui&quot;)</code></pre>
 <ul>
 <li>check if your installation is working with the following example library(msqrob2)</li>
