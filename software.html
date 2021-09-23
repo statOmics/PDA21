@@ -332,7 +332,7 @@ pe &lt;- aggregateFeatures(pe,i=&quot;peptide&quot;,fcol=&quot;Proteins&quot;,na
 pe &lt;- msqrob(pe,i=&quot;protein&quot;,formula=~condition,modelColumnName=&quot;rlm&quot;)
 getCoef(rowData(pe[[&quot;protein&quot;]])$rlm[[1]])</code></pre>
 <ul>
-<li>For testing you can launch an R studio interface in an R docker along with bioconductor packages for proteomics.</li>
+<li>For testing our package without installation: you can launch an R studio interface in an R docker along with bioconductor packages for proteomics that is running on top of one of our github repositories.</li>
 </ul>
 <p><a href="https://mybinder.org/v2/gh/statOmics/shinyTest/master?urlpath=rstudio"><img src="http://mybinder.org/badge.svg" alt="Binder" /></a></p>
 
