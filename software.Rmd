@@ -31,6 +31,9 @@ BiocManager::install("msqrob2")
 if(!requireNamespace("BiocManager", quietly = TRUE)) {
  install.packages("BiocManager")
 }
+if(!requireNamespace("remotes", quietly = TRUE)) {
+ BiocManager::install("remotes")
+}
 BiocManager::install("statomics/msqrob2gui")
 ```
 
