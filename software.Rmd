@@ -46,6 +46,6 @@ getCoef(rowData(pe[["protein"]])$rlm[[1]])
 
 
 
-- For testing you can launch an R studio interface in an R docker along with bioconductor packages for proteomics.
+- For testing our package without installation: you can launch an R studio interface in an R docker along with bioconductor packages for proteomics that is running on top of one of our github repositories.
 
 [![Binder](http://mybinder.org/badge.svg)](https://mybinder.org/v2/gh/statOmics/shinyTest/master?urlpath=rstudio)
