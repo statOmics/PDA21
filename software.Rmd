@@ -38,9 +38,9 @@ BiocManager::install("statomics/msqrob2gui")
 ```
 
 - check if your installation is working with the following example
-library(msqrob2)
 
 ``` 
+library(msqrob2)
 data(pe)
 pe <- aggregateFeatures(pe,i="peptide",fcol="Proteins",name="protein")
 pe <- msqrob(pe,i="protein",formula=~condition,modelColumnName="rlm")
